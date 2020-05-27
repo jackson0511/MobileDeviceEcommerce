@@ -13,6 +13,9 @@ class SanPham extends Model
     	return $this->hasMany('App\ChiTietThuocTinh','idSP','id');
     }
 
+    function tintuc(){
+        return $this->hasMany('App\TinTuc','idSP','id');
+    }
     function banner(){
     	return $this->hasMany('App\Banner','idSP','id');
     }

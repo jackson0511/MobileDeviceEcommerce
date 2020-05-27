@@ -57,10 +57,6 @@
                             @endforeach
                         </div>
                     </div>
-{{--                    <div class="form-group">--}}
-{{--                        <label for="emailAddress">Email address*</label>--}}
-{{--                        <textarea name="txtContent" class="form-control " id="editor1"></textarea>--}}
-{{--                    </div>--}}
 
                     <div class="form-group text-right m-b-0">
                         <button class="btn btn-primary waves-effect waves-light" type="submit">
@@ -77,15 +73,4 @@
     </div>
     <!-- end row -->
 @endsection
-@section('script')
-{{--    <script>--}}
-{{--        CKEDITOR.replace( 'editor1', {--}}
-{{--            filebrowserBrowseUrl: "admin/ckfinder/ckfinder.html",--}}
-{{--            filebrowserImageBrowseUrl: "admin/ckfinder/ckfinder.html?type=Images",--}}
-{{--            filebrowserFlashBrowseUrl: "admin/ckfinder/ckfinder.html?type=Flash",--}}
-{{--            filebrowserUploadUrl: "admin/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files",--}}
-{{--            filebrowserImageUploadUrl: "admin/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images",--}}
-{{--            filebrowserFlashUploadUrl: "admin/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash"--}}
-{{--        } );--}}
-{{--    </script>--}}
-@endsection
+

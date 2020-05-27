@@ -80,11 +80,6 @@
                             </div>
                         </div>
 
-                            {{--                    <div class="form-group">--}}
-                        {{--                        <label for="emailAddress">Email address*</label>--}}
-                        {{--                        <textarea name="txtContent" class="form-control " id="editor1"></textarea>--}}
-                        {{--                    </div>--}}
-
                         <div class="form-group text-right m-b-0">
                             <button class="btn btn-primary waves-effect waves-light" type="submit">
                                 Save
@@ -99,17 +94,4 @@
         </div>
     </div>
     <!-- end row -->
-@endsection
-@section('script')
-{{--    <script>--}}
-{{--        $(document).ready(function () {--}}
-{{--            $("input.thuoctinh").change(function () {--}}
-{{--                if($(this).is(':checked')){--}}
-{{--                    $(this).next('div.giatri').show();--}}
-{{--                }else{--}}
-{{--                    $(this).next('div.giatri').hide();--}}
-{{--                }--}}
-{{--            }).change();--}}
-{{--        });--}}
-{{--    </script>--}}
 @endsection

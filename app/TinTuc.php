@@ -11,4 +11,7 @@ class TinTuc extends Model
     function quantri(){
     	return $this->belongsTo('App\QuanTri','idQT','id');
     }
+    function sanpham(){
+        return $this->belongsTo('App\SanPham','idSP','id');
+    }
 }

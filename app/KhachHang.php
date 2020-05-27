@@ -12,6 +12,9 @@ class KhachHang extends Authenticatable
     //
     protected $table='KhachHang';
 
+    protected $hidden = [
+        'password'
+    ];
     function donhang(){
     	return $this->hasMany('App\DonHang','idKH','id');
     }
@@ -21,5 +24,5 @@ class KhachHang extends Authenticatable
     function gopy(){
     	return $this->hasMany('App\GopY','idKH','id');
     }
-   
+
 }
