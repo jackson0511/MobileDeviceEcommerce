@@ -34,7 +34,7 @@
         .page-item.active .page-link{
             background: #f63440;
             border-color: #f63440;
-            #6e6e6e;
+            color: #6e6e6e;
 
         }
         .page-item{

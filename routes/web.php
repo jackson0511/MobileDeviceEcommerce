@@ -13,16 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
 //dang nhap admin
 Route::get('admin/dangnhap','AdminController@getLogin');
 Route::post('admin/dangnhap','AdminController@postLogin');
 
 Route::get('admin/logout','AdminController@getLogout');
 
-Route::group(['prefix'=>'admin','middleware'=>'CheckLoginAdmin'],function() {
+Route::group(['prefix'=>'admin'],function() {
     //trang chu admin
     Route::get('trangchu','AdminController@index');
 
@@ -110,5 +107,17 @@ Route::group(['prefix'=>'admin','middleware'=>'CheckLoginAdmin'],function() {
     });
 
 });
-
+//frontend
 Route::get('/','HomeController@index');
+//chi tiet san pham
+Route::get('chitietsanpham/{id}/{Ten_KhongDau}.html','HomeController@productDetail');
+//login
+Route::get('dangnhap','HomeController@getLogin');
+Route::post('dangnhap','HomeController@postLogin');
+//register
+Route::get('dangky','HomeController@getRegister');
+Route::post('dangky','HomeController@postRegister');
+
+Route::group(['prefix'=>'ajax'],function (){
+   Route::get('sanpham_theloai','AjaxController@getProductToCategory');
+});

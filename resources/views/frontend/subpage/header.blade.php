@@ -16,24 +16,24 @@
                     <div class="money">
 {{--                         <p style="text-align: center;">{{sw_get_current_weekday()}}  <span id="clock"></span></p> --}}
                     </div>
-{{--                    @if(Auth::guard('KhachHang')->check())--}}
-{{--                    <div class="language-wrap">--}}
-{{--                        <ul class="language">--}}
-{{--                            <li>--}}
-{{--                                <a href="">Xin chào : {{Auth::guard('KhachHang')->user()->HoTen}} </a><i class="fa fa-user"></i>--}}
-{{--                                <ul class="sub-language">--}}
-{{--                                    <li><a href="giohang">Giỏ Hàng</a></li>--}}
-{{--                                    <li><a href="donhangcuaban/{{Auth::guard('KhachHang')->user()->id}}">Đơn hàng</a></li>--}}
-{{--                                    <li><a href="taikhoan">Tài Khoản</a></li>--}}
-{{--                                    <li><a href="logout">Đăng Xuất</a></li>--}}
-{{--                                </ul>--}}
-{{--                            </li>--}}
-{{--                        </ul>--}}
-{{--                    </div>  --}}
-{{--                    @else--}}
-{{--                    <div  class="money"><a href="dangnhap">Đăng nhập</a> </div>                            --}}
-{{--                    <div  class="money"><a href="dangky">Đăng ký</a></div>--}}
-{{--                @endif--}}
+                    @if(Auth::guard('KhachHang')->check())
+                    <div class="language-wrap">
+                        <ul class="language">
+                            <li>
+                                <a href="">Xin chào : {{Auth::guard('KhachHang')->user()->HoTen}} </a><i class="fa fa-user"></i>
+                                <ul class="sub-language">
+                                    <li><a href="giohang">Giỏ Hàng</a></li>
+                                    <li><a href="donhangcuaban/{{Auth::guard('KhachHang')->user()->id}}">Đơn hàng</a></li>
+                                    <li><a href="taikhoan">Tài Khoản</a></li>
+                                    <li><a href="logout">Đăng Xuất</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    @else
+                    <div  class="money"><a href="dangnhap">Đăng nhập</a> </div>
+                    <div  class="money"><a href="dangky">Đăng ký</a></div>
+                @endif
             </div>
         </div>
     </div>
@@ -116,10 +116,22 @@
                     <li class="active">
                         <a href="/">TRANG CHỦ</a>
                     </li>
+                    @foreach($theloai as $tl)
+                        <li>
+                            <a href="danhmucsanpham/{{$tl->id}}/{{$tl->Ten_KhongDau}}.html">{{$tl->Ten}}</a>
+                        </li>
+                    @endforeach
 {{--                    @foreach($theloai as $tl)--}}
-{{--                    <li>--}}
-{{--                        <a href="danhmucsanpham/{{$tl->id}}/{{$tl->Ten_KhongDau}}.html">{{$tl->Ten}}</a>--}}
-{{--                    </li>--}}
+{{--                        @if($tl->parent_id==0)--}}
+{{--                            <li>--}}
+{{--                                <a href="danhmucsanpham/{{$tl->id}}/{{$tl->Ten_KhongDau}}.html">{{$tl->Ten}}</a>--}}
+{{--                                @foreach($tl->children as $child)--}}
+{{--                                    <ul class="submenu">--}}
+{{--                                        <a href="danhmucsanpham/{{$child->id}}/{{$child->Ten_KhongDau}}.html">{{$child->Ten}}</a>--}}
+{{--                                    </ul>--}}
+{{--                                @endforeach--}}
+{{--                            </li>--}}
+{{--                        @endif--}}
 {{--                    @endforeach--}}
                      <li>
                         <a href="danhmuctintuc">TIN TỨC</a>

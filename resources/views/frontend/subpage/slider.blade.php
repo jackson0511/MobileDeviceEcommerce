@@ -5,23 +5,23 @@
             <li data-target="#myCarousel" data-slide-to="1"></li>
             <li data-target="#myCarousel" data-slide-to="2"></li>
         </ol>
-{{--        <div class="carousel-inner">--}}
-{{--            <?php $i=0 ?>--}}
-{{--            @foreach($banner as $bn)--}}
-{{--                <div--}}
-{{--                    @if($i==0)--}}
+        <div class="carousel-inner">
+            <?php $i=0 ?>
+            @foreach($banner as $bn)
+                <div
+                    @if($i==0)
 
-{{--                    class="carousel-item active"--}}
-{{--                    @else--}}
-{{--                    class="carousel-item"--}}
-{{--                    @endif--}}
-{{--                >--}}
-{{--                    <a style="width: 100%" href=""><img class="d-block w-100" src="upload/banner/{{$bn->Hinh}}" alt="Leopard"></a>--}}
+                    class="carousel-item active"
+                    @else
+                    class="carousel-item"
+                    @endif
+                >
+                    <a style="width: 100%" href=""><img class="d-block w-100" src="upload/banner/{{$bn->Hinh}}" alt="Leopard"></a>
 
-{{--                </div>--}}
-{{--                <?php $i++ ?>--}}
-{{--            @endforeach--}}
-{{--        </div>--}}
+                </div>
+                <?php $i++ ?>
+            @endforeach
+        </div>
         <!-- Controls -->
         <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -34,8 +34,6 @@
     </div>
     <div class="divider h20"></div>
     <div class="row gutter-10">
-
-
 
         <div class="col-md-2 col-6 text-center">
             <a href="danhmucsanpham/1/iphone.html">
