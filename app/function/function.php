@@ -19,28 +19,6 @@ function data_tree($data,$parent_id=0,$level=0){
     }
     return $result;
 }
-//function data_tree($data,$parent_id=0,$level=0)
-//{
-//    $cate_child = [];
-//    foreach ($data as $key=> $item) {
-//        if ($item->parent_id == $parent_id) {
-//            $cate_child[] = $item;
-//        }
-//    }
-//    if ($cate_child) {
-//        if($level==0){
-//
-//        }
-//        foreach ($cate_child as $key => $item) {
-//            echo '<li>
-//                <a>'.$item['Ten'].'</a>';
-//                echo '<ul class="submenu">';
-//                data_tree($data, $item['id'],$level+1);
-//                echo '</ul>';
-//            echo '</li>';
-//        }
-//    }
-//}
 function formatPrice($number)
 {
     $number=intval($number);

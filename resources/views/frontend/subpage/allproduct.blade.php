@@ -27,7 +27,7 @@
                                     <span class="product-title">{{$ipad->Ten}}</span>
                                     <div class="price">
                                         <ins>
-                                            <span class="amount">{{formatPrice($ipad->Gia)}}</span>
+                                            <span class="amount">{{\App\Helpers\FormatPrice::formatPrice($ipad->Gia)}}</span>
                                         </ins>
                                     </div>
                                 </div>
@@ -48,7 +48,7 @@
                                     <span class="product-title">{{$iphone->Ten}}</span>
                                     <div class="price">
                                         <ins>
-                                            <span class="amount">{{formatPrice($iphone->Gia)}}</span>
+                                            <span class="amount">{{\App\Helpers\FormatPrice::formatPrice($iphone->Gia)}}</span>
                                         </ins>
                                     </div>
                                 </div>
@@ -70,10 +70,10 @@
                                     <span class="product-title">{{$aw->Ten}}</span>
                                     <div class="price">
                                         <del>
-                                            <span class="regular">{{formatPrice($aw->Gia)}}</span>
+                                            <span class="regular">{{\App\Helpers\FormatPrice::formatPrice($aw->Gia)}}</span>
                                         </del>
                                         <ins>
-                                            <span class="amount">{{formatPrice(($aw->Gia)-1000000)}}</span>
+                                            <span class="amount">{{\App\Helpers\FormatPrice::formatPrice(($aw->Gia)-1000000)}}</span>
                                         </ins>
                                     </div>
                                     <ul class="flat-color-list width-14">
@@ -106,7 +106,7 @@
                                     <span class="product-title">{{$mac->Ten}}</span>
                                     <div class="price">
                                         <ins>
-                                            <span class="amount">{{formatPrice($mac->Gia)}}</span>
+                                            <span class="amount">{{\App\Helpers\FormatPrice::formatPrice($mac->Gia)}}</span>
                                         </ins>
                                     </div>
                                 </div>
@@ -128,7 +128,7 @@
                                      <span class="product-title">{{$pk->Ten}}</span>
                                      <div class="price">
                                          <ins>
-                                             <span class="amount">{{formatPrice($pk->Gia)}}</span>
+                                             <span class="amount">{{\App\Helpers\FormatPrice::formatPrice($pk->Gia)}}</span>
                                          </ins>
                                       </div>
                                  </div>

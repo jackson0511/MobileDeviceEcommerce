@@ -9,6 +9,7 @@
     <link href="icon/ducthuan.png" rel="shortcut icon">
     <!-- App Title -->
     <title>Admin - Apple</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <base href="{{ asset('') }}">
 
     <!-- DataTables -->
@@ -25,6 +26,13 @@
     <link rel="stylesheet" href="admin/assets/plugins/morris/morris.css">
 
     <!-- Plugins css-->
+{{--    <link href="admin/assets/plugins/timepicker/bootstrap-timepicker.min.css" rel="stylesheet">--}}
+{{--    <link href="admin/assets/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css" rel="stylesheet">--}}
+{{--    <link href="admin/assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet">--}}
+{{--    <link href="admin/assets/plugins/clockpicker/css/bootstrap-clockpicker.min.css" rel="stylesheet">--}}
+{{--    <link href="admin/assets/plugins/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">--}}
+
+
     <link href="admin/assets/plugins/bootstrap-tagsinput/css/bootstrap-tagsinput.css" rel="stylesheet" />
     <link href="admin/assets/plugins/switchery/css/switchery.min.css" rel="stylesheet" />
     <link href="admin/assets/plugins/multiselect/css/multi-select.css"  rel="stylesheet" type="text/css" />
@@ -151,6 +159,14 @@
 <script src="admin/assets/plugins/datatables/dataTables.fixedColumns.min.js"></script>
 <script src="admin/assets/plugins/select2/js/select2.js"></script>
 <script src="admin/assets/pages/datatables.init.js"></script>
+{{--picker--}}
+<script src="admin/assets/plugins/moment/moment.js"></script>
+<script src="admin/assets/plugins/timepicker/bootstrap-timepicker.js"></script>
+<script src="admin/assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+<script src="admin/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+<script src="admin/assets/plugins/clockpicker/js/bootstrap-clockpicker.min.js"></script>
+<script src="admin/assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+<script src="admin/assets/pages/jquery.form-pickers.init.js"></script>
 <script type="text/javascript">
     jQuery(document).ready(function($) {
         $('.counter').counterUp({

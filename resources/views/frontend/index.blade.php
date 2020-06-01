@@ -34,7 +34,7 @@
         .page-item.active .page-link{
             background: #f63440;
             border-color: #f63440;
-            color: #6e6e6e;
+            color: #eee;
 
         }
         .page-item{
@@ -120,10 +120,21 @@
         result.hide()
         $("#tukhoa").keyup(function(){
             var tukhoa=$(this).val();
-            $.get('timkiem/'+tukhoa,function(data){
-                if(data!=null) {
-                    result.show();
-                    $("#ketqua").html(data);
+            if(tukhoa==''){
+                result.hide()
+                return;
+            }
+            $.ajax({
+                method: "POST",
+                url: 'ajax/timkiem',
+                data: {
+                    tukhoa:tukhoa,
+                },
+                success: function (data) {
+                    if(data!=null) {
+                        result.show();
+                        $("#ketqua").html(data);
+                    }
                 }
             });
         });
@@ -143,7 +154,7 @@
                 let products=localStorage.getItem('products');
                 products=$.parseJSON(products);
                 if(products.length>0){
-                    $.post("sanphamview/"+products,function(result){
+                    $.post("ajax/sanphamview/"+products,function(result){
                         $("#view").html(result);
                     });
                 }

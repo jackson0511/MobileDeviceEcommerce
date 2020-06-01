@@ -68,7 +68,7 @@
 {{--            @endif--}}
 {{--          @endforeach--}}
 {{--      @else--}}
-         <ins><span class="regular">{{formatPrice(($sanpham->Gia))}}</span></ins>
+         <ins><span class="regular">{{\App\Helpers\FormatPrice::formatPrice(($sanpham->Gia))}}</span></ins>
 {{--      @endif--}}
     </div>
 
@@ -164,25 +164,25 @@
                         @endforeach
 {{--                         ket thuc binh luan --}}
                     </ol><!-- /.review-list -->
-{{--                    @if(Auth::guard('KhachHang')->check())--}}
-{{--                    <div class="comment-respond review-respond" id="respond">--}}
-{{--                        <div class="comment-reply-title margin-bottom-14">--}}
-{{--                            <h5>Viết bình luận</h5>--}}
-{{--                        </div>--}}
-{{--                        <form class="comment-form review-form" id="commentform" method="get">--}}
-{{--                           {{ csrf_field() }}--}}
-{{--                           <input type="hidden" id="idsp" value="{{$sanpham->id}}">--}}
-{{--                           <p class="comment-form-comment">--}}
-{{--                            <label>Nội dung*</label>--}}
-{{--                            <textarea class="" tabindex="4" id="noidung"  name="noidung" required> </textarea>                          --}}
-{{--                        </p>                                     --}}
-{{--                        <p class="form-submit">                 --}}
-{{--                           <button class="comment-submit" id="binhluan">Bình Luận</button> --}}
-{{--                         <input type="button" id="binhluan" value="Bình Luận">--}}
-{{--                     </p>--}}
-{{--                 </form>--}}
-{{--             </div><!-- /.comment-respond --> --}}
-{{--             @endif                                          --}}
+                    @if(Auth::guard('KhachHang')->check())
+                    <div class="comment-respond review-respond" id="respond">
+                        <div class="comment-reply-title margin-bottom-14">
+                            <h5>Viết bình luận</h5>
+                        </div>
+                        <form class="comment-form review-form" id="commentform" method="get">
+                           {{ csrf_field() }}
+                           <input type="hidden" id="idsp" value="{{$sanpham->id}}">
+                           <p class="comment-form-comment">
+                            <label>Nội dung*</label>
+                            <textarea class="" tabindex="4" id="noidung"  name="noidung" required> </textarea>
+                        </p>
+                        <p class="form-submit">
+{{--                           <button class="comment-submit" id="binhluan">Bình Luận</button>--}}
+                         <input type="reset" id="binhluan" value="Bình Luận">
+                     </p>
+                 </form>
+             </div><!-- /.comment-respond -->
+             @endif
          </div>
      </div><!-- /.content-inner -->
  </div>
@@ -214,7 +214,7 @@
                 <span class="product-title">{{$splq->Ten}}</span>
                 <div class="price">
                     <ins>
-                        <span class="amount">{{formatPrice($splq->Gia)}}</span>
+                        <span class="amount">{{\App\Helpers\FormatPrice::formatPrice($splq->Gia)}}</span>
                     </ins>
                 </div>
             </div>
@@ -241,14 +241,27 @@
             if(noidung==" "){
                 alert('Bạn chưa nhập nội dung mà!!!');
             }
-            $.get("binhluan/"+idsp+"/"+noidung,function(data){
-            $(".ketqua").prepend(data);
-        });
+            $.ajax({
+                method: "get",
+                url: 'ajax/binhluan',
+                data: {
+                    noidung:noidung,
+                    idsp:idsp
+                },
+                success: function (data) {
+                    if(data!=null) {
+                        $(".ketqua").prepend(data);
+                        alert('Viết bình luận thành công');
+                    }
+                }
+            });
+
+            // $.get("binhluan/"+idsp+"/"+noidung,function(data){
+            // $(".ketqua").prepend(data);
     });
 });
     $(function(){
       let idproduct=$("#content").attr("data-key");
-      // console.log(idproduct);
       let products=localStorage.getItem('products');
        if(products==null){
           arrayProduct=new Array();
@@ -262,7 +275,6 @@
           products.push(idproduct);
           localStorage.setItem('products',JSON.stringify(products));
         }
-        console.log(products);
        }
     });
 </script>

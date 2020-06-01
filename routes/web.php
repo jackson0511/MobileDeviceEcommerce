@@ -19,7 +19,7 @@ Route::post('admin/dangnhap','AdminController@postLogin');
 
 Route::get('admin/logout','AdminController@getLogout');
 
-Route::group(['prefix'=>'admin'],function() {
+Route::group(['prefix'=>'admin','middleware'=>'CheckLoginAdmin'],function() {
     //trang chu admin
     Route::get('trangchu','AdminController@index');
 
@@ -105,19 +105,74 @@ Route::group(['prefix'=>'admin'],function() {
         Route::post('sua/{id}','QuyenController@postEdit');
         Route::get('xoa/{id}','QuyenController@getDelete');
     });
+    //khuyemai
+    Route::group(['prefix'=>'khuyenmai','middleware'=>'CheckLoginAdmin:kinhdoanh'],function (){
+        Route::get('danhsach','KhuyenMaiController@getList');
+        Route::get('them','KhuyenMaiController@getAdd');
+        Route::post('them','KhuyenMaiController@postAdd');
+        Route::get('sua/{id}','KhuyenMaiController@getEdit');
+        Route::post('sua/{id}','KhuyenMaiController@postEdit');
+        Route::get('xoa/{id}','KhuyenMaiController@getDelete');
+    });
 
 });
 //frontend
 Route::get('/','HomeController@index');
 //chi tiet san pham
 Route::get('chitietsanpham/{id}/{Ten_KhongDau}.html','HomeController@productDetail');
+//danh sach san pham theo the loai
+Route::get('danhmucsanpham/{id}/{Ten_KhongDau}.html','HomeController@productByCategory');
+//danh sach san pham ban chay
+Route::get('sanphambanchay','HomeController@getDanhsachbanchay');
+//danh sach san pham vua xem
+Route::get('danhmuctintuc','HomeController@getListNews');
+//chi tiet tin tuc
+Route::get('chitiettintuc/{id}/{TenDe_KhongDau}.html','HomeController@getDetailNew');
+//danh sach tin tuc
+Route::get('danhsachsanphamvuaxem/{id}','HomeController@getListProductView');
 //login
 Route::get('dangnhap','HomeController@getLogin');
 Route::post('dangnhap','HomeController@postLogin');
 //register
 Route::get('dangky','HomeController@getRegister');
 Route::post('dangky','HomeController@postRegister');
+//logout
+Route::get('logout','HomeController@getLogout');
+//gui ma xac nhan khi dang ky
+Route::get('xacnhan','HomeController@getXacnhan')->name('get.link.xacnhan');
+Route::post('xacnhan','HomeController@postXacnhan');
+//thong tin tai khoan
+Route::get('taikhoan','HomeController@getAccount');
+Route::post('taikhoan','HomeController@postAccount');
+// tim kiem
+Route::get('timkiem','HomeController@getTimkiem');
+//cart
+Route::get('themgiohang/{id}','ShoppingCartController@addToCart');
+Route::get('giohang','ShoppingCartController@showCart');
+Route::get('xoagiohang/{idCart}','ShoppingCartController@deleteCart');
+//cam on
+Route::get('camon','HomeController@getCamon');
+//thanhtoan
+Route::group(['prefix'=>'shopping','middleware'=>'CheckLoginKhachHang'],function(){
+    Route::get('donhang','ShoppingCartController@getOrder');
+    Route::post('donhang','ShoppingCartController@postOrder');
+});
+//viet gop ý
+Route::group(['prefix'=>'gopy','middleware'=>'CheckLoginKhachHang'],function(){
+    Route::get('lienhe','HomeController@getContact');
 
+    Route::post('lienhe','HomeController@postContact');
+});
 Route::group(['prefix'=>'ajax'],function (){
    Route::get('sanpham_theloai','AjaxController@getProductToCategory');
+   //binhluan
+   Route::get('binhluan','AjaxController@getComment');
+   //product view
+   Route::post('sanphamview/{id}','AjaxController@postProductview');
+   //kiem tra mat khau cu
+   Route::get('kiemtramatkhaucu','AjaxController@getKiemtramatkhau');
+   //tim kiem
+   Route::post('timkiem','AjaxController@postTimkiem');
+   //chi tiet khuyen mai
+    Route::post('chitietkhuyenmai','AjaxController@postChitietkhuyenmai');
 });

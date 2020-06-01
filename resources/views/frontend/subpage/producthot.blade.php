@@ -1,6 +1,6 @@
-{{--<div id="view">--}}
+<div id="view">
 
-{{--</div>--}}
+</div>
 <section class="flat-row row-best-sale">
     <div class="container">
         <div class="row">
@@ -27,10 +27,10 @@
                                 <span class="product-title">{{$sphot->Ten}}</span>
                                 <div class="price">
                                     <del>
-                                        <span class="regular">{{formatPrice($sphot->Gia)}}</span>
+                                        <span class="regular">{{\App\Helpers\FormatPrice::formatPrice($sphot->Gia)}}</span>
                                     </del>
                                     <ins>
-                                        <span class="amount">{{formatPrice(($sphot->Gia)*90/100)}}</span>
+                                        <span class="amount">{{\App\Helpers\FormatPrice::formatPrice(($sphot->Gia)*90/100)}}</span>
                                     </ins>
                                 </div>
                             </div>

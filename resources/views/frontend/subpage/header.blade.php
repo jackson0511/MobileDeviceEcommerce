@@ -54,7 +54,7 @@
             <li class="box-search">
                 <a class="icon_search header-search-icon" href="#"></a>
                 <form role="search" method="get" action="timkiem" class="header-search-form">
-                     {{ csrf_field() }}
+{{--                     {{ csrf_field() }}--}}
                     <input type="text" id="tukhoa" name="tukhoa" class="header-search-field" placeholder="Tìm kiếm...">
                   <div class="header-search-field" id="ketqua"></div>
                    <button type="submit"  title="Search">Tìm</button>
@@ -65,7 +65,7 @@
                 <a class="icon_login" href="#"></a>
             </li>
             <li class="box-cart nav-top-cart-wrapper">
-{{--                <a class="icon_cart nav-cart-trigger active" href="giohang"><span>{{Cart::count()}}</span></a>--}}
+                <a class="icon_cart nav-cart-trigger active" href="giohang"><span>{{Cart::count()}}</span></a>
                 <div class="nav-shop-cart">
                     <div class="widget_shopping_cart_content">
                         <div class="woocommerce-min-cart-wrap">
@@ -75,31 +75,29 @@
                                 <!--REVIEW ORDER-->
                                 <div class="panel panel-info">
 
-{{--                                    <div class="panel-body">--}}
-{{--                                        <?php $sum=0; ?>--}}
-{{--                                        @foreach(Cart::content() as $sp)--}}
-{{--                                        <div class="form-group">--}}
-{{--                                            <div class="row">--}}
-{{--                                                <div class="col-sm-3 col-xs-3">--}}
-{{--                                                    <img src="upload/sanpham/{{$sp->options->hinh}}" />--}}
-{{--                                                </div>--}}
-{{--                                                <div class="col-sm-5 col-xs-5">--}}
-{{--                                                    <div style="font-size: 10px">{{$sp->name}}</div>--}}
-{{--                                                    <div style="font-size: 10px">Số lượng:{{$sp->qty}}</div>--}}
-{{--                                                </div>--}}
-{{--                                                <div class="col-sm-4 col-xs-4 text-right">--}}
-{{--                                                    <h6>{{formatPrice($sp->qty*$sp->price)}}</h6>--}}
-{{--                                                </div>--}}
-{{--                                            </div>--}}
-{{--                                        </div>--}}
-{{--                                           <?php $sum+=$sp->price*$sp->qty?>--}}
-{{--                                        @endforeach--}}
+                                    <div class="panel-body">
+                                        @foreach(Cart::content() as $sp)
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-3 col-xs-3">
+                                                    <img src="upload/sanpham/{{$sp->options->hinh}}" />
+                                                </div>
+                                                <div class="col-sm-5 col-xs-5">
+                                                    <div style="font-size: 10px">{{$sp->name}}</div>
+                                                    <div style="font-size: 10px">Số lượng: {{$sp->qty}}</div>
+                                                </div>
+                                                <div class="col-sm-4 col-xs-4 text-right">
+                                                    <h6>{{\App\Helpers\FormatPrice::formatPrice($sp->qty*$sp->price)}}</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @endforeach
 
-{{--                                        <div class="col-xs-12">--}}
-{{--                                            <strong>Tổng Tiền</strong>--}}
-{{--                                            <div class="col-md-4 pull-right"><span>{{formatPrice($sum)}}</span></div>--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
+                                        <div class="col-xs-12">
+                                            <strong>Tổng Tiền</strong>
+                                            <div class="col-md-4 pull-right"><span>{{\App\Helpers\FormatPrice::formatPrice(str_replace(',', '', \Cart::subtotal(0,3)))}}</span></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                                 </li>
