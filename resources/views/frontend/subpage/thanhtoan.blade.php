@@ -42,7 +42,7 @@
 							<div class="col-md-1"></div>
 							<div class="col-lg-5 col-md-5 col-sm-5col-xs-12 col-md-pull-5 col-sm-pull-5">
 								<!--SHIPPING METHOD-->
-                                <?php $sum_sale=0;  $pr_sale=0; $sum=0;?>
+                                <?php $sum_sale=0;  $pr_sale=0; $sum=0;$total_coupon=0;?>
                                 @foreach($sanpham as $sp)
                                     <?php
                                         if($sp->options->price_sale!=0){
@@ -82,12 +82,25 @@
 											value="{{\Cart::subtotal(0,3)}}"
 											id="exampleInputPassword1" name="tongtien">
 										</div>
+                                        @if(Session::get('coupon'))
                                         <div class="form-group">
                                             <label for="exampleInputPassword1">Tổng Tiền đã giảm</label>
+                                            @foreach(Session::get('coupon') as $cou)
+                                                <?php $total_coupon=$cou['coupon_money']; ?>
+                                             <input type="hidden" class="form-control" value="{{$cou['coupon_id']}}" name='coupon_id'>
                                             <input type="text" class="form-control" readonly
-                                                   value="{{(number_format(str_replace(',', '', \Cart::subtotal(0,3))-$pr_sale))}}"
+                                                   value="{{(number_format(str_replace(',', '', \Cart::subtotal(0,3))-$pr_sale-$total_coupon))}}"
                                                    id="exampleInputPassword1" name="tongtien_sale">
+                                             @endforeach
                                         </div>
+                                         @else
+                                            <div class="form-group">
+                                                <label for="exampleInputPassword1">Tổng Tiền đã giảm</label>
+                                                <input type="text" class="form-control" readonly
+                                                       value="{{(number_format(str_replace(',', '', \Cart::subtotal(0,3))-$pr_sale))}}"
+                                                       id="exampleInputPassword1" name="tongtien_sale">
+                                            </div>
+                                        @endif
 										<div class="form-group">
 											<label for="inputAddress">Ghi chú</label>
 											<textarea class="form-control" name="ghichu" id="" cols="30" rows="10"></textarea>
@@ -130,9 +143,18 @@
 											<div class="pull-right"><span>{{str_replace(',', '.', \Cart::subtotal(0,3).'đ')}}</span></div>
 										</div>
                                         <div class="col-xs-12">
-                                             <strong>Giảm giá</strong>
+                                             <small>Khuyến mãi</small>
                                              <div class="pull-right"><span>{{number_format(-$pr_sale,0,',','.').'đ'}}</span></div>
                                          </div>
+                                            @if(Session::get('coupon'))
+                                         <div class="col-xs-12">
+                                             @foreach(Session::get('coupon') as $cou)
+                                                 <?php $total_coupon=$cou['coupon_money']; ?>
+                                            <small>Giảm giá</small>
+                                            <div class="pull-right"><span>{{number_format(-$total_coupon,0,',','.').'đ'}}</span></div>
+                                             @endforeach
+                                        </div>
+                                            @endif
 										<div class="col-xs-12">
 											<small>Phí</small>
 											<div class="pull-right"><span>free ship</span></div>
@@ -142,7 +164,7 @@
 									<div class="form-group">
 										<div class="col-xs-12">
 											<strong>Tổng Tiền Thanh Toán</strong>
-											<div class="pull-right"><span>{{\App\Helpers\FormatPrice::formatPrice(str_replace(',', '', \Cart::subtotal(0,3))-$pr_sale)}}</span></div>
+											<div class="pull-right"><span>{{\App\Helpers\FormatPrice::formatPrice(str_replace(',', '', \Cart::subtotal(0,3))-$pr_sale-$total_coupon)}}</span></div>
 										</div>
 									</div>
 									<!--Paypal payment button -->

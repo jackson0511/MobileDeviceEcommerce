@@ -18,4 +18,7 @@ class DonHang extends Model
     function khachhang(){
     	return $this->belongsTo('App\KhachHang','idKH','id');
     }
+    function makhuyenmai(){
+        return $this->belongsTo('App\MaKhuyenMai','idMaKM','id');
+    }
 }

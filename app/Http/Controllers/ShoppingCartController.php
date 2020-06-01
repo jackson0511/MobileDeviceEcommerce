@@ -10,7 +10,10 @@ use Cart;
 use App\SanPham;
 use App\ChiTietKhuyenMai;
 use App\ChiTietDonHang;
+use App\MaKhuyenMai;
 use Carbon\Carbon;
+use Session;
+session_start();
 class ShoppingCartController extends Controller
 {
     public function __construct(Request $request){
@@ -85,6 +88,10 @@ class ShoppingCartController extends Controller
         }
         else
         {
+            $session_coupon=Session::get('coupon');
+            if ($session_coupon){
+                 Session::forget('coupon');
+            }
             return redirect('/');
         }
     }
@@ -93,6 +100,49 @@ class ShoppingCartController extends Controller
         return redirect('giohang')->with('ThongBao','Xoá giỏ hàng thành công');
 
     }
+    public function check_coupon(){
+        $code=$this->request->coupon;
+        Carbon::setLocale('vi');
+        $now=Carbon::now();
+        $ngay=$now->toDateString();
+        $makhuyenmai=MaKhuyenMai::where('Code',$code)->first();
+        if($makhuyenmai){
+            $ngayapdung=$makhuyenmai->NgayApDung;
+            $ngayketthuc=$makhuyenmai->NgayKetThuc;
+            if ($ngay>=$ngayapdung && $ngay <=$ngayketthuc  && $makhuyenmai->TrangThai==1){
+                $session_coupon=Session::get('coupon');
+                if ($session_coupon==true){
+                    $cou[]=array(
+                        'coupon_id'   =>$makhuyenmai->id,
+                        'coupon_code' =>$makhuyenmai->Code,
+                        'coupon_money'=>$makhuyenmai->GiaTri,
+                    );
+                    Session::put('coupon',$cou);
+                }else{
+                    $cou[]=array(
+                        'coupon_id'   =>$makhuyenmai->id,
+                        'coupon_code' =>$makhuyenmai->Code,
+                        'coupon_money'=>$makhuyenmai->GiaTri,
+                    );
+                    Session::put('coupon',$cou);
+                }
+                Session::save();
+                return redirect()->back()->with('success','Nhập mã giảm gía thành công ');
+            }else{
+                return redirect()->back()->with('error','Mã giảm giá đã hết hạn');
+            }
+        }else{
+            return redirect()->back()->with('error','Mã giảm giá không đúng');
+        }
+    }
+    public function delete_coupon(){
+        $session_coupon=Session::get('coupon');
+        if ($session_coupon){
+            Session::forget('coupon');
+        }
+        return redirect()->back()->with('success','Xoá mã giảm giá thành công');
+    }
+
     public function getOrder(){
         $sanpham=\Cart::content();
         return view('frontend.subpage.thanhtoan',['sanpham'=>$sanpham]);
@@ -118,6 +168,9 @@ class ShoppingCartController extends Controller
             $donhang->DiaChi        =$diachi;
             $donhang->SoDienThoai   =$sdt;
         }
+        if($this->request->coupon_id) {
+            $donhang->idMaKM = $this->request->coupon_id;
+        }
         $donhang->save();
 
         $donhangId=$donhang->id;
@@ -136,6 +189,10 @@ class ShoppingCartController extends Controller
             }
         }
         \Cart::destroy();
+        $session_coupon=Session::get('coupon');
+            if ($session_coupon){
+                Session::forget('coupon');
+            }
         return redirect('camon');
 
     }

@@ -114,6 +114,16 @@ Route::group(['prefix'=>'admin','middleware'=>'CheckLoginAdmin'],function() {
         Route::post('sua/{id}','KhuyenMaiController@postEdit');
         Route::get('xoa/{id}','KhuyenMaiController@getDelete');
     });
+    //makhuyemai
+    Route::group(['prefix'=>'makhuyenmai','middleware'=>'CheckLoginAdmin:kinhdoanh'],function (){
+        Route::get('danhsach','MaKhuyenMaiController@getList');
+        Route::get('them','MaKhuyenMaiController@getAdd');
+        Route::post('them','MaKhuyenMaiController@postAdd');
+        Route::get('sua/{id}','MaKhuyenMaiController@getEdit');
+        Route::post('sua/{id}','MaKhuyenMaiController@postEdit');
+        Route::get('xoa/{id}','MaKhuyenMaiController@getDelete');
+        Route::get('xuly/{id}','MaKhuyenMaiController@getXuLy');
+    });
 
 });
 //frontend
@@ -150,6 +160,9 @@ Route::get('timkiem','HomeController@getTimkiem');
 Route::get('themgiohang/{id}','ShoppingCartController@addToCart');
 Route::get('giohang','ShoppingCartController@showCart');
 Route::get('xoagiohang/{idCart}','ShoppingCartController@deleteCart');
+//check coupom
+Route::post('check-coupon','ShoppingCartController@check_coupon');
+Route::get('xoa-coupon','ShoppingCartController@delete_coupon');
 //cam on
 Route::get('camon','HomeController@getCamon');
 //thanhtoan
@@ -175,4 +188,5 @@ Route::group(['prefix'=>'ajax'],function (){
    Route::post('timkiem','AjaxController@postTimkiem');
    //chi tiet khuyen mai
     Route::post('chitietkhuyenmai','AjaxController@postChitietkhuyenmai');
+
 });

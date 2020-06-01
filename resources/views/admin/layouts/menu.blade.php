@@ -94,6 +94,13 @@
                 </ul>
             </li>
             <li class="has-submenu">
+                <a href="#"><i class="md md-color-lens"></i>Mã khuyến mãi</a>
+                <ul class="submenu">
+                    <li><a href="admin/makhuyenmai/danhsach">Danh sách</a></li>
+                    <li><a href="admin/makhuyenmai/them">Thêm</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
                 <a href="#"><i class="md md-color-lens"></i>Đơn hàng</a>
                 <ul class="submenu">
                     <li><a href="admin/donhang/danhsach">Danh sách</a></li>

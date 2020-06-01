@@ -29,7 +29,7 @@ class QuanTriController extends Controller
             [
                 'ten.required'  =>'Bạn chưa nhập tên',
                 'email.required'  =>'Bạn chưa nhập email',
-                'email.unique'  =>'Bạn email đã tồn tại',
+                'email.unique'  => 'Email đã tồn tại',
                 'password.required'  =>'Bạn chưa nhập mật khẩu',
                 'passwordagain.required'  =>'Bạn chưa nhập lại mật khẩu',
                 'passwordagain.same'  =>'Mật khẩu không giống nhau',
