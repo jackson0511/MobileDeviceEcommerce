@@ -22,17 +22,7 @@
   <div class="container">
     <div class="row">
        <div class="col-md-12">
-          {{-- hien filter --}}
-                  <div class="filter-shop bottom_68 clearfix">
 
-                    <ul class="flat-filter-search">
-                        <li>
-                            <a  class="show-filter">Filters</a>
-                        </li>
-                        <li class="search-product"><a  >Search</a></li>
-                    </ul>
-                </div><!-- /.filte-shop -->
-              @include('frontend.subpage.boloc')
 
           @if(session('ThongBao'))
         <div class="alert alert-success">
@@ -158,21 +148,34 @@
 @section('script')
    <script>
       $(document).ready(function(){
+          $.ajaxSetup({
+              headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+              }
+          });
          $(".updatecart").click(function(){
             var soluong=$(this).parents("tr").find(".soluong").val();
             var idcart=$(this).attr("data-key");
             var idsp=$(this).parents("tr").find(".idsp").val();
-            // alert(soluong);
-            $.get("suagiohang/"+idcart+"/"+soluong+"/"+idsp+"/",function(data){
-              $(".tien").append(data);
-               if(data==1){
-                  alert("cap nhap thanh cong");
-                   location.reload();
-                 }else{
-                    alert("cap nhap that bai");
-                   location.reload();
+             $.ajax({
+                 method: "POST",
+                 url: 'update-cart',
+                 data: {
+                     soluong:soluong,
+                     idcart:idcart,
+                     idsp:idsp
+                 },
+                 success: function (data) {
+                     if(data!=null && data==1) {
+                         $(".tien").append(data);
+                         alert("cap nhap thanh cong");
+                         location.reload();
+                     }else{
+                         alert("cap nhap that bai");
+                         location.reload();
+                     }
                  }
-            });
+             });
          });
       });
       $(document).ready(function () {

@@ -589,7 +589,8 @@
 }
 
 .themesflat-button.width-150 {
-	width: 150px;
+	/*width: 150px;*/
+	width: 200px;
 }
 
 .themesflat-button.has-padding-36 {
@@ -1231,7 +1232,8 @@
 .product.style3 .product-item .new {
 	font-size: 14px;
 	line-height: 25px;
-	width: 55px;
+	/*width: 55px;*/
+	width: 75px;
 	top: 17px;
 	left: 19px;
 }

@@ -26,11 +26,8 @@
                             <div class="product-info clearfix">
                                 <span class="product-title">{{$sphot->Ten}}</span>
                                 <div class="price">
-                                    <del>
-                                        <span class="regular">{{\App\Helpers\FormatPrice::formatPrice($sphot->Gia)}}</span>
-                                    </del>
                                     <ins>
-                                        <span class="amount">{{\App\Helpers\FormatPrice::formatPrice(($sphot->Gia)*90/100)}}</span>
+                                        <span class="amount">{{number_format($sphot->Gia,0,',','.').'đ'}}</span>
                                     </ins>
                                 </div>
                             </div>

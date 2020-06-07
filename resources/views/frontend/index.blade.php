@@ -44,7 +44,7 @@
             color: #6e6e6e;
         }
         .page-item .page-link:hover{
-            color: #fff;
+            color: #fff !important;
             background: #f63440;
         }
 
@@ -161,6 +161,8 @@
             }
         });
     });
+    //filter
+
 </script>
 {{--   <script>--}}
 {{--  function startTime() {--}}

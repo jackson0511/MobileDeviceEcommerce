@@ -11,15 +11,23 @@ use App\SanPham;
 use App\ChiTietKhuyenMai;
 use App\ChiTietDonHang;
 use App\MaKhuyenMai;
+use App\TheLoaiMaKhuyenMai;
 use Carbon\Carbon;
 use Session;
+use Mail;
 session_start();
 class ShoppingCartController extends Controller
 {
     public function __construct(Request $request){
         parent::__construct($request);
         $theloai=TheLoai::where('TrangThai',1)->get();
+        $tu=0;
+        $den=0;
+        $dungluong=0;
+        $sim=0;
+        $gia=0;
         view()->share('theloai',$theloai);
+        view()->share(['tu'=>$tu,'den'=>$den,'dungluong'=>$dungluong,'sim'=>$sim,'gia'=>$gia]);
 
     }
     public function addToCart($id){
@@ -95,6 +103,20 @@ class ShoppingCartController extends Controller
             return redirect('/');
         }
     }
+    public function update_cart(){
+        $soluong=(int)$this->request->soluong;
+        $idcart=$this->request->idcart;
+        $idsp=$this->request->idsp;
+        $sanpham=SanPham::find($idsp);
+        if($sanpham->SoLuong<$soluong){
+            echo"<script> alert('Số lượng vượt quá số lượng sản phẩm trong kho');
+			location.herf='giohang';
+			</script>";
+        }else{
+            \Cart::update($idcart,$soluong);
+            echo 1;
+        }
+    }
     public function deleteCart($idCart){
         \Cart::remove($idCart);
         return redirect('giohang')->with('ThongBao','Xoá giỏ hàng thành công');
@@ -107,27 +129,34 @@ class ShoppingCartController extends Controller
         $ngay=$now->toDateString();
         $makhuyenmai=MaKhuyenMai::where('Code',$code)->first();
         if($makhuyenmai){
-            $ngayapdung=$makhuyenmai->NgayApDung;
-            $ngayketthuc=$makhuyenmai->NgayKetThuc;
-            if ($ngay>=$ngayapdung && $ngay <=$ngayketthuc  && $makhuyenmai->TrangThai==1){
-                $session_coupon=Session::get('coupon');
-                if ($session_coupon==true){
-                    $cou[]=array(
-                        'coupon_id'   =>$makhuyenmai->id,
-                        'coupon_code' =>$makhuyenmai->Code,
-                        'coupon_money'=>$makhuyenmai->GiaTri,
-                    );
-                    Session::put('coupon',$cou);
+            $ngayapdung=$makhuyenmai->theloaimakhuyenmai->NgayApDung;
+            $ngayketthuc=$makhuyenmai->theloaimakhuyenmai->NgayKetThuc;
+            if ($ngay>=$ngayapdung && $ngay <=$ngayketthuc   && $makhuyenmai->theloaimakhuyenmai->TrangThai==1){
+                if($makhuyenmai->TrangThai==1){
+                    $session_coupon=Session::get('coupon');
+                    if ($session_coupon==true){
+                        $cou[]=array(
+                            'coupon_id'   =>$makhuyenmai->id,
+                            'coupon_code' =>$makhuyenmai->Code,
+                            'coupon_money'=>$makhuyenmai->theloaimakhuyenmai->GiaTri,
+                        );
+                        Session::put('coupon',$cou);
+                    }else{
+                        $cou[]=array(
+                            'coupon_id'   =>$makhuyenmai->id,
+                            'coupon_code' =>$makhuyenmai->Code,
+                            'coupon_money'=>$makhuyenmai->theloaimakhuyenmai->GiaTri,
+                        );
+                        Session::put('coupon',$cou);
+                    }
+                    Session::save();
+                    return redirect()->back()->with('success','Nhập mã giảm giá thành công ');
+
+                }elseif($makhuyenmai->TrangThai==2){
+                    return redirect()->back()->with('error','Mã giảm giá đã được sử dụng ');
                 }else{
-                    $cou[]=array(
-                        'coupon_id'   =>$makhuyenmai->id,
-                        'coupon_code' =>$makhuyenmai->Code,
-                        'coupon_money'=>$makhuyenmai->GiaTri,
-                    );
-                    Session::put('coupon',$cou);
+                    return redirect()->back()->with('error','Mã giảm giá chưa được phát hành ');
                 }
-                Session::save();
-                return redirect()->back()->with('success','Nhập mã giảm gía thành công ');
             }else{
                 return redirect()->back()->with('error','Mã giảm giá đã hết hạn');
             }
@@ -188,9 +217,60 @@ class ShoppingCartController extends Controller
                 ]);
             }
         }
+        //tang coupon
+        Carbon::setLocale('vi');
+        $now=Carbon::now();
+        $ngay=$now->toDateString();
+        $theloaikm=TheLoaiMaKhuyenMai::where('Code','APPLE-MENBER')->first();
+        $ngayapdung=$theloaikm->NgayApDung;
+        $ngaykethuc=$theloaikm->NgayKetThuc;
+        if($tongtien>=50000000 && $ngay>=$ngayapdung && $ngay<=$ngaykethuc && $theloaikm->TrangThai==1){
+            $makhuyenmai=MaKhuyenMai::where('idTLMKM',$theloaikm->id)->get();
+            foreach ($makhuyenmai as $makm){
+                if($makm->TrangThai==0){
+                    $code=$makm->Code;
+                    if ($this->request->hoten){
+                        $data=[
+                            'name'      =>$this->request->hoten,
+                            'code'      =>$code,
+                            'ngayapdung'=>$theloaikm->NgayApDung,
+                            'ngaykethuc'=>$theloaikm->NgayKetThuc,
+                        ];
+                    }else{
+                        $data=[
+                            'name'      =>Auth::guard('KhachHang')->user()->HoTen,
+                            'code'      =>$code,
+                            'ngayapdung'=>$theloaikm->NgayApDung,
+                            'ngaykethuc'=>$theloaikm->NgayKetThuc,
+                        ];
+                    }
+                    //email nguoi mua hang
+                    $email=Auth::guard('KhachHang')->user()->Email;
+                    //gui mail
+                    Mail::send('frontend.email-template.coupon',$data, function($message) use ($email){
+                        $message->from('thuan.dh51600602@gmail.com','Đức Thuận');
+                        $message->to($email, 'Tặng mã khuyến mãi');
+                        $message->subject('Tặng mã khuyến mãi!');
+                    });
+                    //update trang thai ma khuyen mai len 1
+                    $coupon = MaKhuyenMai::where('Code',$code)->first();
+                    $coupon->TrangThai=1;
+                    $coupon->save();
+                    break;
+                }
+            }
+        }
+        //
         \Cart::destroy();
         $session_coupon=Session::get('coupon');
             if ($session_coupon){
+                foreach ($session_coupon as $cou){
+                    $id_cou=$cou['coupon_id'];
+                }
+                $coupon_update=MaKhuyenMai::find($id_cou);
+                $coupon_update->TrangThai=2;
+                $coupon_update->save();
+                //xoa coupon
                 Session::forget('coupon');
             }
         return redirect('camon');

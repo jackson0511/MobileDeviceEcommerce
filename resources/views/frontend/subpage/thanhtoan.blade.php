@@ -21,20 +21,7 @@
 <section class="flat-row main-shop shop-4col">
 	<div class="container">
 		<div class="row">
-
 			<div class="col-md-12">
-				{{-- hien filter --}}
-				<div class="filter-shop bottom_68 clearfix">
-
-					<ul class="flat-filter-search">
-						<li>
-							<a  class="show-filter">Filters</a>
-						</li>
-						<li class="search-product"><a  >Search</a></li>
-					</ul>
-				</div><!-- /.filte-shop -->
-				@include('frontend.subpage.boloc')
-
 				<div class="product-content product-fourcolumn clearfix">
 					<form class="form-horizontal" method="post" action="shopping/donhang">
 						{{ csrf_field() }}

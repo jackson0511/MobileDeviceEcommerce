@@ -3,8 +3,9 @@
 
     @include('frontend.subpage.productnew')
 
-    @include('frontend.subpage.allproduct')
+    @include('frontend.subpage.product_promotion')
 
+    @include('frontend.subpage.allproduct')
 
     @include('frontend.subpage.producthot')
 

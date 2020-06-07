@@ -27,7 +27,7 @@
                                     <span class="product-title">{{$ipad->Ten}}</span>
                                     <div class="price">
                                         <ins>
-                                            <span class="amount">{{\App\Helpers\FormatPrice::formatPrice($ipad->Gia)}}</span>
+                                            <span class="amount">{{number_format($ipad->Gia,0,',','.'),'đ'}}</span>
                                         </ins>
                                     </div>
                                 </div>
@@ -48,7 +48,7 @@
                                     <span class="product-title">{{$iphone->Ten}}</span>
                                     <div class="price">
                                         <ins>
-                                            <span class="amount">{{\App\Helpers\FormatPrice::formatPrice($iphone->Gia)}}</span>
+                                            <span class="amount">{{number_format($iphone->Gia,0,',','.'),'đ'}}</span>
                                         </ins>
                                     </div>
                                 </div>
@@ -69,24 +69,10 @@
                                 <div class="product-info clearfix">
                                     <span class="product-title">{{$aw->Ten}}</span>
                                     <div class="price">
-                                        <del>
-                                            <span class="regular">{{\App\Helpers\FormatPrice::formatPrice($aw->Gia)}}</span>
-                                        </del>
                                         <ins>
-                                            <span class="amount">{{\App\Helpers\FormatPrice::formatPrice(($aw->Gia)-1000000)}}</span>
+                                            <span class="amount">{{number_format($aw->Gia,0,',','.'),'đ'}}</span>
                                         </ins>
                                     </div>
-                                    <ul class="flat-color-list width-14">
-                                        <li>
-                                            <a href="#" class="red"></a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="blue"></a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="black"></a>
-                                        </li>
-                                    </ul>
                                 </div>
                                 <div class="add-to-cart text-center">
                                     <a href="themgiohang/{{$aw->id}}">ADD TO CART</a>
@@ -106,7 +92,7 @@
                                     <span class="product-title">{{$mac->Ten}}</span>
                                     <div class="price">
                                         <ins>
-                                            <span class="amount">{{\App\Helpers\FormatPrice::formatPrice($mac->Gia)}}</span>
+                                            <span class="amount">{{number_format($mac->Gia,0,',','.'),'đ'}}</span>
                                         </ins>
                                     </div>
                                 </div>
@@ -128,7 +114,7 @@
                                      <span class="product-title">{{$pk->Ten}}</span>
                                      <div class="price">
                                          <ins>
-                                             <span class="amount">{{\App\Helpers\FormatPrice::formatPrice($pk->Gia)}}</span>
+                                             <span class="amount">{{number_format($pk->Gia,0,',','.'),'đ'}}</span>
                                          </ins>
                                       </div>
                                  </div>

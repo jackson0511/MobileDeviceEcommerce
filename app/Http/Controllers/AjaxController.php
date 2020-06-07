@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\DonHang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\SanPham;
 use App\BinhLuan;
 use App\ChiTietKhuyenMai;
+use App\MakhuyenMai;
+use App\TheLoai;
+use App\ChiTietDonHang;
+use App\TheLoaiMaKhuyenMai;
 use Illuminate\Support\Facades\Hash;
 
 class AjaxController extends Controller
@@ -112,6 +117,187 @@ class AjaxController extends Controller
                          <th>".$ctkm->ChiTiet."</th>
                          </tr>";
                  }
+    }
+    public function postMakhuyenmai(){
+        $id=$this->request->id;
+        $makhuyenmai=MakhuyenMai::where('idTLMKM',$id)->get();
+        echo   "<thead>
+                   <tr align='center'>
+                   <th>STT</th>
+                   <th>Code</th>
+                   <th>Trạng Thái</th>
+                   <th>Thể Loại Mã Khuyến Mãi</th>
+                   </tr>
+                 </thead>";
+        foreach ($makhuyenmai as $key=> $makm) {
+                $trangthai='';
+                if ($makm->TrangThai==0){
+                    $trangthai.='Có thể phát mã';
+                }elseif($makm->TrangThai==1){
+                    $trangthai.='Chưa sử dụng';
+                }else{
+                    $trangthai.='Đã sử dụng';
+                }
+                $classes='';
+                if ($makm->TrangThai==0){
+                    $classes.='btn-primary';
+                }elseif($makm->TrangThai==1){
+                    $classes.='btn-info';
+                }else{
+                    $classes.='btn-danger';
+                }
+            echo    "<tr align='center'>
+                         <th>".($key+1)."</th>
+                         <th>".$makm->Code."</th>
+                         <th> <a class='btn btn-xs $classes'>".$trangthai."</a></th>
+                         <th>".$makm->theloaimakhuyenmai->Ten."</th>
+                         </tr>";
+        }
+    }
+    public function postShowthuoctinh(){
+        $id=$this->request->id;
+        $theloai=TheLoai::find($id);
+        $thuoctinh=$theloai->thuoctinh;
+        echo $data=json_encode($thuoctinh);
+    }
+    public function chitietdonhang(){
+        $id=$this->request->id;
+        $chitietdonhang=ChiTietDonHang::where('idDH',$id)->get();
+        $donhang=DonHang::find($id);
+        echo "<h2 class='text-center'>Thông tin vận chuyển</h2>
+                <table class='table table-striped table-bordered table-hover '>
+                   <thead>
+                       <tr align='center'>
+                       <th>Tên người nhận</th>
+                       <th width='230px'>Địa chỉ</th>
+                       <th>Số điện thoại</th>
+                       <th width='200px'>Ghi chú</th>
+                       </tr>
+                  </thead>";
+                ?>
+                     <tr align='center'>
+                     <th>
+                        <?php
+                            if ($donhang->HoTen==null){
+                                echo $donhang->khachhang->HoTen;
+                            }else{
+                                echo "Tên 1: ".$donhang->HoTen."<br/>";
+                                echo "Tên 2: ".$donhang->khachhang->HoTen;
+                            }
+                        ?>
+                     </th>
+                    <th>
+                        <?php
+                            if ($donhang->DiaChi==null){
+                                echo $donhang->khachhang->DiaChi;
+                            }else{
+                                echo "Địa chỉ 1: ".$donhang->DiaChi."<br/>";
+                                echo "Địa chỉ 2: ".$donhang->khachhang->DiaChi;
+                            }
+                        ?>
+                    </th>
+                    <th>
+                        <?php
+                            if ($donhang->SoDienThoai==null){
+                                echo $donhang->khachhang->SoDienThoai;
+                            }else{
+                                echo "Số điện thoại 1: ".$donhang->SoDienThoai."<br/>";
+                                echo "Số điện thoại 2: ".$donhang->khachhang->SoDienThoai;
+                            }
+                        ?>
+                    </th>
+                    <th>
+                        <?php echo $donhang->GhiChu?>
+                    </th>
+                    </tr>
+                <?php
+
+        echo "</table>";
+        //
+         echo "<h2 class='text-center'>Chi tiết đơn hàng</h2>
+                <table class='table table-striped table-bordered table-hover '>
+                   <thead>
+                       <tr align='center'>
+                       <th>ID</th>
+                       <th>Tên</th>
+                       <th>Hình</th>
+                       <th>Số lượng</th>
+                       <th>Giá</th>
+                       <th>IMEI</th>
+                       <th>% Giảm giá</th>
+                       <th>Update</th>
+                       </tr>
+                  </thead>";
+        foreach ($chitietdonhang as $cthd) {
+            $imei=explode('/', $cthd->IMEI);
+            ?>
+            <tr align='center'>
+                <th><?= $cthd->id ?></th>
+                <th><a href='chitietsanpham/"<?=$cthd->sanpham->id ?>'><?=$cthd->sanpham->Ten?></a></th>
+                <th><img width='70px' height='70px' src='upload/sanpham/<?=$cthd->sanpham->Hinh?>' ></th>
+                <th><?=$cthd->SoLuong?></th>
+                <th><?=number_format($cthd->Gia,0,',','.').'đ'?></th>
+                <th >
+                    <?php $i=1; foreach($imei as $vl){ ?>
+                        <p><?=$i?>:<?=$vl?></p>
+                        <?php $i++;} ?>
+                </th>
+                <th><?=$cthd->GiamGia!=null?$cthd->GiamGia:'No'?></th>
+                <th><a href='admin/donhang/xuly/<?=$cthd->id?>'>Sửa</th>
+            </tr>
+            <?php
+        }
+        ?>
+            <tr>
+                <th colspan='2'>
+                    Tổng:
+                    <br>
+                    Khuyến mãi:
+                    <br>
+                    Giảm giá:
+                    <br>
+                    Phí ship:
+                    <br>
+                    Thanh toán:
+                </th>
+                <th colspan="6">
+                    <?php echo number_format($donhang->TongTien,0,',','.').'đ';?>
+                    <br>
+                    <?php
+                         $sum_sale=0;
+                         foreach ($chitietdonhang as $cthd1) {
+                             if($cthd1->GiamGia!=null) {
+                                 $khuyenmai = $cthd->GiamGia;
+                                 $sum_sale = ($donhang->TongTien * $khuyenmai / 100);
+                             }
+                         }
+                    ?>
+                    <?php echo number_format(-$sum_sale,0,',','.').'đ';?>
+                    <br>
+                    <?php
+                        $sum_coupon=0;
+                        if($donhang->idMaKM!=0){
+                            $idkm=$donhang->idMaKM;
+                            $makm=MakhuyenMai::find($idkm);
+                            $sotien_giamgia=$makm->theloaimakhuyenmai->GiaTri;
+                            $sum_coupon=$sotien_giamgia;
+                        }
+                    ?>
+                    <?php echo number_format(-$sum_coupon,0,',','.').'đ'; ?>
+                    <br>
+                   <?php echo 'free';?>
+                    <br>
+                   <?php echo number_format($donhang->TongTien_DaGiam,0,',','.').'đ';?>
+                </th>
+            </tr>
+            <tr>
+                <th colspan="8">
+                    <button class="btn btn-primary button"><a href="admin/donhang/print-order/<?= $id; ?>">in hoá đơn</a></button>
+                </th>
+            </tr>
+        <?php
+
+        echo "</table>";
     }
 
 }

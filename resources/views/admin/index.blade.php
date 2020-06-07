@@ -1,7 +1,6 @@
 @extends('admin.layouts.index')
 @section('content')
     <!-- Page-Title -->
-
     <div class="row">
         <div class="col-md-6 col-lg-3">
             <div class="widget-bg-color-icon card-box fadeInDown animated">
@@ -9,8 +8,8 @@
                     <i class="md md-attach-money text-info"></i>
                 </div>
                 <div class="text-right">
-                    <h3 class="text-dark"><b class="counter">31,570</b></h3>
-                    <p class="text-muted">Total Revenue</p>
+                    <h3 class="text-dark"><b class="counter">{{number_format($tongtien)}}</b></h3>
+                    <p class="text-muted">Tổng danh thu</p>
                 </div>
                 <div class="clearfix"></div>
             </div>
@@ -22,8 +21,8 @@
                     <i class="md md-add-shopping-cart text-pink"></i>
                 </div>
                 <div class="text-right">
-                    <h3 class="text-dark"><b class="counter">280</b></h3>
-                    <p class="text-muted">Today's Sales</p>
+                    <h3 class="text-dark"><b class="counter">{{count($donhang)}}</b></h3>
+                    <p class="text-muted">Tổng đơn hàng</p>
                 </div>
                 <div class="clearfix"></div>
             </div>
@@ -32,11 +31,11 @@
         <div class="col-md-6 col-lg-3">
             <div class="widget-bg-color-icon card-box">
                 <div class="bg-icon bg-icon-purple pull-left">
-                    <i class="md md-equalizer text-purple"></i>
+                    <i class="md md-account-box text-purple"></i>
                 </div>
                 <div class="text-right">
-                    <h3 class="text-dark"><b class="counter">0.16</b>%</h3>
-                    <p class="text-muted">Conversion</p>
+                    <h3 class="text-dark">{{count($khachhang)}}</h3>
+                    <p class="text-muted">Khách hàng</p>
                 </div>
                 <div class="clearfix"></div>
             </div>
@@ -45,169 +44,84 @@
         <div class="col-md-6 col-lg-3">
             <div class="widget-bg-color-icon card-box">
                 <div class="bg-icon bg-icon-success pull-left">
-                    <i class="md md-remove-red-eye text-success"></i>
+                    <i class="md md-phone-android text-success"></i>
                 </div>
                 <div class="text-right">
-                    <h3 class="text-dark"><b class="counter">64,570</b></h3>
-                    <p class="text-muted">Today's Visits</p>
+                    <h3 class="text-dark"><b class="counter">{{count($sanpham)}}</b></h3>
+                    <p class="text-muted">Sản phẩm</p>
                 </div>
                 <div class="clearfix"></div>
             </div>
         </div>
     </div>
-
     <div class="row">
-
-        <div class="col-lg-4">
+        <div class="col-lg-5">
             <div class="card-box">
-                <h4 class="text-dark header-title m-t-0 m-b-30">Total Revenue</h4>
-
-                <div class="widget-chart text-center">
-                    <input class="knob" data-width="150" data-height="150" data-linecap=round data-fgColor="#fb6d9d" value="80" data-skin="tron" data-angleOffset="180" data-readOnly=true data-thickness=".15"/>
-                    <h5 class="text-muted m-t-20">Total sales made today</h5>
-                    <h2 class="font-600">$75</h2>
-                    <ul class="list-inline m-t-15">
-                        <li>
-                            <h5 class="text-muted m-t-20">Target</h5>
-                            <h4 class="m-b-0">$1000</h4>
-                        </li>
-                        <li>
-                            <h5 class="text-muted m-t-20">Last week</h5>
-                            <h4 class="m-b-0">$523</h4>
-                        </li>
-                        <li>
-                            <h5 class="text-muted m-t-20">Last Month</h5>
-                            <h4 class="m-b-0">$965</h4>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="col-lg-8">
-            <div class="card-box">
-                <h4 class="text-dark header-title m-t-0">Sales Analytics</h4>
-                <div class="text-center">
-                    <ul class="list-inline chart-detail-list">
-                        <li>
-                            <h5><i class="fa fa-circle m-r-5" style="color: #5fbeaa;"></i>Desktops</h5>
-                        </li>
-                        <li>
-                            <h5><i class="fa fa-circle m-r-5" style="color: #5d9cec;"></i>Tablets</h5>
-                        </li>
-                        <li>
-                            <h5><i class="fa fa-circle m-r-5" style="color: #dcdcdc;"></i>Mobiles</h5>
-                        </li>
-                    </ul>
-                </div>
-                <div id="morris-bar-stacked" style="height: 303px;"></div>
+                <h4 class="text-dark header-title m-t-0 m-b-30">Top sản phẩm bán chạy trong tháng</h4>
+                <div id="container1"></div>
             </div>
         </div>
-
-
-
-    </div>
+        <div class="col-lg-7">
+            <div class="card-box">
+                <h4 class="text-dark header-title m-t-0 m-b-30">Biểu đồ doanh thu ngày/tuần/tháng/năm</h4>
+                <div id="container2"></div>
+            </div>
+        </div>
     <!-- end row -->
-
+    </div>
 
     <div class="row">
 
-        <div class="col-lg-6">
+        <div class="col-lg-12">
             <div class="card-box">
-                <h4 class="text-dark header-title m-t-0">Total Sales</h4>
-
-                <div class="text-center">
-                    <ul class="list-inline chart-detail-list">
-                        <li>
-                            <h5><i class="fa fa-circle m-r-5" style="color: #5fbeaa;"></i>Desktops</h5>
-                        </li>
-                        <li>
-                            <h5><i class="fa fa-circle m-r-5" style="color: #5d9cec;"></i>Tablets</h5>
-                        </li>
-                        <li>
-                            <h5><i class="fa fa-circle m-r-5" style="color: #ebeff2;"></i>Mobiles</h5>
-                        </li>
-                    </ul>
-                </div>
-
-                <div id="morris-area-with-dotted" style="height: 300px;"></div>
-
-            </div>
-
-        </div>
-
-        <!-- col -->
-
-        <div class="col-lg-6">
-            <div class="card-box">
-                <a href="#" class="pull-right btn btn-default btn-sm waves-effect waves-light">View All</a>
-                <h4 class="text-dark header-title m-t-0">Recent Orders</h4>
-                <p class="text-muted m-b-30 font-13">
-                    Use the button classes on an element.
-                </p>
-
+                <a class="pull-right btn btn-default btn-sm waves-effect waves-light">View All</a>
+                <h4 class="text-dark header-title m-t-0">Đơn hàng mới</h4>
                 <div class="table-responsive">
                     <table class="table table-actions-bar m-b-0">
                         <thead>
                         <tr>
-                            <th></th>
-                            <th>Item Name</th>
-                            <th>Up-Down</th>
-                            <th style="min-width: 80px;">Manage</th>
+                            <th>ID</th>
+                            <th>Khách hàng</th>
+                            <th>Tổng tiền</th>
+                            <th>Tổng tiền đã giảm</th>
+                            <th>Trạng thái</th>
+                            <th >Thời gian</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td><span data-plugin="peity-bar" data-colors="#5fbeaa,#5fbeaa" data-width="80" data-height="30">5,3,9,6,5,9,7,3,5,2</span></td>
-                            <td><img src="admin/assets/images/products/iphone.jpg" class="thumb-sm pull-left m-r-10" alt=""> Apple iPhone </td>
-                            <td><span class="text-custom">+$230</span></td>
-                            <td>
-                                <a href="#" class="table-action-btn"><i class="md md-edit"></i></a>
-                                <a href="#" class="table-action-btn"><i class="md md-close"></i></a>
-                            </td>
-                        </tr>
+                        @foreach($donhang_new as $dh)
+                            <tr>
+                                <td>{{$dh->id}}</td>
+                                <td>{{$dh->khachhang->HoTen}}</td>
+                                <td>{{number_format($dh->TongTien).'đ'}}</td>
+                                <td>{{number_format($dh->TongTien_DaGiam).'đ'}}</td>
+                                <td>
+                                    <a class="btn btn-xs
+                                   @if($dh->TrangThai==0)
+                                    {{'btn-danger'}}
+                                    @elseif($dh->TrangThai==4)
+                                    {{'btn-danger'}}
+                                    @else
+                                    {{'btn-default'}}
+                                    @endif
+                                        ">
+                                        @if($dh->TrangThai==1)
+                                            {{'Xử lý'}}
+                                        @elseif($dh->TrangThai==2)
+                                            {{'Đang giao hàng'}}
+                                        @elseif($dh->TrangThai==3)
+                                            {{'Đã giao hàng'}}
+                                        @elseif($dh->TrangThai==4)
+                                            {{'Đã huỷ'}}
+                                        @else
+                                            {{'Chưa xử lý'}}
+                                        @endif
 
-                        <tr>
-                            <td><span data-plugin="peity-line" data-fill="#5fbeaa" data-stroke="#5fbeaa" data-width="80" data-height="30">0,-3,-6,-4,-5,-4,-7,-3,-5,-2</span></td>
-                            <td><img src="admin/assets/images/products/samsung.jpg" class="thumb-sm pull-left m-r-10" alt=""> Samsung Phone </td>
-                            <td><span class="text-danger">-$154</span></td>
-                            <td>
-                                <a href="#" class="table-action-btn"><i class="md md-edit"></i></a>
-                                <a href="#" class="table-action-btn"><i class="md md-close"></i></a>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td><span data-plugin="peity-line" data-fill="#fff" data-stroke="#5fbeaa" data-width="80" data-height="30">5,3,9,6,5,9,7,3,5,2</span>
-                            <td><img src="admin/assets/images/products/imac.jpg" class="thumb-sm pull-left m-r-10" alt=""> Apple iPhone </td>
-                            <td><span class="text-custom">+$1850</span></td>
-                            <td>
-                                <a href="#" class="table-action-btn"><i class="md md-edit"></i></a>
-                                <a href="#" class="table-action-btn"><i class="md md-close"></i></a>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td><span data-plugin="peity-pie" data-colors="#5fbeaa,#ebeff2" data-width="30" data-height="30">1/5</span></td>
-                            <td><img src="admin/assets/images/products/macbook.jpg" class="thumb-sm pull-left m-r-10" alt=""> Apple iPhone </td>
-                            <td><span class="text-danger">-$560</span></td>
-                            <td>
-                                <a href="#" class="table-action-btn"><i class="md md-edit"></i></a>
-                                <a href="#" class="table-action-btn"><i class="md md-close"></i></a>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td><span data-plugin="peity-bar" data-colors="#5fbeaa,#ebeff2" data-width="80" data-height="30">5,3,9,6,5,9,7,3,5,2</span></td>
-                            <td><img src="admin/assets/images/products/lumia.jpg" class="thumb-sm pull-left m-r-10" alt=""> Lumia iPhone </td>
-                            <td><span class="text-custom">+$230</span></td>
-                            <td>
-                                <a href="#" class="table-action-btn"><i class="md md-edit"></i></a>
-                                <a href="#" class="table-action-btn"><i class="md md-close"></i></a>
-                            </td>
-                        </tr>
-
+                                    </a>
+                                </td>
+                                <td>{{$dh->created_at->format('d-m-Y')}}</td>
+                            </tr>
+                        @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -221,4 +135,113 @@
 @endsection
 @section('script')
     <script src="admin/assets/pages/jquery.dashboard.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/data.js"></script>
+    <script src="https://code.highcharts.com/modules/drilldown.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <script src="https://code.highcharts.com/modules/funnel.js"></script>
+    <script>
+        // Build the chart
+        let data1="{{$dataProduct}}";
+        datachart1=JSON.parse(data1.replace(/&quot;/g,'"'));
+        Highcharts.chart('container1', {
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Biểu đồ top sản phẩm bán chạy trong tháng'
+            },
+            tooltip: {
+                pointFormat: '{point.y:.1f}Cái'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            },
+            series: [{
+                name: 'Brands',
+                colorByPoint: true,
+                data: datachart1
+            }]
+        });
+        // Create the chart
+        let data2="{{$dataMoney}}";
+        datachart2=JSON.parse(data2.replace(/&quot;/g,'"'));
+
+        //chitiet
+        let dt="{{$dataChitiet}}";
+        datamonth=JSON.parse(dt.replace(/&quot;/g,'"'));
+        console.log(datamonth);
+        Highcharts.chart('container2', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Biểu đồ doanh thu ngày/tuần/tháng/năm'
+            },
+
+            accessibility: {
+                announceNewData: {
+                    enabled: true
+                }
+            },
+            xAxis: {
+                type: 'category'
+            },
+            yAxis: {
+                title: {
+                    text: 'Mức độ'
+                }
+
+            },
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                series: {
+                    borderWidth: 0,
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y:.1f}VNĐ'
+                    }
+                }
+            },
+
+            tooltip: {
+                headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+            },
+
+            series: [
+                {
+                    name: "Browsers",
+                    colorByPoint: true,
+                    data: datachart2
+                }
+            ],
+            drilldown: {
+                series: [
+
+                    {
+                        name: "Doanh thu tháng",
+                        id: "Doanh thu tháng",
+                        data: datamonth
+                    },
+
+
+                ]
+            }
+        });
+    </script>
 @endsection

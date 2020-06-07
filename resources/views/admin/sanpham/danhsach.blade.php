@@ -4,10 +4,10 @@
     <div class="row">
         <div class="col-sm-12">
 
-            <h4 class="page-title">Thể Loại</h4>
+            <h4 class="page-title">Sản phẩm</h4>
             <ol class="breadcrumb">
                 <li><a href="admin/trangchu">Trang chủ</a></li>
-                <li><a href="admin/theloai/danhsach">Thể loại</a></li>
+                <li><a href="admin/sanpham/danhsach">Sản phẩm</a></li>
                 <li class="active">Danh sách</li>
             </ol>
         </div>
@@ -27,8 +27,10 @@
                     <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Tên</th>
+                        <th >Nội Dung</th>
+                        <th width="290px">Tóm Tắt</th>
                         <th>Trạng thái</th>
+                        <th>Thể Loại</th>
                         <th>Sửa</th>
                         <th>Xoá</th>
                     </tr>
@@ -36,25 +38,41 @@
 
 
                     <tbody>
-                    @foreach($theloai as $tl)
+                    @foreach($sanpham as $sp)
                         <tr align="center" >
-                            <td>{{$tl->id}}</td>
-                            <td>{{$tl->Ten}}</td>
+                            <td>{{$sp->id}}</td>
                             <td>
-                                <a class="btn btn-xs {{$tl->TrangThai==1?'btn-info':'btn-danger'}} " href="admin/theloai/xuly/{{$tl->id}}">
-                                    {{$tl->TrangThai==1?'Hiện':'Ẩn'}}
+                                <p>Tên: {{$sp->Ten}} </p>
+                                <img width="150px" src="upload/sanpham/{{$sp->Hinh}}" alt="">
+                                <p>Giá :{{$sp->Gia}}</p>
+                                <p>Số Lượng :{{$sp->SoLuong}}</p>
+                                <p>Tình trạng :
+                                    @if($sp->TinhTrang==1)
+                                        {{'Hàng mới'}}
+                                    @elseif($sp->TinhTrang==2)
+                                        {{'Hàng like new'}}
+                                    @else
+                                        {{'Hàng trưng bày'}}
+                                    @endif
+                                </p>
+                            </td>
+                            <td>{{$sp->TomTat}}</td>
+                            <td>
+                                <a class="btn btn-xs {{$sp->TrangThai==1?'btn-info':'btn-danger'}} ">
+                                    {{$sp->TrangThai==1?'Hiển thị':'Ẩn'}}
                                 </a>
                             </td>
+                            <td>{{$sp->theloai->Ten}}</td>
                             <td>
                                 <i class="fa fa-pencil">
-                                    <a href="admin/theloai/sua/{{$tl->id}}">
+                                    <a href="admin/sanpham/sua/{{$sp->id}}">
                                         Sửa
                                     </a>
                                 </i>
                             </td>
                             <td>
                                 <i class="fa fa-trash">
-                                    <a href="admin/theloai/xoa/{{$tl->id}}"
+                                    <a href="admin/sanpham/xoa/{{$sp->id}}"
                                        onclick="return confirm('Bạn có chắc muốn xoá không?');"
                                     >
                                         Xoá

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\GopY;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Banner;
@@ -11,7 +12,10 @@ use App\SanPham;
 use App\TinTuc;
 use App\KhachHang;
 use Mail;
-use Illuminate\Support\Facades\DB;
+use App\KhuyenMai;
+use App\DonHang;
+use App\ChiTietKhuyenMai;
+use App\ChiTietDonHang;
 
 class HomeController extends Controller
 {
@@ -21,12 +25,18 @@ class HomeController extends Controller
         parent::__construct($request);
         $theloai=TheLoai::where('TrangThai',1)->get();
         $tongsanpham=SanPham::all();
+        $tu=0;
+        $den=0;
+        $dungluong=0;
+        $sim=0;
+        $gia=0;
         view()->share('theloai',$theloai);
         view()->share('tongsanpham',$tongsanpham);
+        view()->share(['tu'=>$tu,'den'=>$den,'dungluong'=>$dungluong,'sim'=>$sim,'gia'=>$gia]);
     }
 
     public function index(){
-        $sanpham=SanPham::where('TrangThai',1)->orderByRaw('id DESC')->get();
+        $sanpham=SanPham::where('TrangThai',1)->where('TinhTrang',1)->orderByRaw('id DESC')->get();
         $tintuc=TinTuc::orderByRaw('id DESC')->take(4)->get();
         $iphone=SanPham::where('idTL',1)->orderByRaw('id DESC')->get()->random(8);;
         $ipad=SanPham::where('idTL',2)->orderByRaw('id DESC')->take(8)->get();
@@ -34,7 +44,26 @@ class HomeController extends Controller
         $applewatch=SanPham::where('idTL',3)->orderByRaw('id DESC')->take(8)->get();
         $phukien=SanPham::where('idTL',5)->orderByRaw('id DESC')->take(8)->get();
         $sanphamhot=SanPham::where('pay','>',0)->orderByRaw('id DESC')->take(5)->get();
-//        $khuyenmai=KhuyenMai::where('TrangThai',1)->take(2)->get();
+        //
+        Carbon::setLocale('vi');
+        $now=Carbon::now();
+        $ngay=$now->toDateString();
+        $khuyenmai=KhuyenMai::where('TrangThai',1)->get();
+
+        $sanphamsale=[];
+        $title='';
+        foreach ($khuyenmai as $km){
+            $ngaybatdau=$km->NgayBatDau;
+            $ngaykethuc=$km->NgayKetThuc;
+            if($ngay>=$ngaybatdau && $ngay<=$ngaykethuc) {
+                $title='SẢN PHẨM KHUYẾN MÃI';
+                foreach ($km->chitietkhuyenmai as $ctkm) {
+                    $sanphamsale[] = $ctkm;
+                }
+            }
+        }
+        $sanphamsale=array_slice($sanphamsale,0,5);
+
         $banner=Banner::orderByRaw('id DESC')->take(3)->get();
         return view('frontend.subpage.trangchu',
             [
@@ -47,17 +76,31 @@ class HomeController extends Controller
                 'phukien'       =>$phukien,
                 'sanphamhot'    =>$sanphamhot,
                 'tintuc'        =>$tintuc,
+                'sanphamsale'   =>$sanphamsale,
+                'title'         =>$title,
             ]
         );
     }
     //chi tiet san pham
     public function productDetail($id){
         $sanpham=SanPham::find($id);
+        if($sanpham->TinhTrang==1) {
+            $product_type = SanPham::where('type', $sanpham->type)->where('TinhTrang', 1)->get();
+        }else{
+            $product_type=[];
+        }
+        Carbon::setLocale('vi');
+        $now=Carbon::now();
+        $ngay=$now->toDateString();
+        $ctkhuyenmai=ChiTietKhuyenMai::where('idSP',$id)->get();
         $sanphamlienquan=SanPham::where('idTL',$sanpham->idTL)->where('TrangThai',1)->get()->random(1);
         return view('frontend.subpage.chitietsanpham',
             [
                 'sanpham'           =>$sanpham,
                 'sanphamlienquan'   =>$sanphamlienquan,
+                'product_type'      =>$product_type,
+                'ngay'              =>$ngay,
+                'ctkhuyenmai'       =>$ctkhuyenmai,
             ]
         );
     }
@@ -65,10 +108,24 @@ class HomeController extends Controller
     public function productByCategory($id){
         $theloai1=TheLoai::find($id);
         $sanpham=SanPham::where('idTL',$id)->orderByRaw('id DESC')->paginate(8);
+
+        $sort=0;
+        if ($this->request->sort){
+            $sort=$this->request->sort;
+            if($sort=='tang-dan'){
+                $sanpham=SanPham::where('idTL',$id)->orderBy('Gia','asc')->paginate(8);
+                $sanpham->appends(['sort' => $sort]);
+            }else{
+                $sanpham=SanPham::where('idTL',$id)->orderBy('Gia','desc')->paginate(8);
+                $sanpham->appends(['sort' => $sort]);
+            }
+        }
+
         return view('frontend.subpage.danhsachsanpham',
             [
                 'sanpham'   =>$sanpham,
-                'theloai1'  =>$theloai1
+                'theloai1'  =>$theloai1,
+                'sort'      =>$sort,
             ]);
     }
     // danh sach san pham ban chay
@@ -82,6 +139,94 @@ class HomeController extends Controller
         $sanpham=SanPham::whereIn('id',$listid)->orderByRaw('id DESC')->paginate(8);
         return view('frontend.subpage.danhsachsanphamvuaxem',['sanpham'=>$sanpham]);
     }
+    //danh sach san pham khuyen mai
+    public function getDanhsachkhuyenmai(){
+        Carbon::setLocale('vi');
+        $now=Carbon::now();
+        $ngay=$now->toDateString();
+        $khuyenmai=KhuyenMai::where('TrangThai',1)->get();
+
+        $id=[];
+        foreach ($khuyenmai as $km){
+            $ngaybatdau=$km->NgayBatDau;
+            $ngaykethuc=$km->NgayKetThuc;
+            if($ngay>=$ngaybatdau && $ngay<=$ngaykethuc) {
+                $id[]=$km->id;
+                $sanphamsale=ChiTietKhuyenMai::whereIn('idKM',$id)->paginate(8);
+            }
+        }
+        return view('frontend/subpage/danhsachsanphamkhuyenmai',['sanphamsale'=>$sanphamsale]);
+    }
+    //danh sach san pham theo bo loc
+    public function danhsachsanphamtheoboloc(){
+        $tu=0;
+        $den=0;
+        $dungluong=0;
+        $sim=0;
+        $arr_gia=0;
+        if($this->request->gia){
+            $arr_gia=$this->request->gia;
+            $name='Lọc Theo Giá';
+            if ($arr_gia=='tatca'){
+                $sanpham=SanPham::where('TrangThai',1)->orderBy('Gia','desc')->paginate(8);
+            }else{
+                $gia=explode('-',$arr_gia);
+                $tu=$gia[0];
+                $den=$gia[1];
+                $sanpham=SanPham::where('TrangThai',1)->whereBetween('Gia',array($tu.'000000',$den.'000000'))->orderBy('Gia','desc')->paginate(8);
+            }
+            $sanpham->appends(['gia' => $arr_gia]);
+        }elseif($this->request->dungluong){
+            $dungluong=$this->request->dungluong;
+            $name='Lọc Theo Dung Lượng';
+            if($dungluong=='tatca'){
+                $sanpham= SanPham::select('SanPham.*')
+                    ->join('ChiTietThuocTinh', 'SanPham.id', '=', 'ChiTietThuocTinh.idSP')
+                    ->join('ThuocTinh', 'ChiTietThuocTinh.idTT', '=', 'ThuocTinh.id')
+                    ->where('ThuocTinh.Ten','=', 'Dung lượng')
+                    ->orderBy('Gia','desc')
+                    ->paginate(8);
+            }else{
+                $sanpham= SanPham::select('SanPham.*','ChiTietThuocTinh.ChiTiet')
+                    ->join('ChiTietThuocTinh', 'SanPham.id', '=', 'ChiTietThuocTinh.idSP')
+                    ->where('ChiTietThuocTinh.ChiTiet', '=',$dungluong.' GB')
+                    ->orderBy('Gia','desc')
+                    ->paginate(8);
+            }
+            $sanpham->appends(['dungluong' => $dungluong]);
+        }elseif ($this->request->sim) {
+            $sim = $this->request->sim;
+            $name = 'Lọc Theo Sim';
+            if($sim=='tatca'){
+                $sanpham= SanPham::select('SanPham.*')
+                    ->join('ChiTietThuocTinh', 'SanPham.id', '=', 'ChiTietThuocTinh.idSP')
+                    ->join('ThuocTinh', 'ChiTietThuocTinh.idTT', '=', 'ThuocTinh.id')
+                    ->where('ThuocTinh.Ten','=', 'Sim')
+                    ->orderBy('Gia','desc')
+                    ->paginate(8);
+            }else{
+                $sanpham = SanPham::select('SanPham.*', 'ChiTietThuocTinh.ChiTiet')
+                    ->join('ChiTietThuocTinh', 'SanPham.id', '=', 'ChiTietThuocTinh.idSP')
+                    ->where('ChiTietThuocTinh.ChiTiet', '=', $sim . ' sim')
+                    ->orderBy('Gia', 'desc')
+                    ->paginate(8);
+            }
+            $sanpham->appends(['sim' => $sim]);
+        }
+
+        return view ('frontend.subpage.danhsachsanphamboloc',
+            [
+                'sanpham'       =>$sanpham,
+                'name'          =>$name,
+                'tu'            =>$tu,
+                'den'           =>$den,
+                'dungluong'     =>$dungluong,
+                'sim'           =>$sim,
+                'gia'           =>$arr_gia,
+            ]);
+
+    }
+
     //danh sach tin tuc
     public function getListNews(){
         $tintuc=TinTuc::orderByRaw('id DESC')->paginate(6);
@@ -195,7 +340,7 @@ class HomeController extends Controller
             'name'      =>$this->request->name,
         ];
         //gui mail
-        Mail::send('frontend.subpage.guimail_xacnhan',$data, function($message) use ($email){
+        Mail::send('frontend.email-template.guimail_xacnhan',$data, function($message) use ($email){
             $message->from('thuan.dh51600602@gmail.com','Đức Thuận');
             $message->to($email, 'Xác nhận');
             $message->subject('Gửi mã xác nhận!');
@@ -291,5 +436,67 @@ class HomeController extends Controller
             ]);
 
     }
+    //don hang cua ban
+    public function danh_sach_don_hang($id){
+        $donhang=DonHang::where('idKH',$id)->get();
+        return view('frontend.subpage.donhangcuaban',['donhang'=>$donhang]);
+
+    }
+    //chi tiet don hang
+    public function getChitietdonhang(){
+        $id=$this->request->iddh;
+        $chitietdonhang=ChiTietDonHang::where('idDH',$id)->get();
+        echo     "<thead>
+           <tr align='center'>
+           <th>ID</th>
+           <th>Tên</th>
+           <th>Hình</th>
+           <th>Số lượng</th>
+           <th>Giá</th>
+           <th>Imei</th>
+           <th>% Giảm giá</th>
+           </tr>
+           </thead>";
+        foreach ($chitietdonhang as $cthd) {
+            $imei=explode('/', $cthd->IMEI);
+            ?>
+            <tr align='center'>
+                <th><?= $cthd->id ?></th>
+                <th><a href='chitietsanpham/"<?=$cthd->sanpham->id ?>'><?=$cthd->sanpham->Ten?></a></th>
+                <th><img width='70px' height='70px' src='upload/sanpham/<?=$cthd->sanpham->Hinh?>' ></th>
+                <th><?=$cthd->SoLuong?></th>
+                <th><?=number_format($cthd->Gia,0,',','.').'đ'?></th>
+                <th >
+                    <?php $i=1; foreach($imei as $vl){ ?>
+                        <p><?=$i?> :<?=$vl?></p>
+                        <?php $i++;} ?>
+                </th>
+                <th><?=$cthd->GiamGia!=null?$cthd->GiamGia:'No'?></th>
+            </tr>
+         <?php
+        }
+    }
+    //cho khach hang huy don hang khi don hang chua xu ly
+    public function getHuydonhang($iddh){
+        $donhang=DonHang::find($iddh);
+        //kiem tra thoi gian trong vong 12gio
+        Carbon::setLocale('vi');
+        $thoigiandonhang=$donhang->created_at;
+        $now=Carbon::now();
+        //tach chuoi thanh mang
+//         dd($thoigiandonhang->diffInHours($now));
+        $thoigian=explode(' ', ($thoigiandonhang->diffInHours($now)));
+        // dd($thoigian[0]);
+        if($donhang->TrangThai==0 && $thoigian[0]>12){
+            return redirect()->back()->with('ThongBao','Sau 12 giờ đơn hàng không thể huỷ được');
+        }else{
+            $trangthai=4;
+        }
+        $donhang->TrangThai=$trangthai;
+        $donhang->save();
+        return redirect()->back()->with('ThongBao','Huỷ đơn hàng thành công');
+
+    }
+
 
 }

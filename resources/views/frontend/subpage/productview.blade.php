@@ -18,16 +18,12 @@
                                         <a href="chitietsanpham/{{$spview->id}}/{{$spview->Ten_KhongDau}}.html">
                                             <img src="upload/sanpham/{{$spview->Hinh}}" alt="image">
                                         </a>
-                                        <span class="new sale">Sale</span>
                                     </div>
                                     <div class="product-info clearfix">
                                         <span class="product-title">{{$spview->Ten}}</span>
                                         <div class="price">
-                                            <del>
-                                                <span class="regular">{{\App\Helpers\FormatPrice::formatPrice($spview->Gia)}}</span>
-                                            </del>
                                             <ins>
-                                                <span class="amount">{{\App\Helpers\FormatPrice::formatPrice($spview->Gia)}}</span>
+                                                <span class="amount">{{number_format($spview->Gia,0,',','.').'đ'}}</span>
                                             </ins>
                                         </div>
                                     </div>

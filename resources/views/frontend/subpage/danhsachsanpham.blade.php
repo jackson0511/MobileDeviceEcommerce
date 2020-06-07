@@ -34,7 +34,59 @@
                         <li class="search-product"><a  >Search</a></li>
                     </ul>
                 </div><!-- /.filte-shop -->
-                @include('frontend.subpage.boloc')
+
+                <div class="box-filter slidebar-shop clearfix">
+                    <div class="btn-close"><a><i class="fa fa-times"></i></a></div>
+                    <div class="widget widget-sort-by">
+                        <h5 class="widget-title">
+                            Sort By
+                        </h5>
+                        <ul>
+                            <li><a href="danhmucsanpham/{{$theloai1->id}}/{{$theloai1->Ten_KhongDau}}.html?sort=tang-dan" class="@if($sort==='tang-dan'){{'active'}} @endif">Giá: Tăng dần</a></li>
+                            <li><a href="danhmucsanpham/{{$theloai1->id}}/{{$theloai1->Ten_KhongDau}}.html?sort=giam-dan" class="@if($sort==='giam-dan'){{'active'}} @endif">Giá: Giảm dần</a></li>
+                        </ul>
+                    </div><!-- /.widget-sort-by -->
+                    <div class="widget widget-price">
+                        <h5 class="widget-title">Giá</h5>
+                        <ul>
+                            <li><a href="danhsachsanphamtheoboloc?gia=tatca" class="@if($gia==='tatca'){{'active'}} @endif">Tất cả</a></li>
+                            <li><a href="danhsachsanphamtheoboloc?gia=5-10"  class="@if($tu==5 && $den==10){{'active'}} @endif">5-10 Triệu</a></li>
+                            <li><a href="danhsachsanphamtheoboloc?gia=10-15" class="@if($tu==10 && $den==15){{'active'}} @endif">10-15 Triệu</a></li>
+                            <li><a href="danhsachsanphamtheoboloc?gia=15-20" class="@if($tu==15 && $den==20){{'active'}} @endif">15-20 Triệu</a></li>
+                            <li><a href="danhsachsanphamtheoboloc?gia=20-30" class="@if($tu==20 && $den==30){{'active'}} @endif">20-30 Triệu</a></li>
+                            <li><a href="danhsachsanphamtheoboloc?gia=30-50" class="@if($tu=30 && $den==100){{'active'}} @endif" >Trên 30 Triệu</a></li>
+
+                        </ul>
+                    </div><!-- /.widget -->
+                    <div class="widget widget-color">
+                        <h5 class="widget-title">
+                            Dung Lượng
+                        </h5>
+                        <ul >
+                            <li><a  href="danhsachsanphamtheoboloc?dungluong=tatca" class="@if($dungluong==='tatca'){{'active'}} @endif" >Tất cả</a></li>
+                            <li><a  href="danhsachsanphamtheoboloc?dungluong=64" class="@if($dungluong==64){{'active'}} @endif" >64GB</a></li>
+                            <li><a href="danhsachsanphamtheoboloc?dungluong=128" class="@if($dungluong==128){{'active'}} @endif"> 128GB</a></li>
+                            <li><a href="danhsachsanphamtheoboloc?dungluong=256" class="@if($dungluong==256){{'active'}} @endif">256GB </a></li>
+                            <li><a href="danhsachsanphamtheoboloc?dungluong=512" class="@if($dungluong==512){{'active'}} @endif">512GB</a></li>
+                        </ul>
+                    </div><!-- /.widget-color -->
+                    <div class="widget widget-size">
+                        <h5 class="widget-title">Sim</h5>
+                        <ul>
+                            <li><a href="danhsachsanphamtheoboloc?sim=tatca" class="@if($sim==='tatca'){{'active'}} @endif">Tất cả</a></li>
+                            <li><a href="danhsachsanphamtheoboloc?sim=1" class="@if($sim==1){{'active'}}@endif">1 Sim</a></li>
+                            <li><a href="danhsachsanphamtheoboloc?sim=2" class="@if($sim==2){{'active'}}@endif">2 Sim</a></li>
+                        </ul>
+                    </div><!-- /.widget -->
+                </div><!-- /.box-filter -->
+                <div class="shop-search clearfix">
+                    <form role="search" method="get" class="search-form" action="#">
+                        <label>
+                            <input type="search" class="search-field" placeholder="Searching …" value="" name="s">
+                        </label>
+                    </form>
+                </div><!-- /.top-serach -->
+                <!-- end filter-->
 
                 <div class="product-content product-fourcolumn clearfix">
                     <ul class="product style2">
@@ -49,20 +101,9 @@
                                 <span class="product-title">{{$sp->Ten}}</span>
                                 <div class="price">
                                     <ins>
-                                        <span class="amount">{{\App\Helpers\FormatPrice::formatPrice($sp->Gia)}}</span>
+                                        <span class="amount">{{number_format($sp->Gia,0,',','.').'đ'}}</span>
                                     </ins>
                                 </div>
-                                <ul class="flat-color-list">
-                                    <li>
-                                        <a href="#" class="red"></a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="blue"></a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="black"></a>
-                                    </li>
-                                </ul>
                             </div>
                             <div class="add-to-cart text-center">
                                 <a href="themgiohang/{{$sp->id}}">Thêm giỏ hàng</a>
