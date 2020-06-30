@@ -20,7 +20,15 @@
                                     <a href="chitietsanpham/{{$spsale->sanpham->id}}/{{$spsale->sanpham->Ten_KhongDau}}.html">
                                         <img src="upload/sanpham/{{$spsale->sanpham->Hinh}}" alt="image">
                                     </a>
-                                    <span class="new sale">Sale {{$spsale->ChiTiet}} %</span>
+                                    @if($spsale->TrangThai==1)
+                                        <span class="new sale">Sale {{$spsale->ChiTiet}} %</span>
+                                    @else
+                                        @foreach($product_km as $pr_km)
+                                            @if($pr_km->id==(int)$spsale->ChiTiet)
+                                                <span style="width: 100px; font-size: 12px" class="new sale">Tặng {{$pr_km->Ten}}</span>
+                                            @endif
+                                        @endforeach
+                                    @endif
                                 </div>
                                 <div class="product-info clearfix">
                                     <span class="product-title">{{$spsale->sanpham->Ten}}</span>
@@ -29,7 +37,11 @@
                                             <span class="regular">{{number_format($spsale->sanpham->Gia,0,',','.').'đ'}}</span>
                                         </del>
                                         <ins>
+                                            @if($spsale->Gia_Sale!=null)
                                             <span class="amount">{{number_format($spsale->Gia_Sale,0,',','.').'đ'}}</span>
+                                            @else
+                                                <span class="amount">{{number_format($spsale->sanpham->Gia,0,',','.').'đ'}}</span>
+                                            @endif
                                         </ins>
                                     </div>
                                 </div>

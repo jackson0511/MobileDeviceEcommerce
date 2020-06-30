@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\ThongTinBaoHanh;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\DonHang;
 use App\ChiTietDonHang;
@@ -63,7 +65,7 @@ class DonHangController extends Controller
                 if($donhang->TrangThai==4){
                     return redirect('admin/donhang/danhsach')->with('ThongBao','Đơn hàng đã được huỷ');
                 }elseif($donhang->TrangThai==3){
-                    return redirect('admin/donhang/danhsach')->with('ThongBao','Đơn hàng đã được giao');
+//                    return redirect('admin/donhang/danhsach')->with('ThongBao','Đơn hàng đã được giao');
                 }
                 else{
                     $trangthai=$this->request->trangthai;
@@ -89,8 +91,50 @@ class DonHangController extends Controller
                             //update lai so luong san pham
                             $sanpham->SoLuong=$slsanphamconlai;
 
-                            $sanpham->pay 	 =$sanpham->pay+1;
+                            $sanpham->pay 	 =$sanpham->pay+$soluong;
                             $sanpham->save();
+                        }
+                    }
+                    if($trangthai==3){
+                        Carbon::setLocale('vi');
+                        $now=Carbon::now();
+                        $now1=Carbon::now();
+                        $ngay=$now->toDateString();
+                        $ngayketthuc6=$now1->addMonth(6);
+                        $ngayketthuc12=$now->addMonth(12);
+                        foreach ($donhang->chitietdonhang as $ctdh){
+                            $thongtinbaohanh=new ThongTinBaoHanh();
+                            if ($ctdh->SoLuong>1){
+                                $sanpham=SanPham::find($ctdh->idSP);
+                                for ($i=0;$i<$ctdh->SoLuong;$i++){
+                                    $thongtinbaohanh=new ThongTinBaoHanh();
+                                    $arr_imei=explode('/',$ctdh->IMEI);
+                                    $thongtinbaohanh->IMEI=$arr_imei[$i];
+                                    $thongtinbaohanh->idSP=$ctdh->idSP;
+                                    $thongtinbaohanh->idDH=$ctdh->idDH;
+                                    $thongtinbaohanh->NgayApDung=$ngay;
+                                    if($sanpham->baohanh->Ten=='6 tháng'){
+                                        $thongtinbaohanh->NgayKetThuc=$ngayketthuc6;
+                                    }else{
+                                        $thongtinbaohanh->NgayKetThuc=$ngayketthuc12;
+                                    }
+                                    $thongtinbaohanh->BaoHanh=$sanpham->baohanh->Ten;
+                                    $thongtinbaohanh->save();
+                                }
+                            }else{
+                                $sanpham=SanPham::find($ctdh->idSP);
+                                $thongtinbaohanh->IMEI=$ctdh->IMEI;
+                                $thongtinbaohanh->idSP=$ctdh->idSP;
+                                $thongtinbaohanh->idDH=$ctdh->idDH;
+                                $thongtinbaohanh->NgayApDung=$ngay;
+                                if($sanpham->baohanh->Ten=='6 tháng'){
+                                    $thongtinbaohanh->NgayKetThuc=$ngayketthuc6;
+                                }else{
+                                    $thongtinbaohanh->NgayKetThuc=$ngayketthuc12;
+                                }
+                                $thongtinbaohanh->BaoHanh=$sanpham->baohanh->Ten;
+                                $thongtinbaohanh->save();
+                            }
                         }
                     }
                 }

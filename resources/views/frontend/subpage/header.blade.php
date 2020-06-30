@@ -114,29 +114,33 @@
                     <li class="active">
                         <a href="/">TRANG CHỦ</a>
                     </li>
-                    @foreach($theloai as $tl)
-                        <li>
-                            <a href="danhmucsanpham/{{$tl->id}}/{{$tl->Ten_KhongDau}}.html">{{$tl->Ten}}</a>
-                        </li>
-                    @endforeach
 {{--                    @foreach($theloai as $tl)--}}
-{{--                        @if($tl->parent_id==0)--}}
-{{--                            <li>--}}
-{{--                                <a href="danhmucsanpham/{{$tl->id}}/{{$tl->Ten_KhongDau}}.html">{{$tl->Ten}}</a>--}}
-{{--                                @foreach($tl->children as $child)--}}
-{{--                                    <ul class="submenu">--}}
-{{--                                        <a href="danhmucsanpham/{{$child->id}}/{{$child->Ten_KhongDau}}.html">{{$child->Ten}}</a>--}}
-{{--                                    </ul>--}}
-{{--                                @endforeach--}}
-{{--                            </li>--}}
-{{--                        @endif--}}
+{{--                        <li>--}}
+{{--                            <a href="danhmucsanpham/{{$tl->id}}/{{$tl->Ten_KhongDau}}.html">{{$tl->Ten}}</a>--}}
+{{--                        </li>--}}
 {{--                    @endforeach--}}
+                    @foreach($theloai as $tl)
+                        @if($tl->parent_id==0)
+                            <li>
+                                <a href="danhmucsanpham/{{$tl->id}}/{{$tl->Ten_KhongDau}}.html">{{$tl->Ten}}</a>
+                                @if(count($tl->children)>0)
+                                    <ul class="submenu">
+                                        @foreach($tl->children as $child)
+                                            <li>
+                                                <a href="danhmucsanpham/{{$child->id}}/{{$child->Ten_KhongDau}}.html">{{$child->Ten}}</a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                @endif
+                            </li>
+                        @endif
+                    @endforeach
                      <li>
                         <a href="danhmuctintuc">TIN TỨC</a>
                     </li>
-                       <li>
-                        <a href="gopy/lienhe">LIÊN HỆ</a>
-                    </li>
+{{--                       <li>--}}
+{{--                        <a href="gopy/lienhe">LIÊN HỆ</a>--}}
+{{--                    </li>--}}
 
                 </ul>
             </nav><!-- /.mainnav -->

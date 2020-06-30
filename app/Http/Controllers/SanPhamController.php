@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\BoLoc;
 use Illuminate\Http\Request;
 use App\SanPham;
 use App\TheLoai;
@@ -14,8 +15,10 @@ class SanPhamController extends Controller
         return view('admin.sanpham.danhsach',['sanpham'=>$sanpham]);
     }
     public function getAdd(){
-        $theloai=TheLoai::all();
-        return view('admin.sanpham.them',['theloai'=>$theloai]);
+        $theloai1=TheLoai::where('Ten','=','HÀNG CŨ')->first();
+        $theloai=TheLoai::where('id','!=',$theloai1->id)->get();
+        $boloc=BoLoc::where('parent_id','!=',0)->get();
+        return view('admin.sanpham.them',['theloai'=>$theloai,'boloc'=>$boloc]);
     }
     public function postAdd(){
         $this->validate($this->request,
@@ -74,19 +77,27 @@ class SanPhamController extends Controller
                     ]);
                 }
             }
+            //save boloc
+            $boloc=$this->request->boloc;
+            foreach ($boloc as $key => $idbl) {
+                $sanpham->boloc()->attach($idbl);
+            }
         }
         return redirect('admin/sanpham/danhsach')->with('ThongBao','Thêm thành công');
 
     }
     public function getEdit($id){
         $sanpham=SanPham::find($id);
-        $theloai=TheLoai::all();
+        $theloai1=TheLoai::where('Ten','=','HÀNG CŨ')->first();
+        $theloai=TheLoai::where('id','!=',$theloai1->id)->get();
         $theloai_ct=TheLoai::find($sanpham->idTL);
+        $boloc=BoLoc::where('parent_id','!=',0)->get();
         return view('admin.sanpham.sua',
             [
                 'theloai'       =>$theloai,
                 'sanpham'       =>$sanpham,
-                'theloai_ct'  =>$theloai_ct,
+                'theloai_ct'    =>$theloai_ct,
+                'boloc'         =>$boloc,
             ]);
     }
     public function postEdit($id){
@@ -145,6 +156,12 @@ class SanPhamController extends Controller
                         'idTT'      =>$idtt,//idthuoctinh
                     ]);
                 }
+            }
+            //save boloc
+            $boloc=$this->request->boloc;
+            $sanpham->boloc()->detach();
+            foreach ($boloc as $key => $idbl) {
+                $sanpham->boloc()->attach($idbl);
             }
 
         }

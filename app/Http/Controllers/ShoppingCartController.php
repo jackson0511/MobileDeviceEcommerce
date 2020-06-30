@@ -40,24 +40,136 @@ class ShoppingCartController extends Controller
             foreach ($ctkm as $km) {
                 $ngaybatdau = $km->khuyenmai->NgayBatDau;
                 $ngayketthuc = $km->khuyenmai->NgayKetThuc;
-
                 if ($ngay >= $ngaybatdau && $ngay <= $ngayketthuc && $km->khuyenmai->TrangThai==1) {
-                    $gia_sale = $km->Gia_Sale;
-                    \Cart::add([
-                        'id' => $sanpham->id,
-                        'name' => $sanpham->Ten,
-                        'qty' => 1,
-                        'weight' => 1,
-                        'price' => $sanpham->Gia,
-                        'options' => [
-                            'hinh' => $sanpham->Hinh,
-                            'price_sale' => $gia_sale,
-                            'detail' => $km->ChiTiet
-                        ],
-                    ]);
+                    //tang san pham
+                    if($km->TrangThai==2){
+                        //co san pham trong gio hang
+                        if (Cart::count()>0) {
+                            foreach (Cart::content() as $key => $value) {
+                                $idsp = $value->id;
+                                if ($idsp == (int)$km->ChiTiet && $id == $km->idSP) {
+                                    $idsp_sale=(int)$km->ChiTiet;
+                                    $sp_sale=SanPham::find($idsp_sale);
+                                    \Cart::add([
+                                        [
+                                            'id' => $sanpham->id,
+                                            'name' => $sanpham->Ten,
+                                            'qty' => 1,
+                                            'weight' => 1,
+                                            'price' => $sanpham->Gia,
+                                            'options' => [
+                                                'hinh' => $sanpham->Hinh,
+                                                'price_sale' => 0,
+                                                'detail' => $km->ChiTiet,
+                                                'status' => $km->TrangThai,
+                                            ]
+                                        ],
+                                        [
+                                            'id' => $sp_sale->id,
+                                            'name' => $sp_sale->Ten,
+                                            'qty' => 1,
+                                            'weight' => 1,
+                                            'price' => 0,
+                                            'options' => [
+                                                'hinh' => $sp_sale->Hinh,
+                                                'price_sale' => 0,
+                                                'detail' => null,
+                                            ]
+                                        ]
+                                    ]);
+                                    if ($value->price!=0) {
+                                        \Cart::remove($key);
+                                    }
+                                    break;
+                                }
+                            }
+                            if($idsp!=(int)$km->ChiTiet){
+                                //combo khuyenmai
+                                $idsp_sale=(int)$km->ChiTiet;
+                                $sp_sale=SanPham::find($idsp_sale);
+                                \Cart::add([
+                                    [
+                                        'id' => $sanpham->id,
+                                        'name' => $sanpham->Ten,
+                                        'qty' => 1,
+                                        'weight' => 1,
+                                        'price' => $sanpham->Gia,
+                                        'options' => [
+                                            'hinh' => $sanpham->Hinh,
+                                            'price_sale' => 0,
+                                            'detail' => $km->ChiTiet,
+                                            'status'=>$km->TrangThai,
+                                        ]
+                                    ],
+                                    [
+                                        'id' => $sp_sale->id,
+                                        'name' => $sp_sale->Ten,
+                                        'qty' => 1,
+                                        'weight' => 1,
+                                        'price' => 0,
+                                        'options' => [
+                                            'hinh' => $sp_sale->Hinh,
+                                            'price_sale' => 0,
+                                            'detail' => null,
+//                                            'status'=>null,
+                                        ]
+                                    ]
+                                ]);
+                            }
+                        }else{
+                            //combo khuyenmai
+                            $idsp=(int)$km->ChiTiet;
+                            $sp_sale=SanPham::find($idsp);
+                            \Cart::add([
+                                [
+                                    'id' => $sanpham->id,
+                                    'name' => $sanpham->Ten,
+                                    'qty' => 1,
+                                    'weight' => 1,
+                                    'price' => $sanpham->Gia,
+                                    'options' => [
+                                        'hinh' => $sanpham->Hinh,
+                                        'price_sale' => 0,
+                                        'detail' => $km->ChiTiet,
+                                        'status'=>$km->TrangThai,
+                                    ]
+                                ],
+                                [
+                                    'id' => $sp_sale->id,
+                                    'name' => $sp_sale->Ten,
+                                    'qty' => 1,
+                                    'weight' => 1,
+                                    'price' => 0,
+                                    'options' => [
+                                        'hinh' => $sp_sale->Hinh,
+                                        'price_sale' => 0,
+                                        'detail' => null,
+//                                        'status'=>null,
+                                    ]
+                                ]
+                            ]);
+                        }
+                    }else {
+                        //giam gia %
+                        $gia_sale = $km->Gia_Sale;
+                        \Cart::add([
+                            'id' => $sanpham->id,
+                            'name' => $sanpham->Ten,
+                            'qty' => 1,
+                            'weight' => 1,
+                            'price' => $sanpham->Gia,
+                            'options' => [
+                                'hinh' => $sanpham->Hinh,
+                                'price_sale' => $gia_sale,
+                                'detail' => $km->ChiTiet,
+                                'status'=>$km->TrangThai,
+                            ],
+                        ]);
+                    }
                     break;
                 }
             }
+            //khuyen mai het han
             if ($ngay > $ngayketthuc || $ngay <$ngaybatdau){
                 \Cart::add([
                     'id' => $sanpham->id,
@@ -69,10 +181,11 @@ class ShoppingCartController extends Controller
                         'hinh' => $sanpham->Hinh,
                         'price_sale' => 0,
                         'detail'    =>null,
+                        'status'=>null,
                     ],
                 ]);
             }
-        }else{
+        }else {
             \Cart::add([
                 'id' => $sanpham->id,
                 'name' => $sanpham->Ten,
@@ -82,17 +195,19 @@ class ShoppingCartController extends Controller
                 'options' => [
                     'hinh' => $sanpham->Hinh,
                     'price_sale' => 0,
-                    'detail'    =>null,
+                    'detail' => null,
+                    'status'=>null,
                 ],
             ]);
         }
-        return redirect()->back();
+        return redirect('/giohang');
     }
     public function showCart(){
         if(\Cart::count()>0)
         {
+            $sanpham_all=SanPham::all();
             $sanpham=\Cart::content();
-            return view('frontend.subpage.giohang',['sanpham'=>$sanpham]);
+            return view('frontend.subpage.giohang',['sanpham'=>$sanpham,'sanpham_all'=>$sanpham_all]);
         }
         else
         {
@@ -113,11 +228,38 @@ class ShoppingCartController extends Controller
 			location.herf='giohang';
 			</script>";
         }else{
+            $sanpham1=\Cart::get($idcart);
+            $idsp_sale=(int)$sanpham1->options->detail;
+            $idCart = -1;
+            foreach (Cart::content() as $key => $value) {
+                if ($idsp_sale == $value->id && $value->price==0) {
+                    $idCart = $key;
+                }
+            }
+            if ($idCart!=-1) {
+                \Cart::update($idCart,$soluong);
+            }
+
             \Cart::update($idcart,$soluong);
             echo 1;
         }
     }
     public function deleteCart($idCart){
+        $sanpham=\Cart::get($idCart);
+        $chitietkm=ChiTietKhuyenMai::where('idSP',$sanpham->id)->where('TrangThai',2)->first();
+        if($chitietkm) {
+            $idsp = (int)$chitietkm->ChiTiet;
+            $sp=SanPham::find($idsp);
+            $idcart = -1;
+            foreach (\Cart::content() as $key => $value) {
+                if ($idsp == $value->id && $value->price==0) {
+                    $idcart = $key;
+                }
+            }
+            if ($idcart!=-1) {
+                \Cart::remove($idcart);
+            }
+        }
         \Cart::remove($idCart);
         return redirect('giohang')->with('ThongBao','Xoá giỏ hàng thành công');
 
@@ -212,6 +354,7 @@ class ShoppingCartController extends Controller
                     'SoLuong' 		=>$sp->qty,
                     'Gia'			=>$sp->price,
                     'GiamGia'       =>$sp->options->detail,
+                    'TrangThai_KM'  =>$sp->options->status,
                     'idDH'			=>$donhangId,
                     'idSP'			=>$sp->id,
                 ]);

@@ -50,6 +50,13 @@
                 </ul>
             </li>
             <li class="has-submenu">
+                <a href="#"><i class="md md-color-lens"></i>Bộ lọc</a>
+                <ul class="submenu">
+                    <li><a href="admin/boloc/danhsach">Danh sách</a></li>
+                    <li><a href="admin/boloc/them">Thêm</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
                 <a href="#"><i class="md md-color-lens"></i>Góp ý</a>
                 <ul class="submenu">
                     <li><a href="admin/gopy/danhsach">Danh sách</a></li>
@@ -94,7 +101,7 @@
                 </ul>
             </li>
             <li class="has-submenu">
-                <a href="#"><i class="md md-color-lens"></i>Thê Loại Mã khuyến mãi</a>
+                <a href="#"><i class="md md-color-lens"></i>Thể Loại Mã khuyến mãi</a>
                 <ul class="submenu">
                     <li><a href="admin/theloaimakhuyenmai/danhsach">Danh sách</a></li>
                     <li><a href="admin/theloaimakhuyenmai/them">Thêm</a></li>
@@ -105,6 +112,27 @@
                 <ul class="submenu">
                     <li><a href="admin/donhang/danhsach">Danh sách</a></li>
                     <li><a href="admin/donhang/them">Thêm</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#"><i class="md md-color-lens"></i>Bảo hành</a>
+                <ul class="submenu">
+                    <li><a href="admin/baohanh/danhsach">Danh sách</a></li>
+                    <li><a href="admin/baohanh/them">Thêm</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#"><i class="md md-color-lens"></i>Option Bảo hành</a>
+                <ul class="submenu">
+                    <li><a href="admin/optionbaohanh/danhsach">Danh sách</a></li>
+                    <li><a href="admin/optionbaohanh/them">Thêm</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#"><i class="md md-color-lens"></i>Thông tin bảo hành</a>
+                <ul class="submenu">
+                    <li><a href="admin/thongtinbaohanh/danhsach">Danh sách</a></li>
+                    <li><a href="admin/thongtinbaohanh/them">Thêm</a></li>
                 </ul>
             </li>
         @endif

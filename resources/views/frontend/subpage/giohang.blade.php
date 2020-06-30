@@ -46,7 +46,7 @@
               </tr>
             </thead>
             <tbody>
-              <?php $sum_sale=0; $stt=1; $pr_sale=0;$sum=0;?>
+              <?php $sum_sale=0; $stt=1; $pr_sale=0;$sum=0;$name_sale=null;?>
               @foreach($sanpham as $key=> $sp)
 
               <tr>
@@ -55,15 +55,27 @@
                 <td>
                   <img width="100px" height="100px" src="upload/sanpham/{{$sp->options->hinh}}" alt="">
                 </td>
-                <td><input class="soluong" type="number" name="soluong" value="{{$sp->qty}}" min=0 style="width: 50px">
-                <input type="hidden" name="idsp" class="idsp"  value="{{$sp->id}}" >
-                </td>
-                <td>{{\App\Helpers\FormatPrice::formatPrice($sp->price)}}</td>
-                <td class="tien">{{\App\Helpers\FormatPrice::formatPrice(($sp->price*$sp->qty))}}</td>
-                <td >
-                  <i class="fa fa-pencil  fa-fw " ></i><a class="updatecart" data-key={{$key}}> Sửa</a>-
-                  <i class="fa fa-trash-o fa-fw"></i> <a href="xoagiohang/{{$key}}">Xoá</a>
-                </td>
+                  @if($sp->price!=0)
+                    <td>
+                        <input class="soluong" type="number" name="soluong" value="{{$sp->qty}}" min=0 style="width: 50px">
+                        <input type="hidden" name="idsp" class="idsp"  value="{{$sp->id}}" >
+                    </td>
+                  @else
+                      <td>
+                          <input class="soluong" type="number" name="soluong" disabled value="{{$sp->qty}}" min=0 style="width: 50px">
+                          <input type="hidden" name="idsp" class="idsp"  value="{{$sp->id}}" >
+                      </td>
+                  @endif
+                <td>{{number_format(($sp->price),0,',','.').'đ'}}</td>
+                <td class="tien">{{number_format(($sp->price*$sp->qty),0,',','.').'đ'}}</td>
+                  @if($sp->price!=0)
+                    <td >
+                      <i class="fa fa-pencil  fa-fw " ></i><a class="updatecart" data-key={{$key}}> Sửa</a>-
+                      <i class="fa fa-trash-o fa-fw"></i> <a href="xoagiohang/{{$key}}">Xoá</a>
+                    </td>
+                   @else
+                      <td>{{'(sản phẩm tặng kèm khuyến mãi)'}}</td>
+                  @endif
               </tr>
                <?php
                    if($sp->options->price_sale!=0){

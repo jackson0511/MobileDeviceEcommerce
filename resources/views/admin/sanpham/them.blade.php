@@ -36,7 +36,9 @@
                                 <select class="form-control" name="theloai" id="theloai">
                                     <option value="-1">--Chọn thể loại--</option>
                                     @foreach($theloai as $tl)
-                                        <option value="{{$tl->id}}">{{$tl->Ten}}</option>
+                                        <option value="{{$tl->id}}">
+                                            {{$tl->parent_id!=null?$tl->parent->Ten:''}}-{{$tl->Ten}}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -63,6 +65,17 @@
 
                             </div>
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1">Bộ lọc</label>
+                        <select class="form-control" style="height: 200px" name="boloc[]" id="boloc" multiple>
+                            @foreach($boloc as $bl)
+                                <option
+                                    value="{{$bl->id}}">
+                                    {{$bl->parent!=null?$bl->parent->Ten:$bl->Ten}}-{{$bl->Ten}}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="form-group">
                         <label>Tóm tắt</label>

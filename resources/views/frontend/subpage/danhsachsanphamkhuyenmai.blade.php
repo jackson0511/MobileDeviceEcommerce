@@ -34,7 +34,7 @@
                         <li class="search-product"><a  >Search</a></li>
                     </ul>
                 </div><!-- /.filte-shop -->
-                @include('frontend.subpage.boloc')
+                @include('frontend.subpage.filter')
 
                 <div class="product-content product-fourcolumn clearfix">
                     <ul class="product style2">
@@ -44,7 +44,15 @@
                                 <a href="chitietsanpham/{{$sp->sanpham->id}}/{{$sp->sanpham->Ten_KhongDau}}.html">
                                     <img src="upload/sanpham/{{$sp->sanpham->Hinh}}" alt="image">
                                 </a>
-                                <span class="new sale">Sale {{$sp->ChiTiet}} %</span>
+                                @if($sp->TrangThai==1)
+                                    <span class="new sale">Sale {{$sp->ChiTiet}} %</span>
+                                @else
+                                    @foreach($product_km as $pr_km)
+                                        @if($pr_km->id==(int)$sp->ChiTiet)
+                                            <span style="width: 100px; font-size: 12px" class="new sale">Tặng {{$pr_km->Ten}}</span>
+                                        @endif
+                                    @endforeach
+                                @endif
                             </div>
                             <div class="product-info clearfix">
                                 <span class="product-title">{{$sp->sanpham->Ten}}</span>
@@ -53,7 +61,11 @@
                                         <span class="regular">{{number_format($sp->sanpham->Gia,0,',','.').'đ'}}</span>
                                     </del>
                                     <ins>
-                                        <span class="amount">{{number_format($sp->Gia_Sale,0,',','.').'đ'}}</span>
+                                        @if($sp->Gia_Sale!=null)
+                                            <span class="amount">{{number_format($sp->Gia_Sale,0,',','.').'đ'}}</span>
+                                        @else
+                                            <span class="amount">{{number_format($sp->sanpham->Gia,0,',','.').'đ'}}</span>
+                                        @endif
                                     </ins>
                                 </div>
                             </div>

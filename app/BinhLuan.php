@@ -18,4 +18,11 @@ class BinhLuan extends Model
     function quantri(){
     	return $this->belongsTo('App\QuanTri','idQT','id');
     }
+    //parent_id
+    public function parent(){
+        return $this->belongsTo('App\BinhLuan','parent_id');
+    }
+    public function children(){
+        return $this->hasMany('App\BinhLuan','parent_id');
+    }
 }

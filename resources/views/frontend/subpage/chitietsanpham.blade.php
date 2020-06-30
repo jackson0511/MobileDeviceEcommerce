@@ -68,7 +68,11 @@
                                         <?php $ngaybatdau=$km->khuyenmai->NgayBatDau; $ngaykethuc=$km->khuyenmai->NgayKetThuc; ?>
                                         @if($ngay>=$ngaybatdau && $ngay<=$ngaykethuc && $km->khuyenmai->TrangThai==1)
                                             <del><span class="regular">{{number_format($sanpham->Gia,0,',','.').'đ'}}</span></del>
-                                            <ins><span class="amount">{{number_format($km->Gia_Sale,0,',','.').'đ'}}</span></ins>
+                                            @if($km->TrangThai==1)
+                                                    <ins><span class="amount">{{number_format($km->Gia_Sale,0,',','.').'đ'}}</span></ins>
+                                            @else
+                                                    <ins><span class="amount">{{number_format($sanpham->Gia,0,',','.').'đ'}}</span></ins>
+                                            @endif
                                             @break
                                         @endif
                                     @endforeach
@@ -178,21 +182,70 @@
                                     <div class="inner max-width-83 padding-top-33">
                                         <ol class="review-list">
                                             {{--                         show binh luan--}}
-                                            <li class="ketqua">
+                                            <li class="ketqua review">
                                             </li>
                                             @foreach($sanpham->binhluan as $bl)
-                                                <li class="review">
-                                                    <div class="thumb">
-                                                        <img src="images/images.png" alt="Image">
-                                                    </div>
-                                                    <div class="text-wrap">
-                                                        <div class="review-text">
-                                                            <h3>{{$bl->khachhang->HoTen}}</h3>
-                                                            <p>{{$bl->NoiDung}}</p>
-                                                            <p>Thời gian:{{$bl->created_at}} </p>
+                                                @if($bl->parent_id==0)
+                                                    <li class="review">
+                                                        <div class="thumb">
+                                                            <img src="images/images.png" alt="Image">
                                                         </div>
-                                                    </div>
-                                                </li>
+                                                        <div class="text-wrap">
+                                                            <div class="review-text">
+                                                                <h3>{{$bl->khachhang->HoTen}}</h3>
+                                                                <p>{{$bl->NoiDung}}</p>
+                                                                <p>Thời gian:{{$bl->created_at}} </p>
+                                                                @if(count($bl->children)>0)
+                                                                     <p style="color: #0a68b4" data-id="{{$bl->id}}" class="traloi" >Trả lời </p>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                    @if(count($bl->children)>0)
+                                                        <ol class="review-list">
+                                                            @foreach($bl->children as $child)
+                                                                <li class="review">
+                                                                    <div class="thumb">
+                                                                        @if($child->TrangThai_Admin==1)
+                                                                            <img src="images/logo2.png" alt="Image">
+                                                                        @else
+                                                                            <img src="images/images.png" alt="Image">
+                                                                        @endif
+                                                                    </div>
+                                                                    <div class="text-wrap">
+                                                                        <div class="review-text">
+                                                                            @if($child->TrangThai_Admin==1)
+                                                                                <h3>{{$child->quantri->HoTen}}</h3>
+                                                                            @else
+                                                                                <h3>{{$child->khachhang->HoTen}}</h3>
+                                                                            @endif
+                                                                            <p>{{$child->NoiDung}}</p>
+                                                                            <p>Thời gian:{{$child->created_at}} </p>
+                                                                            @if($child->TrangThai_Admin==1)
+                                                                            <p>{{'by admin'}}</p>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                             @endforeach
+                                                                <li class="review result{{$bl->id}}" style="display: none">
+                                                                </li>
+                                                                @if(Auth::guard('KhachHang')->check())
+                                                                    <form class="mt-2" id="reply{{$bl->id}}" style="display: none" method="get">
+                                                                        @csrf
+                                                                        <div class="form-group">
+                                                                            <input type=text placeholder="Viết bình luận của bạn"  class="form-control nd_reply"  />
+                                                                            <input type="hidden" class="id_sanpham" value="{{$sanpham->id}}">
+                                                                            <input type=hidden name="parent_id" class="pr_id" value="{{$bl->id}}"  />
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <input type="reset" class="reply" value="Trả lời">
+                                                                        </div>
+                                                                    </form>
+                                                                @endif
+                                                        </ol>
+                                                     @endif
+                                                    </li>
+                                                @endif
                                                 <!--  /.review    -->
                                             @endforeach
                                             {{--                         ket thuc binh luan --}}
@@ -206,9 +259,10 @@
                                                 <form class="comment-form review-form" id="commentform" method="get">
                                                     {{ csrf_field() }}
                                                     <input type="hidden" id="idsp" value="{{$sanpham->id}}">
+                                                    <input type=hidden name="parent_id" id="parent_id" value="0"  />
                                                     <p class="comment-form-comment">
                                                         <label>Nội dung*</label>
-                                                        <textarea class="" tabindex="4" id="noidung"  name="noidung" required> </textarea>
+                                                        <textarea class="noidung form-control"  id="noidung"  name="noidung" placeholder="Viết bình luận của bạn"></textarea>
                                                     </p>
                                                     <p class="form-submit">
                                                         {{--                           <button class="comment-submit" id="binhluan">Bình Luận</button>--}}
@@ -249,7 +303,7 @@
                                         <span class="product-title">{{$splq->Ten}}</span>
                                         <div class="price">
                                             <ins>
-                                                <span class="amount">{{\App\Helpers\FormatPrice::formatPrice($splq->Gia)}}</span>
+                                                <span class="amount">{{number_format($splq->Gia,0,',','.').'đ'}}</span>
                                             </ins>
                                         </div>
                                     </div>
@@ -275,27 +329,63 @@
         $("#binhluan").click(function(){
             var idsp=$("#idsp").val();
             var noidung=$("#noidung").val();
+            var parent_id=$("#parent_id").val();
             if(noidung==" "){
                 alert('Bạn chưa nhập nội dung mà!!!');
-            }
-            $.ajax({
-                method: "get",
-                url: 'ajax/binhluan',
-                data: {
-                    noidung:noidung,
-                    idsp:idsp
-                },
-                success: function (data) {
-                    if(data!=null) {
-                        $(".ketqua").prepend(data);
-                        alert('Viết bình luận thành công');
+            }else {
+                $.ajax({
+                    method: "get",
+                    url: 'ajax/binhluan',
+                    data: {
+                        noidung: noidung,
+                        idsp: idsp,
+                        parent_id:parent_id
+                    },
+                    success: function (data) {
+                        if (data != null) {
+                            $(".ketqua").prepend(data);
+                            alert('Viết bình luận thành công');
+                        }
                     }
-                }
-            });
-
-            // $.get("binhluan/"+idsp+"/"+noidung,function(data){
-            // $(".ketqua").prepend(data);
+                });
+            }
     });
+        var idsp1=-1;
+        var reply='';
+        var result='';
+        $('.traloi').click(function () {
+            idsp1=$(this).attr("data-id");
+            reply='#reply'+idsp1;
+            $(reply).css('display', 'block');
+        });
+        $('.reply').click(function () {
+            var form=$(reply);
+            var idsp_rl=form.find(".id_sanpham").val();
+            var noidung_rl=form.find(".nd_reply").val();
+            var parent_id_rl=form.find(".pr_id").val();
+            if(noidung_rl==""){
+                alert('Bạn chưa nhập nội dung mà!!!');
+            }else {
+                $.ajax({
+                    method: "get",
+                    url: 'ajax/binhluan',
+                    data: {
+                        noidung: noidung_rl,
+                        idsp: idsp_rl,
+                        parent_id:parent_id_rl
+                    },
+                    success: function (data) {
+                        if (data != null) {
+                            result='.result'+idsp1;
+                            $(result).css('display','block');
+                            $(result).prepend(data);
+                            alert('Viết bình luận thành công');
+                        }
+                    }
+                });
+            }
+        });
+
 });
     $(function(){
       let idproduct=$("#content").attr("data-key");

@@ -80,6 +80,15 @@ Route::group(['prefix'=>'admin','middleware'=>'CheckLoginAdmin'],function() {
         Route::post('sua/{id}','SanPhamController@postEdit');
         Route::get('xoa/{id}','SanPhamController@getDelete');
     });
+    //bo loc
+    Route::group(['prefix'=>'boloc','middleware'=>'CheckLoginAdmin:danhmuc'],function (){
+        Route::get('danhsach','BoLocController@getList');
+        Route::get('them','BoLocController@getAdd');
+        Route::post('them','BoLocController@postAdd');
+        Route::get('sua/{id}','BoLocController@getEdit');
+        Route::post('sua/{id}','BoLocController@postEdit');
+        Route::get('xoa/{id}','BoLocController@getDelete');
+    });
     //khachhang
     Route::group(['prefix'=>'khachhang','middleware'=>'CheckLoginAdmin:danhmuc'],function (){
         Route::get('danhsach','KhachHangController@getList');
@@ -91,10 +100,11 @@ Route::group(['prefix'=>'admin','middleware'=>'CheckLoginAdmin'],function() {
         Route::get('danhsach','GopYController@getList');
         Route::get('xuly/{id}','GopYController@getXuLy');
     });
-    //gopy
+    //binhluan
     Route::group(['prefix'=>'binhluan','middleware'=>'CheckLoginAdmin:danhmuc'],function (){
         Route::get('danhsach','BinhLuanController@getList');
-        Route::get('xuly/{id}','BinhLuanController@getXuLy');
+        Route::get('traloi/{id}','BinhLuanController@getTraloi');
+        Route::post('traloi/{id}','BinhLuanController@postTraloi');
     });
     //quantri
     Route::group(['prefix'=>'quantri','middleware'=>'CheckLoginAdmin:taikhoan'],function (){
@@ -132,6 +142,30 @@ Route::group(['prefix'=>'admin','middleware'=>'CheckLoginAdmin'],function() {
         Route::post('sua/{id}','TheLoaiMaKhuyenMaiController@postEdit');
         Route::get('xoa/{id}','TheLoaiMaKhuyenMaiController@getDelete');
         Route::get('xuly/{id}','TheLoaiMaKhuyenMaiController@getXuLy');
+    });
+    //baohang
+    Route::group(['prefix'=>'baohanh','middleware'=>'CheckLoginAdmin:kinhdoanh'],function (){
+        Route::get('danhsach','BaoHanhController@getList');
+        Route::get('them','BaoHanhController@getAdd');
+        Route::post('them','BaoHanhController@postAdd');
+        Route::get('sua/{id}','BaoHanhController@getEdit');
+        Route::post('sua/{id}','BaoHanhController@postEdit');
+        Route::get('xoa/{id}','BaoHanhController@getDelete');
+    });
+    //option bao hanh
+    Route::group(['prefix'=>'optionbaohanh','middleware'=>'CheckLoginAdmin:kinhdoanh'],function (){
+        Route::get('danhsach','OptionBaoHanhController@getList');
+        Route::get('them','OptionBaoHanhController@getAdd');
+        Route::post('them','OptionBaoHanhController@postAdd');
+        Route::get('sua/{id}','OptionBaoHanhController@getEdit');
+        Route::post('sua/{id}','OptionBaoHanhController@postEdit');
+        Route::get('xoa/{id}','OptionBaoHanhController@getDelete');
+    });
+    //thong tin bao hanh
+    Route::group(['prefix'=>'thongtinbaohanh','middleware'=>'CheckLoginAdmin:kinhdoanh'],function (){
+        Route::get('danhsach','ThongTinBaoHanhController@getList');
+        Route::post('danhsach','ThongTinBaoHanhController@search');
+        Route::post('option_baohanh','ThongTinBaoHanhController@getListOption');
     });
     //donhang
     Route::group(['prefix'=>'donhang','middleware'=>'CheckLoginAdmin:kinhdoanh'],function (){
@@ -192,9 +226,9 @@ Route::get('xoagiohang/{idCart}','ShoppingCartController@deleteCart');
 //check coupom
 Route::post('check-coupon','ShoppingCartController@check_coupon');
 Route::get('xoa-coupon','ShoppingCartController@delete_coupon');
+//share coupon
+Route::post('share-coupon','HomeController@share_coupon');
 
-//danh sach san pham theo boloc
-Route::get('danhsachsanphamtheoboloc','HomeController@danhsachsanphamtheoboloc');
 //xem don hang
 Route::get('donhangcuaban/{id}','HomeController@danh_sach_don_hang');
 //xem chi tiet don hang
@@ -232,5 +266,9 @@ Route::group(['prefix'=>'ajax'],function (){
     Route::post('show-thuoc-tinh','AjaxController@postShowthuoctinh');
     //chi tiet don hang
     Route::post('chitietdonhang','AjaxController@chitietdonhang');
+    //filter
+    Route::post('product-filter','AjaxController@product_filter');
+    //so sanh san pham
+    Route::post('sosanh-sanpham','AjaxController@sosanh_sanpham');
 
 });

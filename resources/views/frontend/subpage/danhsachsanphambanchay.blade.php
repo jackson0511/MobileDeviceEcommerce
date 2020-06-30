@@ -48,20 +48,10 @@
                                 <span class="product-title">{{$sp->Ten}}</span>
                                 <div class="price">
                                     <ins>
-                                        <span class="amount">{{\App\Helpers\FormatPrice::formatPrice($sp->Gia)}}</span>
+                                        <span class="amount">{{number_format($sp->Gia,0,',','.').'đ'}}</span>
                                     </ins>
                                 </div>
-                                <ul class="flat-color-list">
-                                    <li>
-                                        <a href="#" class="red"></a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="blue"></a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="black"></a>
-                                    </li>
-                                </ul>
+
                             </div>
                             <div class="add-to-cart text-center">
                                 <a href="#">Thêm giỏ hàng</a>

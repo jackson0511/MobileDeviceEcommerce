@@ -1,5 +1,6 @@
  <div class="box-filter slidebar-shop clearfix">
         <div class="btn-close"><a><i class="fa fa-times"></i></a></div>
+     <form action="" method="post">
 {{--        <div class="widget widget-sort-by">--}}
 {{--            <h5 class="widget-title">--}}
 {{--                Sort By--}}
@@ -42,7 +43,8 @@
                 <li><a href="danhsachsanphamtheoboloc?sim=2" class="@if($sim==2){{'active'}}@endif">2 Sim</a></li>
             </ul>
         </div><!-- /.widget -->
-    </div><!-- /.box-filter -->
+     </form>
+ </div><!-- /.box-filter -->
     <div class="shop-search clearfix">
         <form role="search" method="get" class="search-form" action="#">
             <label>

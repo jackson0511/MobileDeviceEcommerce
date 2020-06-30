@@ -34,64 +34,39 @@
                         <li class="search-product"><a  >Search</a></li>
                     </ul>
                 </div><!-- /.filte-shop -->
-
-                <div class="box-filter slidebar-shop clearfix">
-                    <div class="btn-close"><a><i class="fa fa-times"></i></a></div>
-                    <div class="widget widget-sort-by">
-                        <h5 class="widget-title">
-                            Sort By
-                        </h5>
-                        <ul>
-                            <li><a href="danhmucsanpham/{{$theloai1->id}}/{{$theloai1->Ten_KhongDau}}.html?sort=tang-dan" class="@if($sort==='tang-dan'){{'active'}} @endif">Giá: Tăng dần</a></li>
-                            <li><a href="danhmucsanpham/{{$theloai1->id}}/{{$theloai1->Ten_KhongDau}}.html?sort=giam-dan" class="@if($sort==='giam-dan'){{'active'}} @endif">Giá: Giảm dần</a></li>
-                        </ul>
-                    </div><!-- /.widget-sort-by -->
-                    <div class="widget widget-price">
-                        <h5 class="widget-title">Giá</h5>
-                        <ul>
-                            <li><a href="danhsachsanphamtheoboloc?gia=tatca" class="@if($gia==='tatca'){{'active'}} @endif">Tất cả</a></li>
-                            <li><a href="danhsachsanphamtheoboloc?gia=5-10"  class="@if($tu==5 && $den==10){{'active'}} @endif">5-10 Triệu</a></li>
-                            <li><a href="danhsachsanphamtheoboloc?gia=10-15" class="@if($tu==10 && $den==15){{'active'}} @endif">10-15 Triệu</a></li>
-                            <li><a href="danhsachsanphamtheoboloc?gia=15-20" class="@if($tu==15 && $den==20){{'active'}} @endif">15-20 Triệu</a></li>
-                            <li><a href="danhsachsanphamtheoboloc?gia=20-30" class="@if($tu==20 && $den==30){{'active'}} @endif">20-30 Triệu</a></li>
-                            <li><a href="danhsachsanphamtheoboloc?gia=30-50" class="@if($tu=30 && $den==100){{'active'}} @endif" >Trên 30 Triệu</a></li>
-
-                        </ul>
-                    </div><!-- /.widget -->
-                    <div class="widget widget-color">
-                        <h5 class="widget-title">
-                            Dung Lượng
-                        </h5>
-                        <ul >
-                            <li><a  href="danhsachsanphamtheoboloc?dungluong=tatca" class="@if($dungluong==='tatca'){{'active'}} @endif" >Tất cả</a></li>
-                            <li><a  href="danhsachsanphamtheoboloc?dungluong=64" class="@if($dungluong==64){{'active'}} @endif" >64GB</a></li>
-                            <li><a href="danhsachsanphamtheoboloc?dungluong=128" class="@if($dungluong==128){{'active'}} @endif"> 128GB</a></li>
-                            <li><a href="danhsachsanphamtheoboloc?dungluong=256" class="@if($dungluong==256){{'active'}} @endif">256GB </a></li>
-                            <li><a href="danhsachsanphamtheoboloc?dungluong=512" class="@if($dungluong==512){{'active'}} @endif">512GB</a></li>
-                        </ul>
-                    </div><!-- /.widget-color -->
-                    <div class="widget widget-size">
-                        <h5 class="widget-title">Sim</h5>
-                        <ul>
-                            <li><a href="danhsachsanphamtheoboloc?sim=tatca" class="@if($sim==='tatca'){{'active'}} @endif">Tất cả</a></li>
-                            <li><a href="danhsachsanphamtheoboloc?sim=1" class="@if($sim==1){{'active'}}@endif">1 Sim</a></li>
-                            <li><a href="danhsachsanphamtheoboloc?sim=2" class="@if($sim==2){{'active'}}@endif">2 Sim</a></li>
-                        </ul>
-                    </div><!-- /.widget -->
-                </div><!-- /.box-filter -->
-                <div class="shop-search clearfix">
-                    <form role="search" method="get" class="search-form" action="#">
-                        <label>
-                            <input type="search" class="search-field" placeholder="Searching …" value="" name="s">
-                        </label>
-                    </form>
-                </div><!-- /.top-serach -->
+                @include('frontend.subpage.filter')
                 <!-- end filter-->
-
+                <div class="row d-flex justify-content-end">
+                    <div class="col-lg-9">
+                        <button class="btn btn-info sosanh">So sánh</button>
+                    </div>
+                    <div class="col-lg-3  clearfix">
+                        <form method="get" id="form_sort">
+                            <select class="custom-select custom-select-lg mb-3" id="sort" name="sort">
+                                <option
+                                    @if($sort=='gia-mac-dinh')
+                                        {{'selected'}}
+                                    @endif
+                                    value="gia-mac-dinh">Mặc định</option>
+                                <option
+                                    @if($sort=='gia-tang-dan')
+                                    {{'selected'}}
+                                    @endif
+                                    value="gia-tang-dan">Giá tăng dần</option>
+                                <option
+                                    @if($sort=='gia-giam-dan')
+                                    {{'selected'}}
+                                    @endif
+                                    value="gia-giam-dan">Giá giảm dần</option>
+                            </select>
+                        </form>
+                    </div>
+                </div>
                 <div class="product-content product-fourcolumn clearfix">
                     <ul class="product style2">
                         @foreach($sanpham as $sp)
                         <li class="product-item">
+                            <input type="checkbox" name="sanpham" value="{{$sp->id}}">
                             <div class="product-thumb clearfix">
                                 <a href="chitietsanpham/{{$sp->id}}/{{$sp->Ten_KhongDau}}.html">
                                     <img src="upload/sanpham/{{$sp->Hinh}}" alt="image">
@@ -104,6 +79,18 @@
                                         <span class="amount">{{number_format($sp->Gia,0,',','.').'đ'}}</span>
                                     </ins>
                                 </div>
+                            </div>
+                            <div class="middle-product table-wrapper-scroll-y table-responsive custom-scrollbar-css">
+                                <table class="table table-fixed">
+                                    <tbody>
+                                    @foreach($sp->chitietthuoctinh as $tt)
+                                        <tr>
+                                            <td class="properties middle-product-title">{{$tt->thuoctinh->Ten}} :</td>
+                                            <td class="properties">{{$tt->ChiTiet}}</td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                             <div class="add-to-cart text-center">
                                 <a href="themgiohang/{{$sp->id}}">Thêm giỏ hàng</a>
@@ -124,6 +111,72 @@
         </div><!-- /.row -->
     </div><!-- /.container -->
 </section><!-- /.flat-row --></div>
+<div style="top: 30%" class="modal" id="myModal">
+    <div class="modal-dialog modal-lg" >
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">So sánh thông tin sản </h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body ">
+                <h2 class='text-center mb-5'>Thông tin sản phẩm</h2>
+                    <table class="table table-bordered  ketqua" id="dataTables-example">
+
+                    </table>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
 @endsection
+@section('script')
+    <script >
+        $(document).ready(function () {
+            var arr_id=[];
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $("[name=sanpham]").click(function () {
+                var id=$(this).val();
+                var check=$(this).is(":checked");
+                if(check){
+                    arr_id.push(id);
+                }else{
+                    var index=arr_id.indexOf(id);
+                    arr_id.splice(index,1);
+                }
+            });
+            $(".sosanh").click(function () {
+                if(arr_id.length>0) {
+                    $("#myModal").modal('show');
+                    $.ajax({
+                        method: "POST",
+                        url: 'ajax/sosanh-sanpham',
+                        data: {
+                            id: arr_id,
+                        },
+                        success: function (data) {
+                            if (data != null) {
+                                $(".ketqua").html(data);
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+@endsection
+
 
 

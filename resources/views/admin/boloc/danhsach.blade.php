@@ -4,10 +4,10 @@
     <div class="row">
         <div class="col-sm-12">
 
-            <h4 class="page-title">Thể Loại</h4>
+            <h4 class="page-title">Bộ lọc</h4>
             <ol class="breadcrumb">
                 <li><a href="admin/trangchu">Trang chủ</a></li>
-                <li><a href="admin/theloai/danhsach">Thể loại</a></li>
+                <li><a href="admin/boloc/danhsach">Bộ lọc</a></li>
                 <li class="active">Danh sách</li>
             </ol>
         </div>
@@ -28,7 +28,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Tên</th>
-                        <th>Parent</th>
+                        <th>Parent_id</th>
                         <th>Trạng thái</th>
                         <th>Sửa</th>
                         <th>Xoá</th>
@@ -37,30 +37,30 @@
 
 
                     <tbody>
-                    @foreach($theloai as $tl)
+                    @foreach($boloc as $bl)
                         <tr align="center" >
-                            <td>{{$tl->id}}</td>
-                            <td>{{$tl->Ten}}</td>
-                            @if($tl->parent!=null)
-                                <td>{{$tl->parent->Ten}}</td>
+                            <td>{{$bl->id}}</td>
+                            <td>{{$bl->Ten}}</td>
+                            @if($bl->parent!=null)
+                            <td>{{$bl->parent->Ten}}</td>
                             @else
                                 <td>{{'Root'}}</td>
                             @endif
                             <td>
-                                <a class="btn btn-xs {{$tl->TrangThai==1?'btn-info':'btn-danger'}} " href="admin/theloai/xuly/{{$tl->id}}">
-                                    {{$tl->TrangThai==1?'Hiện':'Ẩn'}}
+                                <a class="btn btn-xs {{$bl->TrangThai==1?'btn-info':'btn-danger'}} ">
+                                    {{$bl->TrangThai==1?'Hiện':'Ẩn'}}
                                 </a>
                             </td>
                             <td>
                                 <i class="fa fa-pencil">
-                                    <a href="admin/theloai/sua/{{$tl->id}}">
+                                    <a href="admin/boloc/sua/{{$bl->id}}">
                                         Sửa
                                     </a>
                                 </i>
                             </td>
                             <td>
                                 <i class="fa fa-trash">
-                                    <a href="admin/theloai/xoa/{{$tl->id}}"
+                                    <a
                                        onclick="return confirm('Bạn có chắc muốn xoá không?');"
                                     >
                                         Xoá

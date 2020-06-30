@@ -28,6 +28,7 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/animate.css">
 
 
+
     <!-- Favicon and touch icons  -->
     <link href="icon/ducthuan.png" rel="shortcut icon">
     <style>
@@ -70,6 +71,10 @@
 <!-- Go Top -->
     <a class="go-top">
         <i class="fa fa-chevron-up"></i>
+    </a>
+    <!-- show coupon -->
+    <a class="show-coupon-index">
+        <i class="fa fa-plus"></i>
     </a>
 
 </div>
@@ -162,7 +167,78 @@
         });
     });
     //filter
-
+    $(document).ready(function () {
+        var arr_value=[];
+        var result='';
+        $("#form_filter input[type=radio]").click(function () {
+            // $("[name=gia]:first").prop('checked', false);
+            // $("[name=dung_luong]:first").prop('checked', false);
+            // $("[name=sim]:first").prop('checked',false);
+            var check=$(this).is(':checked');
+           //  if(check){
+           //      arr_value.push(value);
+           //  }else{
+           //      var index=arr_value.indexOf(value);
+           //      arr_value.splice(index,1);
+           //  }
+           //  let filter=localStorage.getItem('filter');
+           //  if(filter==null){
+           //      localStorage.setItem('filter',JSON.stringify(arr_value));
+           //  }else{
+           //      //chuyen ve mang
+           //      filter=$.parseJSON(filter);
+           //      if(filter.indexOf(value)==-1)
+           //      {
+           //          filter.push(value);
+           //          localStorage.setItem('filter',JSON.stringify(filter));
+           //      }else{
+           //          filter.splice(value,1);
+           //          localStorage.setItem('filter',JSON.stringify(filter));
+           //      }
+           //  }
+            $("#form_filter").submit();
+            // $.ajax({
+            //     method: "POST",
+            //     url: 'ajax/product-filter',
+            //     data: {
+            //         arr_value:arr_value,
+            //     },
+            //     success: function (data) {
+            //         if(data!=null) {
+            //             var data_result=JSON.parse(data);
+            //             $.each(data_result.data,function (k,v) {
+            //                 result+='<li class="product-item">\n' +
+            //                 '             <div class="product-thumb clearfix">\n' +
+            //                 '                    <a href="chitietsanpham/'+v.id+'/'+v.Ten_KhongDau+'.html">\n' +
+            //                 '                    <img src="upload/sanpham/'+v.Hinh+'" alt="image">\n' +
+            //                 '                    </a>\n' +
+            //                 '              </div>\n' +
+            //                 '              <div class="product-info clearfix">\n' +
+            //                 '                    <span class="product-title">'+v.Ten+'</span>\n' +
+            //                 '                    <div class="price">\n' +
+            //                 '                         <ins>\n' +
+            //                 '                            <span class="amount">'+v.Gia+'</span>\n' +
+            //                 '                         </ins>\n' +
+            //                 '                     </div>\n' +
+            //                 '              </div>\n' +
+            //                 '                     <div class="add-to-cart text-center">\n' +
+            //                 '                        <a href="themgiohang/'+v.id+'">Thêm giỏ hàng</a>\n' +
+            //                 '                     </div>\n' +
+            //                 '                         <a href="#" class="like"><i class="fa fa-heart-o"></i></a>\n' +
+            //                 '        </li>';
+            //             });
+            //             $("#kq").html(result);
+            //         }
+            //     }
+            // });
+        });
+    });
+    //sort
+    $(document).ready(function () {
+        $("#sort").change(function () {
+            $("#form_sort").submit();
+        });
+    });
 </script>
 {{--   <script>--}}
 {{--  function startTime() {--}}

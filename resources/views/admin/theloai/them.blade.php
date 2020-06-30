@@ -35,6 +35,16 @@
                             <input type="text" name="ten" parsley-trigger="change" required  placeholder="Nhập tên thể loại" class="form-control" >
                         </div>
                         <div class="form-group">
+                            <label for="exampleFormControlSelect1">Parent</label>
+                            <select class="form-control" name="parent_id" id="parent_id">
+                                <option value="-1">--Chọn parent--</option>
+                                <option value="0">Root</option>
+                                @foreach($theloai as $tl)
+                                    <option value="{{$tl->id}}">{{$tl->Ten}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label for="">Trạng thái</label>
                             <div class="radio radio-custom radio-inline">
                                 <input type="radio" id="inlineRadio1" value="1" name="trangthai" checked="">
@@ -73,4 +83,11 @@
     </div>
     <!-- end row -->
 @endsection
-
+@section('script')
+    <script>
+        $("#parent_id").select2({
+            placeholder: "Select a category",
+            allowClear: true
+        });
+    </script>
+@endsection

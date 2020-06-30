@@ -114,12 +114,16 @@
 												<div class="col-sm-3 col-xs-3">
 													<img class="img-responsive" src="upload/sanpham/{{$sp->options->hinh}}" />
 												</div>
-												<div class="col-sm-6 col-xs-6">
+												<div class="col-sm-5 col-xs-5">
 													<div class="col-xs-12">{{$sp->name}}</div>
 													<div class="col-xs-12"><small>Số lượng: <span>{{$sp->qty}}</span></small></div>
 												</div>
-												<div class="col-sm-3 col-xs-3 text-right">
-													<h6>{{number_format(($sp->qty*$sp->price),0,',','.').'đ'}}</h6>
+												<div class="col-sm-4 col-xs-4 text-right">
+													<h6>{{number_format(($sp->qty*$sp->price),0,',','.').'đ'}}
+                                                        @if($sp->price==0)
+                                                            {{'(sản phẩm tặng kèm khuyến mãi)'}}
+                                                        @endif
+                                                    </h6>
 												</div>
 											</div>
 										</div>

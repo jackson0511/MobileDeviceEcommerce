@@ -40,7 +40,9 @@
                                                 @if($sanpham->idTL==$tl->id)
                                                     {{'selected'}}
                                                 @endif
-                                                value="{{$tl->id}}">{{$tl->Ten}}</option>
+                                                value="{{$tl->id}}">
+                                                {{$tl->parent_id!=null?$tl->parent->Ten:''}}-{{$tl->Ten}}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -111,6 +113,22 @@
 
                                 </div>
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect1">Bộ lọc</label>
+                            <select class="form-control" style="height: 200px" name="boloc[]" id="boloc" multiple>
+                                @foreach($boloc as $bl)
+                                    <option
+                                        @foreach($sanpham->boloc as $sp_bl)
+                                        @if($sp_bl->pivot->idBL==$bl->id)
+                                        {{'selected'}}
+                                        @endif
+                                        @endforeach
+                                        value="{{$bl->id}}">
+                                        {{$bl->parent!=null?$bl->parent->Ten:$bl->Ten}}-{{$bl->Ten}}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="form-group">
                             <label>Tóm tắt</label>

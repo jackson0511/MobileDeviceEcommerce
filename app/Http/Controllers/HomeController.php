@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\BoLoc;
+use App\ChiTietThuocTinh;
 use App\GopY;
+use App\MakhuyenMai;
+use App\TheLoaiMaKhuyenMai;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +20,8 @@ use App\KhuyenMai;
 use App\DonHang;
 use App\ChiTietKhuyenMai;
 use App\ChiTietDonHang;
-
+use Session;
+session_start();
 class HomeController extends Controller
 {
     //
@@ -25,6 +30,7 @@ class HomeController extends Controller
         parent::__construct($request);
         $theloai=TheLoai::where('TrangThai',1)->get();
         $tongsanpham=SanPham::all();
+        $boloc=BoLoc::all();
         $tu=0;
         $den=0;
         $dungluong=0;
@@ -32,6 +38,7 @@ class HomeController extends Controller
         $gia=0;
         view()->share('theloai',$theloai);
         view()->share('tongsanpham',$tongsanpham);
+        view()->share('boloc',$boloc);
         view()->share(['tu'=>$tu,'den'=>$den,'dungluong'=>$dungluong,'sim'=>$sim,'gia'=>$gia]);
     }
 
@@ -43,14 +50,14 @@ class HomeController extends Controller
         $macbook=SanPham::where('idTL',4)->orderByRaw('id DESC')->take(8)->get();
         $applewatch=SanPham::where('idTL',3)->orderByRaw('id DESC')->take(8)->get();
         $phukien=SanPham::where('idTL',5)->orderByRaw('id DESC')->take(8)->get();
-        $sanphamhot=SanPham::where('pay','>',0)->orderByRaw('id DESC')->take(5)->get();
+        $sanphamhot=SanPham::where('pay','>',0)->orderByRaw('pay DESC')->take(5)->get();
         //
         Carbon::setLocale('vi');
         $now=Carbon::now();
         $ngay=$now->toDateString();
         $khuyenmai=KhuyenMai::where('TrangThai',1)->get();
-
         $sanphamsale=[];
+        $arr_id=[];
         $title='';
         foreach ($khuyenmai as $km){
             $ngaybatdau=$km->NgayBatDau;
@@ -58,13 +65,26 @@ class HomeController extends Controller
             if($ngay>=$ngaybatdau && $ngay<=$ngaykethuc) {
                 $title='SẢN PHẨM KHUYẾN MÃI';
                 foreach ($km->chitietkhuyenmai as $ctkm) {
+                    if($ctkm->TrangThai==2){
+                        $arr_id[]=(int)$ctkm->ChiTiet;
+                    }
                     $sanphamsale[] = $ctkm;
                 }
             }
         }
         $sanphamsale=array_slice($sanphamsale,0,5);
-
+        $product_km=SanPham::whereIn('id',$arr_id)->get();
         $banner=Banner::orderByRaw('id DESC')->take(3)->get();
+        //show mã khuyến mãi
+        $theloaikm=TheLoaiMaKhuyenMai::where('Code','COVID19')->first();
+        $ngayapdung=$theloaikm->NgayApDung;
+        $ngayketthuc=$theloaikm->NgayKetThuc;
+        $data_km=array(
+            'ngay'          =>$ngay,
+            'ngayapdung'    =>$ngayapdung,
+            'ngayketthuc'    =>$ngayketthuc,
+
+        );
         return view('frontend.subpage.trangchu',
             [
                 'banner'        =>$banner,
@@ -77,7 +97,10 @@ class HomeController extends Controller
                 'sanphamhot'    =>$sanphamhot,
                 'tintuc'        =>$tintuc,
                 'sanphamsale'   =>$sanphamsale,
+                'product_km'    =>$product_km,
                 'title'         =>$title,
+                'theloaikm'     =>$theloaikm,
+                'data_km'       =>json_encode($data_km),
             ]
         );
     }
@@ -106,26 +129,95 @@ class HomeController extends Controller
     }
     //danh sach san pham
     public function productByCategory($id){
+        $sort='gia-mac-dinh';
+        $dungluong='tat-ca-2';
+        $arr_gia='tat-ca-1';
+        $sim='tat-ca-3';
         $theloai1=TheLoai::find($id);
-        $sanpham=SanPham::where('idTL',$id)->orderByRaw('id DESC')->paginate(8);
-
-        $sort=0;
+        $sanpham=SanPham::where('idTL',$id)->orderBy('id','desc')->paginate(8);
+        $array_bl=[];
+        if($this->request->has('gia') ) {
+            $arr_gia = $this->request->gia;
+            $array_bl[] = $arr_gia;
+        }
+        if($this->request->has('sim')){
+            $sim=$this->request->sim;
+            $array_bl[]=$sim;
+        }
+        if($this->request->has('dung_luong')){
+            $dungluong=$this->request->dung_luong;
+            $array_bl[]=$dungluong;
+        }
+        if ($this->request->has('gia') && $this->request->has('sim')){
+            $arr_gia = $this->request->gia;
+            $sim=$this->request->sim;
+            unset($array_bl);
+            $array_bl[]=$arr_gia;
+            array_unshift($array_bl,$sim);
+        }
+        if ($this->request->has('gia') && $this->request->has('dung_luong')){
+            $arr_gia = $this->request->gia;
+            $dungluong=$this->request->dung_luong;
+            unset($array_bl);
+            $array_bl[]=$arr_gia;
+            array_unshift($array_bl,$dungluong);
+        }
+        if ($this->request->has('sim') && $this->request->has('dung_luong')){
+            $sim=$this->request->sim;
+            $dungluong=$this->request->dung_luong;
+            unset($array_bl);
+            $array_bl[]=$sim;
+            array_unshift($array_bl,$dungluong);
+        }if ($this->request->has('sim') && $this->request->has('dung_luong') && $this->request->has('gia')){
+            $sim=$this->request->sim;
+            $dungluong=$this->request->dung_luong;
+            $arr_gia = $this->request->gia;
+            unset($array_bl);
+            $array_bl[]=$sim;
+            array_unshift($array_bl,$dungluong);
+            array_unshift($array_bl,$arr_gia);
+        }
+        if(count($array_bl)>0) {
+            if (count($array_bl) == 1) {
+                $sanpham = SanPham::whereHas('boloc', function ($query) use ($array_bl,$id) {
+                    $query->whereIn('Ten_KhongDau', $array_bl);
+                    $query->where('idTL', $id);
+                })->orderBy('Gia','desc' )->paginate(8);
+            } elseif(count($array_bl) == 2) {
+                $sanpham = SanPham::whereHas('boloc', function ($query) use ($array_bl,$id) {
+                    $query->whereIn('Ten_KhongDau', $array_bl);
+                    $query->where('idTL', $id);
+                    $query->groupBy('idSP');
+                    $query->havingRaw('COUNT(idSP)>=2');
+                })->orderBy('Gia','desc' )->paginate(8);
+            }else{
+                $sanpham = SanPham::whereHas('boloc', function ($query) use ($array_bl,$id) {
+                    $query->whereIn('Ten_KhongDau', $array_bl);
+                    $query->where('idTL', $id);
+                    $query->groupBy('idSP');
+                    $query->havingRaw('COUNT(idSP)>=3');
+                })->orderBy('Gia','desc' )->paginate(8);
+            }
+        }
         if ($this->request->sort){
             $sort=$this->request->sort;
-            if($sort=='tang-dan'){
+            if($sort=='gia-tang-dan'){
                 $sanpham=SanPham::where('idTL',$id)->orderBy('Gia','asc')->paginate(8);
-                $sanpham->appends(['sort' => $sort]);
+
             }else{
                 $sanpham=SanPham::where('idTL',$id)->orderBy('Gia','desc')->paginate(8);
-                $sanpham->appends(['sort' => $sort]);
             }
+            $sanpham->appends(['sort' => $sort]);
         }
 
         return view('frontend.subpage.danhsachsanpham',
             [
-                'sanpham'   =>$sanpham,
-                'theloai1'  =>$theloai1,
-                'sort'      =>$sort,
+                'sanpham'       =>$sanpham,
+                'theloai1'      =>$theloai1,
+                'sort'          =>$sort,
+                'dungluong'     =>$dungluong,
+                'sim'           =>$sim,
+                'gia'           =>$arr_gia,
             ]);
     }
     // danh sach san pham ban chay
@@ -147,6 +239,7 @@ class HomeController extends Controller
         $khuyenmai=KhuyenMai::where('TrangThai',1)->get();
 
         $id=[];
+        $arr_id=[];
         foreach ($khuyenmai as $km){
             $ngaybatdau=$km->NgayBatDau;
             $ngaykethuc=$km->NgayKetThuc;
@@ -155,76 +248,18 @@ class HomeController extends Controller
                 $sanphamsale=ChiTietKhuyenMai::whereIn('idKM',$id)->paginate(8);
             }
         }
-        return view('frontend/subpage/danhsachsanphamkhuyenmai',['sanphamsale'=>$sanphamsale]);
-    }
-    //danh sach san pham theo bo loc
-    public function danhsachsanphamtheoboloc(){
-        $tu=0;
-        $den=0;
-        $dungluong=0;
-        $sim=0;
-        $arr_gia=0;
-        if($this->request->gia){
-            $arr_gia=$this->request->gia;
-            $name='Lọc Theo Giá';
-            if ($arr_gia=='tatca'){
-                $sanpham=SanPham::where('TrangThai',1)->orderBy('Gia','desc')->paginate(8);
-            }else{
-                $gia=explode('-',$arr_gia);
-                $tu=$gia[0];
-                $den=$gia[1];
-                $sanpham=SanPham::where('TrangThai',1)->whereBetween('Gia',array($tu.'000000',$den.'000000'))->orderBy('Gia','desc')->paginate(8);
+        //
+        foreach ($sanphamsale as $ctkm){
+            if ($ctkm->TrangThai==2){
+                $arr_id[]=(int)$ctkm->ChiTiet;
             }
-            $sanpham->appends(['gia' => $arr_gia]);
-        }elseif($this->request->dungluong){
-            $dungluong=$this->request->dungluong;
-            $name='Lọc Theo Dung Lượng';
-            if($dungluong=='tatca'){
-                $sanpham= SanPham::select('SanPham.*')
-                    ->join('ChiTietThuocTinh', 'SanPham.id', '=', 'ChiTietThuocTinh.idSP')
-                    ->join('ThuocTinh', 'ChiTietThuocTinh.idTT', '=', 'ThuocTinh.id')
-                    ->where('ThuocTinh.Ten','=', 'Dung lượng')
-                    ->orderBy('Gia','desc')
-                    ->paginate(8);
-            }else{
-                $sanpham= SanPham::select('SanPham.*','ChiTietThuocTinh.ChiTiet')
-                    ->join('ChiTietThuocTinh', 'SanPham.id', '=', 'ChiTietThuocTinh.idSP')
-                    ->where('ChiTietThuocTinh.ChiTiet', '=',$dungluong.' GB')
-                    ->orderBy('Gia','desc')
-                    ->paginate(8);
-            }
-            $sanpham->appends(['dungluong' => $dungluong]);
-        }elseif ($this->request->sim) {
-            $sim = $this->request->sim;
-            $name = 'Lọc Theo Sim';
-            if($sim=='tatca'){
-                $sanpham= SanPham::select('SanPham.*')
-                    ->join('ChiTietThuocTinh', 'SanPham.id', '=', 'ChiTietThuocTinh.idSP')
-                    ->join('ThuocTinh', 'ChiTietThuocTinh.idTT', '=', 'ThuocTinh.id')
-                    ->where('ThuocTinh.Ten','=', 'Sim')
-                    ->orderBy('Gia','desc')
-                    ->paginate(8);
-            }else{
-                $sanpham = SanPham::select('SanPham.*', 'ChiTietThuocTinh.ChiTiet')
-                    ->join('ChiTietThuocTinh', 'SanPham.id', '=', 'ChiTietThuocTinh.idSP')
-                    ->where('ChiTietThuocTinh.ChiTiet', '=', $sim . ' sim')
-                    ->orderBy('Gia', 'desc')
-                    ->paginate(8);
-            }
-            $sanpham->appends(['sim' => $sim]);
         }
-
-        return view ('frontend.subpage.danhsachsanphamboloc',
+        $product_km=SanPham::whereIn('id',$arr_id)->get();
+        return view('frontend/subpage/danhsachsanphamkhuyenmai',
             [
-                'sanpham'       =>$sanpham,
-                'name'          =>$name,
-                'tu'            =>$tu,
-                'den'           =>$den,
-                'dungluong'     =>$dungluong,
-                'sim'           =>$sim,
-                'gia'           =>$arr_gia,
+                'sanphamsale'=>$sanphamsale,
+                'product_km' =>$product_km
             ]);
-
     }
 
     //danh sach tin tuc
@@ -497,6 +532,73 @@ class HomeController extends Controller
         return redirect()->back()->with('ThongBao','Huỷ đơn hàng thành công');
 
     }
-
+    public function share_coupon(){
+        $email=$this->request->email;
+        $array_user=[];
+        $session_email=Session::get('email');
+        if($session_email==true) {
+            if(!in_array($email,$session_email)){
+                array_unshift($session_email, $email);
+                Session::put('email', $session_email);
+                $theloaikm=TheLoaiMaKhuyenMai::where('Code','COVID19')->first();
+                $ngayapdung=$theloaikm->NgayApDung;
+                $ngayketthuc=$theloaikm->NgayKetThuc;
+                $makhuyenmai=MakhuyenMai::where('idTLMKM',$theloaikm->id)->get();
+                foreach ($makhuyenmai as $makm){
+                    if($makm->TrangThai==0){
+                        $code=$makm->Code;
+                        $data=[
+                            'name'      =>$email,
+                            'code'      =>$code,
+                            'ngayapdung'=>$ngayapdung,
+                            'ngaykethuc'=>$ngayketthuc,
+                        ];
+                        //gui mail
+                        Mail::send('frontend.email-template.share_coupon',$data, function($message) use ($email){
+                            $message->from('thuan.dh51600602@gmail.com','Đức Thuận');
+                            $message->to($email, 'Tặng mã khuyến mãi');
+                            $message->subject('Tặng mã khuyến mãi!');
+                        });
+                        //update trang thai ma khuyen mai len 1
+                        $coupon = MaKhuyenMai::where('Code',$code)->first();
+                        $coupon->TrangThai=1;
+                        $coupon->save();
+                        break;
+                    }
+                }
+            }
+        }else{
+            $array_user[]=$email;
+            Session::put('email', $array_user);
+            $theloaikm=TheLoaiMaKhuyenMai::where('Code','COVID19')->first();
+            $ngayapdung=$theloaikm->NgayApDung;
+            $ngayketthuc=$theloaikm->NgayKetThuc;
+            $makhuyenmai=MakhuyenMai::where('idTLMKM',$theloaikm->id)->get();
+            foreach ($makhuyenmai as $makm){
+                if($makm->TrangThai==0){
+                    $code=$makm->Code;
+                    $data=[
+                        'name'      =>$email,
+                        'code'      =>$code,
+                        'ngayapdung'=>$ngayapdung,
+                        'ngaykethuc'=>$ngayketthuc,
+                    ];
+                    //gui mail
+                    Mail::send('frontend.email-template.share_coupon',$data, function($message) use ($email){
+                        $message->from('thuan.dh51600602@gmail.com','Đức Thuận');
+                        $message->to($email, 'Tặng mã khuyến mãi');
+                        $message->subject('Tặng mã khuyến mãi!');
+                    });
+                    //update trang thai ma khuyen mai len 1
+                    $coupon = MaKhuyenMai::where('Code',$code)->first();
+                    $coupon->TrangThai=1;
+                    $coupon->save();
+                    break;
+                }
+            }
+        }
+        Session::save();
+        return redirect()->back();
+    }
 
 }

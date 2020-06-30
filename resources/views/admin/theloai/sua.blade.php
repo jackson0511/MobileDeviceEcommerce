@@ -27,21 +27,39 @@
                     @endif
                     </p>
 
-                    <form action="admin/theloai/sua/{{$theloai->id}}" method="post" data-parsley-validate novalidate>
+                    <form action="admin/theloai/sua/{{$theloai_edit->id}}" method="post" data-parsley-validate novalidate>
                         {{csrf_field()}}
                         <div class="col-lg-8">
                             <div class="form-group">
                                 <label for="userName">Tên thể loại</label>
                                 <input type="text" name="ten" parsley-trigger="change" required
                                        placeholder="Nhập tên thể loại" class="form-control"
-                                       value="{{$theloai->Ten}}"
+                                       value="{{$theloai_edit->Ten}}"
                                 >
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleFormControlSelect1">Parent</label>
+                                <select class="form-control" name="parent_id" id="parent_id">
+                                    <option value="-1">--Chọn parent--</option>
+                                    <option
+                                        @if($theloai_edit->parent_id==0)
+                                            {{'selected'}}
+                                        @endif
+                                        value="0">Root</option>
+                                    @foreach($theloai as $tl)
+                                        <option
+                                            @if($theloai_edit->parent_id==$tl->id)
+                                                {{'selected'}}
+                                            @endif
+                                            value="{{$tl->id}}">{{$tl->Ten}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="">Trạng thái</label>
                                 <div class="radio radio-custom radio-inline">
                                     <input
-                                        @if($theloai->TrangThai==1)
+                                        @if($theloai_edit->TrangThai==1)
                                             {{'checked'}}
                                         @endif
                                         type="radio" id="inlineRadio1" value="1" name="trangthai" checked="">
@@ -49,7 +67,7 @@
                                 </div>
                                 <div class="radio radio-custom radio-inline">
                                     <input
-                                        @if($theloai->TrangThai==0)
+                                        @if($theloai_edit->TrangThai==0)
                                              {{'checked'}}
                                         @endif
                                         type="radio" id="inlineRadio2" value="0" name="trangthai">
@@ -63,8 +81,8 @@
                                 <br>
                                     @foreach($thuoctinh as $tt)
                                         <input
-                                         @if(count($theloai->thuoctinh)>0)
-                                         @foreach($theloai->thuoctinh as $tts)
+                                         @if(count($theloai_edit->thuoctinh)>0)
+                                         @foreach($theloai_edit->thuoctinh as $tts)
                                             @if($tts->pivot->idTT==$tt->id)
                                                 {{'checked'}}
                                             @endif

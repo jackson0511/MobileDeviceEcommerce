@@ -14,7 +14,8 @@ class TheLoaiController extends Controller
     }
     public function getAdd(){
         $thuoctinh=ThuocTinh::all();
-        return view('admin.theloai.them',['thuoctinh'=>$thuoctinh]);
+        $theloai=TheLoai::where('parent_id',0)->get();
+        return view('admin.theloai.them',['thuoctinh'=>$thuoctinh,'theloai'=>$theloai]);
     }
     public function postAdd(){
         $this->validate($this->request,
@@ -32,6 +33,7 @@ class TheLoaiController extends Controller
         $theloai->Ten=$this->request->ten;
         $theloai->Ten_KhongDau=str_slug($this->request->ten);
         $theloai->TrangThai=$this->request->trangthai;
+        $theloai->parent_id=$this->request->parent_id;
         $theloai->save();
 
 
@@ -47,9 +49,10 @@ class TheLoaiController extends Controller
 
     }
     public function getEdit($id){
-        $theloai=TheLoai::find($id);
+        $theloai_edit=TheLoai::find($id);
+        $theloai=TheLoai::where('parent_id',0)->get();
         $thuoctinh=ThuocTinh::all();
-        return view('admin/theloai/sua',['theloai'=>$theloai,'thuoctinh'=>$thuoctinh]);
+        return view('admin/theloai/sua',['theloai'=>$theloai,'thuoctinh'=>$thuoctinh,'theloai_edit'=>$theloai_edit]);
     }
     public function postEdit($id){
         $this->validate($this->request,
@@ -67,6 +70,7 @@ class TheLoaiController extends Controller
         $theloai->Ten=$this->request->ten;
         $theloai->Ten_KhongDau=str_slug($this->request->ten);
         $theloai->TrangThai=$this->request->trangthai;
+        $theloai->parent_id=$this->request->parent_id;
         $theloai->save();
         if($theloai) {
             $idtheloai = $theloai->id;
