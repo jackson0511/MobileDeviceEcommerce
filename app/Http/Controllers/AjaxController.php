@@ -115,15 +115,25 @@ class AjaxController extends Controller
                    <th>Chi tiết</th>
                    </tr>
                  </thead>";
-        foreach ($chitietkhuyenmai as $ctkm) {
-            echo    "<tr align='center'>
-                         <th>".$ctkm->id."</th>
-                         <th><a href='chitietsanpham/".$ctkm->sanpham->id."'>".$ctkm->sanpham->Ten."</a></th>
-                         <th><img width='70px' height='70px' src='upload/sanpham/".$ctkm->sanpham->Hinh."' ></th>
-                         <th>".$ctkm->Gia_Sale."</th>
-                         <th>".$ctkm->ChiTiet."</th>
-                         </tr>";
-                 }
+        foreach ($chitietkhuyenmai as $ctkm) {?>
+            <tr align='center'>
+                <th><?=$ctkm->id?></th>
+                <th><a href='chitietsanpham/<?=$ctkm->sanpham->id?>'><?=$ctkm->sanpham->Ten?></a></th>
+                <th><img width='70px' height='70px' src='upload/sanpham/<?=$ctkm->sanpham->Hinh?>' ></th>
+                <th><?=$ctkm->Gia_Sale?></th>
+                <th>
+                    <?php
+                    if ($ctkm->TrangThai==1){
+                        echo $ctkm->ChiTiet."%";
+                    }else{
+                        $id = (int)$ctkm->ChiTiet;
+                        $sanpham = SanPham::find($id);
+                        echo 'tặng' . ' ' . $sanpham->Ten;
+                    }
+                    ?>
+                </th>
+            </tr>
+                <?php }
     }
     public function postMakhuyenmai(){
         $id=$this->request->id;
@@ -331,7 +341,7 @@ class AjaxController extends Controller
             </tr>
             <tr>
                 <th colspan="8">
-                    <button class="btn btn-primary button"><a href="admin/donhang/print-order/<?= $id; ?>">in hoá đơn</a></button>
+                    <button class="btn btn-primary button"><a href="admin/donhang/print-order/<?= $donhang->id; ?>">in hoá đơn</a></button>
                 </th>
             </tr>
         <?php
@@ -358,30 +368,70 @@ class AjaxController extends Controller
     public function sosanh_sanpham(){
         $arr_id=$this->request->id;
         $sanpham=SanPham::whereIn('id',$arr_id)->get();
-        echo   "<thead>
-                   <tr align='center'>";
-            foreach ($sanpham as $sp1) {
-                  echo "<th style='font-weight: bold'>$sp1->Ten</th>";
-                   }
-             echo "</tr>
-                 </thead>";
-            echo  "<tr>";
-            foreach ($sanpham as $sp){
-                echo  "<td width='50%'>
-                    <div class='table-wrapper-scroll-y table-responsive custom-scrollbar-css'>
-                       <table class='table table-fixed'>
-                           <thead>";
-                            foreach ($sp->chitietthuoctinh as $tt) {
-                                echo "<tr>
-                                       <th>" . $tt->thuoctinh->Ten . "</th>
-                                       <th>" . $tt->ChiTiet . "</th>
-                                     </tr>";
-                            }
-                     echo "</thead>
-                       </table>
-                       </div>
-                    </td>";
+        $arr_tt=[];
+        foreach ($sanpham as $sp_tt){
+            foreach ($sp_tt->chitietthuoctinh as $cttt1){
+                if(!in_array($cttt1->thuoctinh->Ten,$arr_tt)){
+                    array_push($arr_tt,$cttt1->thuoctinh->Ten);
                 }
-            echo "</tr>";
+            }
+        }
+        ?>
+        <table class="table ">
+            <thead>
+            <tr>
+                <th style='font-weight: bold'>Thuộc tính</th>
+                <?php foreach ($sanpham as $sp1) {
+                echo "<th width='35%' style='font-weight: bold'>$sp1->Ten</th>";
+                }?>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <table class="table">
+                            <?php foreach ($arr_tt as $tt) {
+                                echo "<tr><td height='50px'>$tt</td></tr>";
+                            }?>
+                        </table>
+                    </td>
+                    <?php foreach ($sanpham as $sp){
+                        echo "<td>
+                                <table class='table'>";
+                         foreach($sp->chitietthuoctinh as $cttt) {
+                            echo "<tr><td height='50px'>{$cttt->ChiTiet}</td></tr> ";
+                         }
+                         echo " </table>
+                            </td>";
+                    }?>
+                </tr>
+            </tbody>
+        </table>
+    <?php
+//        echo   "<thead>
+//                   <tr align='center'>";
+//            foreach ($sanpham as $sp1) {
+//                  echo "<th style='font-weight: bold'>$sp1->Ten</th>";
+//                   }
+//             echo "</tr>
+//                 </thead>";
+//            echo  "<tr>";
+//            foreach ($sanpham as $sp){
+//                echo  "<td width='50%'>
+//                    <div class='table-wrapper-scroll-y table-responsive custom-scrollbar-css'>
+//                       <table class='table table-fixed'>
+//                           <thead>";
+//                            foreach ($sp->chitietthuoctinh as $tt) {
+//                                echo "<tr>
+//                                       <th>" . $tt->thuoctinh->Ten . "</th>
+//                                       <th>" . $tt->ChiTiet . "</th>
+//                                     </tr>";
+//                            }
+//                     echo "</thead>
+//                       </table>
+//                       </div>
+//                    </td>";
+//                }
+//            echo "</tr>";
     }
 }

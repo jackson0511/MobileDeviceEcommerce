@@ -19,7 +19,6 @@ class CheckLoginAdmin
     {
         if($role!=null) {
             $quyen = Quyen::where('Ten', $role)->select('id')->first();
-
             $idQT = (Auth::guard('QuanTri')->id());
             $quantri = QuanTri::find($idQT)->quyen->pluck('id')->toArray();
             if(count($quantri)>1) {
@@ -28,6 +27,7 @@ class CheckLoginAdmin
                         return $next($request);
                     }
                 }
+                return abort(401);
             }else{
                 if ($quyen->id == $quantri[0]) {
                     return $next($request);

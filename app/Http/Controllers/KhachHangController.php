@@ -8,7 +8,7 @@ class KhachHangController extends Controller
 {
     public function getList(){
         $khachhang=KhachHang::all();
-        return view('admin/khachhang/danhsach',['khachhang'=>$khachhang]);
+        return view('admin.khachhang.danhsach',['khachhang'=>$khachhang]);
     }
     public function getXuLy($id){
         $khachhang=KhachHang::find($id);

@@ -122,7 +122,11 @@
                     @foreach($theloai as $tl)
                         @if($tl->parent_id==0)
                             <li>
-                                <a href="danhmucsanpham/{{$tl->id}}/{{$tl->Ten_KhongDau}}.html">{{$tl->Ten}}</a>
+                                @if(count($tl->children)>0)
+                                    <a>{{$tl->Ten}}</a>
+                                @else
+                                    <a href="danhmucsanpham/{{$tl->id}}/{{$tl->Ten_KhongDau}}.html">{{$tl->Ten}}</a>
+                                @endif
                                 @if(count($tl->children)>0)
                                     <ul class="submenu">
                                         @foreach($tl->children as $child)

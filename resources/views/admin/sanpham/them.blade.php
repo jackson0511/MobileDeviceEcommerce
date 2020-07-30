@@ -90,6 +90,17 @@
                         </textarea>
                     </div>
                     <div class="form-group">
+                        <label for="exampleFormControlSelect1">Bảo hành </label>
+                        <select class="form-control" name="baohanh" id="baohanh">
+                            <option value="-1">--Chọn bảo hành--</option>
+                            @foreach($baohanh as $bh)
+                                <option value="{{$bh->id}}">
+                                   {{$bh->Ten}}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="userName">Type (ví dụ iphone x 64gb->iphone-x,iphone x 256gb->iphone-x ...) </label>
                         <input type="text" name="type" parsley-trigger="change"   placeholder="Nhập type sản phẩm" value="{{ old('type') }}" class="form-control" >
                     </div>

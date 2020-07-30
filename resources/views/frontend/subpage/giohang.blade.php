@@ -57,12 +57,12 @@
                 </td>
                   @if($sp->price!=0)
                     <td>
-                        <input class="soluong" type="number" name="soluong" value="{{$sp->qty}}" min=0 style="width: 50px">
+                        <input class="soluong" type="number" name="soluong" value="{{$sp->qty}}" min=1 style="width: 50px">
                         <input type="hidden" name="idsp" class="idsp"  value="{{$sp->id}}" >
                     </td>
                   @else
                       <td>
-                          <input class="soluong" type="number" name="soluong" disabled value="{{$sp->qty}}" min=0 style="width: 50px">
+                          <input class="soluong"  type="number" name="soluong" disabled value="{{$sp->qty}}" min=0 style="width: 50px">
                           <input type="hidden" name="idsp" class="idsp"  value="{{$sp->id}}" >
                       </td>
                   @endif
@@ -180,10 +180,11 @@
                  success: function (data) {
                      if(data!=null && data==1) {
                          $(".tien").append(data);
-                         alert("cap nhap thanh cong");
+                         alert("Cập nhập thành công");
                          location.reload();
                      }else{
-                         alert("cap nhap that bai");
+                         alert(data);
+                         alert("Cập nhập thất bại");
                          location.reload();
                      }
                  }

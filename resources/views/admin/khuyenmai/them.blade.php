@@ -81,8 +81,33 @@
                         </table>
                     </div>
                     <div class="form-group">
+                        <label for="">Khuyến mãi</label>
+                        <div class="radio radio-custom radio-inline">
+                            <input type="radio" id="inlineRadio1" value="1" name="khuyenmai" checked="">
+                            <label for="inlineRadio1"> Phần trăm giảm giá </label>
+                        </div>
+                        <div class="radio radio-custom radio-inline">
+                            <input type="radio" id="inlineRadio2" value="2" name="khuyenmai">
+                            <label for="inlineRadio2"> Tặng sản phẩm </label>
+                        </div>
+                    </div>
+                    <!-- tang san pham -->
+                    <div class="form-group sanpham_sale" style="display: none">
+                        <label for="exampleFormControlSelect1">Chi tiết khuyến mãi</label>
+                        <select class="form-control" name="chitiet_sp" id="sanpham">
+                            <option value="-1">--Chọn sản phẩm--</option>
+                            @foreach($sanpham as $sp)
+                                <option value="{{$sp->id}}">{{$sp->Ten}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <!-- phan tram giam gia -->
+                    <div class="form-group phantram" style="display: none">
                         <label for="userName">Chi tiết khuyến mãi</label>
-                        <input type="text" name="chitiet" parsley-trigger="change"   placeholder="Nhập chi tiết khuyến mãi" value="{{ old('ten') }}" class="form-control" >
+                        <input
+                            type="text" name="chitiet_km" parsley-trigger="change"      placeholder="Nhập chi tiết khuyến mãi"
+                            value="" class="form-control"
+                        >
                     </div>
                     <div class="form-group">
                         <label for="">Trạng thái</label>
@@ -127,6 +152,24 @@
             filebrowserImageUploadUrl: "admin/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images",
             filebrowserFlashUploadUrl: "admin/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash"
         } );
+        $(document).ready(function () {
+            var checked = $("[name='khuyenmai']:checked").val();
+            if(checked==1){
+                $(".phantram").css('display','block');
+            }else{
+                $(".sanpham_sale").css('display','block');
+            }
+            $("[name='khuyenmai']").click(function () {
+                var radioValue = $(this).val();
+                if ( radioValue==1){
+                    $(".phantram").css('display','block');
+                    $(".sanpham_sale").css('display','none');
+                }else {
+                    $(".sanpham_sale").css('display','block');
+                    $(".phantram").css('display','none');
+                }
+            });
+        });
     </script>
 
 @endsection

@@ -8,10 +8,10 @@ class QuyenController extends Controller
 {
     public function getList(){
         $quyen=Quyen::all();
-        return view('admin/quyen/danhsach',['quyen'=>$quyen]);
+        return view('admin.quyen.danhsach',['quyen'=>$quyen]);
     }
     public function getAdd(){
-        return view('admin/quyen/them');
+        return view('admin.quyen.them');
     }
     public function postAdd(){
         $this->validate($this->request,
@@ -28,7 +28,7 @@ class QuyenController extends Controller
     }
     public function getEdit($id){
         $quyen=Quyen::find($id);
-        return view('admin/quyen/sua',['quyen'=>$quyen]);
+        return view('admin.quyen.sua',['quyen'=>$quyen]);
     }
     public function postEdit($id){
         $quyen=Quyen::find($id);

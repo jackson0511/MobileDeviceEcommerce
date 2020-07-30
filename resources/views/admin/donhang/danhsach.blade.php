@@ -182,7 +182,6 @@
                 var id=$(this).attr("data-key");
                 $("#myModal").modal('show');
                 $(".idhoadon").text(id);
-
                 $.ajax({
                     method: "POST",
                     url: 'ajax/chitietdonhang',

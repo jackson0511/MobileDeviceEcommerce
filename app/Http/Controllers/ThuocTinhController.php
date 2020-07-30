@@ -8,10 +8,10 @@ class ThuocTinhController extends Controller
 {
     public function getList(){
         $thuoctinh=ThuocTinh::all();
-        return view('admin/thuoctinh/danhsach',['thuoctinh'=>$thuoctinh]);
+        return view('admin.thuoctinh.danhsach',['thuoctinh'=>$thuoctinh]);
     }
     public function getAdd(){
-        return view('admin/thuoctinh/them');
+        return view('admin.thuoctinh.them');
     }
     public function postAdd(){
         $this->validate($this->request,
@@ -28,7 +28,7 @@ class ThuocTinhController extends Controller
     }
     public function getEdit($id){
         $thuoctinh=ThuocTinh::find($id);
-        return view('admin/thuoctinh/sua',['thuoctinh'=>$thuoctinh]);
+        return view('admin.thuoctinh.sua',['thuoctinh'=>$thuoctinh]);
     }
     public function postEdit($id){
         $thuoctinh=ThuocTinh::find($id);

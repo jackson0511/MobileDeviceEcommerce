@@ -143,7 +143,7 @@ Route::group(['prefix'=>'admin','middleware'=>'CheckLoginAdmin'],function() {
         Route::get('xoa/{id}','TheLoaiMaKhuyenMaiController@getDelete');
         Route::get('xuly/{id}','TheLoaiMaKhuyenMaiController@getXuLy');
     });
-    //baohang
+    //baohanh
     Route::group(['prefix'=>'baohanh','middleware'=>'CheckLoginAdmin:kinhdoanh'],function (){
         Route::get('danhsach','BaoHanhController@getList');
         Route::get('them','BaoHanhController@getAdd');
@@ -167,9 +167,63 @@ Route::group(['prefix'=>'admin','middleware'=>'CheckLoginAdmin'],function() {
         Route::post('danhsach','ThongTinBaoHanhController@search');
         Route::post('option_baohanh','ThongTinBaoHanhController@getListOption');
     });
+    //phieu bao hanh
+    Route::group(['prefix'=>'phieubaohanh','middleware'=>'CheckLoginAdmin:kinhdoanh'],function (){
+        Route::get('danhsach','PhieuBaoHanhController@getList');
+        Route::post('danhsach','PhieuBaoHanhController@search');
+        Route::get('danhsach_trungtam','PhieuBaoHanhController@danhsach_trungtam');
+        Route::get('them','PhieuBaoHanhController@getAdd');
+        Route::post('them','PhieuBaoHanhController@postAdd');
+        Route::get('sua/{id}','PhieuBaoHanhController@getEdit');
+        Route::post('sua/{id}','PhieuBaoHanhController@postEdit');
+        Route::post('chuyentrungtam','PhieuBaoHanhController@chuyentrungtam');
+        //update-status
+        Route::get('update-status/{id}','PhieuBaoHanhController@update_status');
+        Route::post('update-status/{id}','PhieuBaoHanhController@post_update_status');
+        //hen lai
+        Route::post('henlai','PhieuBaoHanhController@henlai');
+        Route::post('ajax_tinhphi','PhieuBaoHanhController@ajax_tinhphi');
+        Route::post('ajax_dichvu','PhieuBaoHanhController@ajax_dichvu');
+        Route::post('ajax_check_imei','PhieuBaoHanhController@ajax_check_imei');
+        Route::post('ajax_update_dichvu','PhieuBaoHanhController@ajax_update_dichvu');
+        Route::post('show_dichvu','PhieuBaoHanhController@show_dichvu');
+        Route::post('show_chitiet_baohanh','PhieuBaoHanhController@show_chitiet_baohanh');
+        //
+        Route::post('show_list','PhieuBaoHanhController@show_list');
+    });
+    //phieu trung tam
+    Route::group(['prefix'=>'phieutrungtam','middleware'=>'CheckLoginAdmin:kinhdoanh'],function (){
+        Route::get('danhsach','PhieuTrungTamController@getList');
+        //update status
+        Route::get('update-status/{id}','PhieuTrungTamController@update_status');
+        Route::post('update-status/{id}','PhieuTrungTamController@post_update_status');
+        //tra ve
+        Route::get('tra-ve/{id}','PhieuTrungTamController@tra_ve');
+        Route::get('show','PhieuTrungTamController@show');
+
+    });
+    //gia linh kien
+    Route::group(['prefix'=>'gialinhkien','middleware'=>'CheckLoginAdmin:kinhdoanh'],function (){
+        Route::get('danhsach','GiaLinhKienController@getList');
+        Route::get('them','GiaLinhKienController@getAdd');
+        Route::post('them','GiaLinhKienController@postAdd');
+        Route::get('sua/{id}','GiaLinhKienController@getEdit');
+        Route::post('sua/{id}','GiaLinhKienController@postEdit');
+        Route::post('import-csv','GiaLinhKienController@import_csv');
+    });
+    //danh muc san pham
+    Route::group(['prefix'=>'danhmucsanpham','middleware'=>'CheckLoginAdmin:kinhdoanh'],function (){
+        Route::get('danhsach','DanhMucSanPhamController@getList');
+        Route::get('them','DanhMucSanPhamController@getAdd');
+        Route::post('them','DanhMucSanPhamController@postAdd');
+        Route::get('sua/{id}','DanhMucSanPhamController@getEdit');
+        Route::post('sua/{id}','DanhMucSanPhamController@postEdit');
+        Route::get('xoa/{id}','DanhMucSanPhamController@getDelete');
+    });
     //donhang
     Route::group(['prefix'=>'donhang','middleware'=>'CheckLoginAdmin:kinhdoanh'],function (){
         Route::get('danhsach','DonHangController@getList');
+        Route::get('danhsach','DonHangController@getOrderById')->name('get.link.order');
         Route::post('danhsach','DonHangController@filter_status');
         Route::get('print-order/{order_id}','DonHangController@print_order');
         //them imei cho chitiet san pham

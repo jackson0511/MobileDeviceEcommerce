@@ -39,7 +39,7 @@
                 <table id="datatable" class="table table-striped table-bordered">
                     <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>STT</th>
                         <th>Tên sản phẩm</th>
                         <th>Giá</th>
                         <th>IMEI</th>
@@ -47,15 +47,15 @@
                         <th>Ngày Áp Dụng</th>
                         <th>Ngày kết Thúc</th>
                         <th>Trạng thái</th>
-                        <th>Sửa</th>
+{{--                        <th>Sửa</th>--}}
                         <th>Option</th>
 
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($thongtinbaohanh as $ttbh)
+                    @foreach($thongtinbaohanh as $key => $ttbh)
                         <tr align="center" >
-                            <td>{{$ttbh->id}}</td>
+                            <td>{{$key+1}}</td>
                             <td>{{$ttbh->sanpham->Ten}}</td>
                             <td>{{$ttbh->sanpham->Gia}}</td>
                             <td>{{$ttbh->IMEI}}</td>
@@ -66,13 +66,14 @@
                                 <a class="btn btn-xs {{$ttbh->TrangThai==1?'btn-danger':'btn-info'}} ">
                                     {{$ttbh->TrangThai==1?'Hết bảo hành':'Còn bảo hành'}}
                                 </a>
-                            <td>
-                                <i class="fa fa-pencil">
-                                    <a href="admin/thongtinbaohanh/sua/{{$ttbh->id}}">
-                                        Sửa
-                                    </a>
-                                </i>
                             </td>
+{{--                            <td>--}}
+{{--                                <i class="fa fa-pencil">--}}
+{{--                                    <a href="admin/thongtinbaohanh/sua/{{$ttbh->id}}">--}}
+{{--                                        Sửa--}}
+{{--                                    </a>--}}
+{{--                                </i>--}}
+{{--                            </td>--}}
                             <td>
                                 <a class="view" data-key="{{$ttbh->id}}">
                                     <i class="fa fa-eye"></i>

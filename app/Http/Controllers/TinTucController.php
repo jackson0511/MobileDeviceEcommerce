@@ -12,11 +12,11 @@ class TinTucController extends Controller
 {
     public function getList(){
         $tintuc=TinTuc::all();
-        return view('admin/tintuc/danhsach',['tintuc'=>$tintuc]);
+        return view('admin.tintuc.danhsach',['tintuc'=>$tintuc]);
     }
     public function getAdd(){
         $sanpham=SanPham::all();
-        return view('admin/tintuc/them',['sanpham'=>$sanpham]);
+        return view('admin.tintuc.them',['sanpham'=>$sanpham]);
     }
     public function postAdd(){
         $this->validate($this->request,
@@ -50,7 +50,7 @@ class TinTucController extends Controller
     public function getEdit($id){
         $tintuc=TinTuc::find($id);
         $sanpham=SanPham::all();
-        return view('admin/tintuc/sua',['tintuc'=>$tintuc,'sanpham'=>$sanpham]);
+        return view('admin.tintuc.sua',['tintuc'=>$tintuc,'sanpham'=>$sanpham]);
     }
     public function postEdit($id){
         $tintuc=TinTuc::find($id);

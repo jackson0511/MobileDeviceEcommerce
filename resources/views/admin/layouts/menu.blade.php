@@ -94,45 +94,84 @@
             </li>
         @else
             <li class="has-submenu">
-                <a href="#"><i class="md md-color-lens"></i>Khuyến mãi</a>
+                <a href="#"><i class="md md-redeem"></i>Khuyến mãi</a>
                 <ul class="submenu">
                     <li><a href="admin/khuyenmai/danhsach">Danh sách</a></li>
                     <li><a href="admin/khuyenmai/them">Thêm</a></li>
                 </ul>
             </li>
             <li class="has-submenu">
-                <a href="#"><i class="md md-color-lens"></i>Thể Loại Mã khuyến mãi</a>
+                <a href="#"><i class="md md-color-lens"></i>TL Mã KM</a>
                 <ul class="submenu">
                     <li><a href="admin/theloaimakhuyenmai/danhsach">Danh sách</a></li>
                     <li><a href="admin/theloaimakhuyenmai/them">Thêm</a></li>
                 </ul>
             </li>
             <li class="has-submenu">
-                <a href="#"><i class="md md-color-lens"></i>Đơn hàng</a>
+                <a><i class="md md-class"></i>Thông tin bảo hành</a>
+                <ul class="submenu">
+                    <li class="has-submenu">
+                        <a>Bảo hành</a>
+                        <ul class="submenu">
+                            <li><a href="admin/baohanh/danhsach">Danh sách</a></li>
+                            <li><a href="admin/baohanh/them">Thêm</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-submenu">
+                        <a>Option BH</a>
+                        <ul class="submenu">
+                            <li><a href="admin/optionbaohanh/danhsach">Danh sách</a></li>
+                            <li><a href="admin/optionbaohanh/them">Thêm</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-submenu">
+                        <a>Thông tin BH</a>
+                        <ul class="submenu">
+                            <li><a href="admin/thongtinbaohanh/danhsach">Danh sách</a></li>
+                            <li><a href="admin/thongtinbaohanh/them">Thêm</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-submenu">
+                        <a>Phiếu bảo hành</a>
+                        <ul class="submenu">
+                            <li><a href="admin/phieubaohanh/danhsach">Danh sách</a></li>
+                            <li><a href="admin/phieubaohanh/danhsach_trungtam">Danh sách phiếu chuyển về trung tâm</a></li>
+                            <li><a href="admin/phieubaohanh/them">Thêm</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a><i class="md md-class"></i>Bảng giá sửa chữa linh kiện</a>
+                <ul class="submenu">
+                    <li class="has-submenu">
+                        <a>Giá linh kiện</a>
+                        <ul class="submenu">
+                            <li><a href="admin/gialinhkien/danhsach">Danh sách</a></li>
+                            <li><a href="admin/gialinhkien/them">Thêm</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-submenu">
+                        <a>DM sản phẩm</a>
+                        <ul class="submenu">
+                            <li><a href="admin/danhmucsanpham/danhsach">Danh sách</a></li>
+                            <li><a href="admin/danhmucsanpham/them">Thêm</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#"><i class="md md-shopping-cart"></i>Đơn hàng</a>
                 <ul class="submenu">
                     <li><a href="admin/donhang/danhsach">Danh sách</a></li>
                     <li><a href="admin/donhang/them">Thêm</a></li>
                 </ul>
             </li>
             <li class="has-submenu">
-                <a href="#"><i class="md md-color-lens"></i>Bảo hành</a>
+                <a href="#"><i class="md md-class"></i>Trung tâm</a>
                 <ul class="submenu">
-                    <li><a href="admin/baohanh/danhsach">Danh sách</a></li>
-                    <li><a href="admin/baohanh/them">Thêm</a></li>
-                </ul>
-            </li>
-            <li class="has-submenu">
-                <a href="#"><i class="md md-color-lens"></i>Option Bảo hành</a>
-                <ul class="submenu">
-                    <li><a href="admin/optionbaohanh/danhsach">Danh sách</a></li>
-                    <li><a href="admin/optionbaohanh/them">Thêm</a></li>
-                </ul>
-            </li>
-            <li class="has-submenu">
-                <a href="#"><i class="md md-color-lens"></i>Thông tin bảo hành</a>
-                <ul class="submenu">
-                    <li><a href="admin/thongtinbaohanh/danhsach">Danh sách</a></li>
-                    <li><a href="admin/thongtinbaohanh/them">Thêm</a></li>
+                    <li><a href="admin/phieutrungtam/danhsach">Danh sách</a></li>
+{{--                    <li><a href="admin/donhang/them">Thêm</a></li>--}}
                 </ul>
             </li>
         @endif

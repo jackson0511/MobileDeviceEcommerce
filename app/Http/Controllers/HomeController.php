@@ -245,7 +245,7 @@ class HomeController extends Controller
             $ngaykethuc=$km->NgayKetThuc;
             if($ngay>=$ngaybatdau && $ngay<=$ngaykethuc) {
                 $id[]=$km->id;
-                $sanphamsale=ChiTietKhuyenMai::whereIn('idKM',$id)->paginate(8);
+                $sanphamsale=ChiTietKhuyenMai::whereIn('idKM',$id)->orderBy('id','asc')->paginate(8);
             }
         }
         //

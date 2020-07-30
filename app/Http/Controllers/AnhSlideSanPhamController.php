@@ -10,11 +10,11 @@ class AnhSlideSanPhamController extends Controller
     //
     public function getList(){
         $anhslidesp=AnhSlideSP::all();
-        return view('admin/anhslidesp/danhsach',['anhslidesp'=>$anhslidesp]);
+        return view('admin.anhslidesp.danhsach',['anhslidesp'=>$anhslidesp]);
     }
     public function getAdd(){
         $sanpham=SanPham::all();
-        return view('admin/anhslidesp/them',['sanpham'=>$sanpham]);
+        return view('admin.anhslidesp.them',['sanpham'=>$sanpham]);
     }
     public function postAdd(){
         $this->validate($this->request,
@@ -50,7 +50,7 @@ class AnhSlideSanPhamController extends Controller
     public function getEdit($id){
         $anhslidesp=AnhSlideSP::find($id);
         $sanpham=SanPham::all();
-        return view('admin/anhslidesp/sua',['anhslidesp'=>$anhslidesp,'sanpham'=>$sanpham]);
+        return view('admin.anhslidesp.sua',['anhslidesp'=>$anhslidesp,'sanpham'=>$sanpham]);
     }
     public function postEdit($id){
         $anhslidesp=AnhSlideSP::find($id);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\BaoHanh;
 use App\BoLoc;
 use Illuminate\Http\Request;
 use App\SanPham;
@@ -18,7 +19,8 @@ class SanPhamController extends Controller
         $theloai1=TheLoai::where('Ten','=','HÀNG CŨ')->first();
         $theloai=TheLoai::where('id','!=',$theloai1->id)->get();
         $boloc=BoLoc::where('parent_id','!=',0)->get();
-        return view('admin.sanpham.them',['theloai'=>$theloai,'boloc'=>$boloc]);
+        $baohanh=BaoHanh::all();
+        return view('admin.sanpham.them',['theloai'=>$theloai,'boloc'=>$boloc,'baohanh'=>$baohanh]);
     }
     public function postAdd(){
         $this->validate($this->request,
@@ -54,6 +56,7 @@ class SanPhamController extends Controller
         $sanpham->TrangThai 	=$this->request->trangthai;
         $sanpham->TinhTrang 	=$this->request->tinhtrang;
         $sanpham->idTL 			=$this->request->theloai;
+        $sanpham->idBH          =$this->request->baohanh;
         if($this->request->hasFile('hinh')){
             $file=$this->request->file('hinh');
             $name=$file->getClientOriginalName();
@@ -91,6 +94,7 @@ class SanPhamController extends Controller
         $theloai1=TheLoai::where('Ten','=','HÀNG CŨ')->first();
         $theloai=TheLoai::where('id','!=',$theloai1->id)->get();
         $theloai_ct=TheLoai::find($sanpham->idTL);
+        $baohanh=BaoHanh::all();
         $boloc=BoLoc::where('parent_id','!=',0)->get();
         return view('admin.sanpham.sua',
             [
@@ -98,6 +102,7 @@ class SanPhamController extends Controller
                 'sanpham'       =>$sanpham,
                 'theloai_ct'    =>$theloai_ct,
                 'boloc'         =>$boloc,
+                'baohanh'       =>$baohanh,
             ]);
     }
     public function postEdit($id){
@@ -107,7 +112,7 @@ class SanPhamController extends Controller
                 'tomtat'			=>'required',
                 'gia'				=>'required',
                 'soluong'			=>'required',
-                'thuoctinh'			=>'required',
+//                'thuoctinh'			=>'required',
                 'noidung'			=>'required',
                 'type'			    =>'required',
             ]
@@ -117,7 +122,7 @@ class SanPhamController extends Controller
                 'gia.required'		=>'Bạn chưa nhập giá',
                 'soluong.required'	=>'Bạn chưa nhập số lượng',
                 'noidung.required'	=>'Bạn chưa nhập nội dung',
-                'thuoctinh.required'=>'Bạn chưa chọn thuộc tính',
+//                'thuoctinh.required'=>'Bạn chưa chọn thuộc tính',
                 'type.required'     =>'Bạn chưa nhập type',
             ]);
         $sanpham=SanPham::find($id);
@@ -132,6 +137,7 @@ class SanPhamController extends Controller
         $sanpham->TrangThai 	=$this->request->trangthai;
         $sanpham->TinhTrang 	=$this->request->tinhtrang;
         $sanpham->idTL 			=$this->request->theloai;
+        $sanpham->idBH          =$this->request->baohanh;
         if($this->request->hasFile('hinh')){
             $file=$this->request->file('hinh');
             $name=$file->getClientOriginalName();

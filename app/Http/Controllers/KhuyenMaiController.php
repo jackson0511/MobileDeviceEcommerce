@@ -68,17 +68,26 @@ class KhuyenMaiController extends Controller
         if ($khuyenmai){
             $idkm=$khuyenmai->id;
             $idsp=$this->request->sanpham;
-            $chitiet=$this->request->chitiet;
-
+            $khuyenmai_id=$this->request->khuyenmai;
+            if ($khuyenmai_id==1){
+                $chitiet=$this->request->chitiet_km;
+            }else{
+                $chitiet=$this->request->chitiet_sp;
+            }
             foreach ($idsp as $key => $id) {
                 //cap nhap gia khuyen mai
                 $sanpham=SanPham::find($id);
-                $gia_sale=$sanpham->Gia *(100-$chitiet)/100;
+                if ($khuyenmai_id==1) {
+                    $gia_sale = $sanpham->Gia * (100 - $chitiet) / 100;
+                }else{
+                    $gia_sale=NULL;
+                }
                 ChiTietKhuyenMai::insert([
                     'ChiTiet'		=>$chitiet,
                     'Gia_Sale'      =>$gia_sale,
                     'idSP'			=>$id,
                     'idKM'			=>$idkm,
+                    'TrangThai'     =>$khuyenmai_id,
                 ]);
             }
 
@@ -140,17 +149,27 @@ class KhuyenMaiController extends Controller
         if ($khuyenmai){
             $idkm=$khuyenmai->id;
             $idsp=$this->request->sanpham;
-            $chitiet=$this->request->chitiet;
+            $khuyenmai_id=$this->request->khuyenmai;
+            if ($khuyenmai_id==1){
+                $chitiet=$this->request->chitiet_km;
+            }else{
+                $chitiet=$this->request->chitiet_sp;
+            }
             $khuyenmai->chitietkhuyenmai()->delete();
             foreach ($idsp as $key => $id) {
                 //cap nhap gia khuyen mai
                 $sanpham=SanPham::find($id);
-                $gia_sale=$sanpham->Gia *(100-$chitiet)/100;
+                if ($khuyenmai_id==1) {
+                    $gia_sale = $sanpham->Gia * (100 - $chitiet) / 100;
+                }else{
+                    $gia_sale=NULL;
+                }
                 ChiTietKhuyenMai::insert([
                     'ChiTiet'		=>$chitiet,
                     'Gia_Sale'      =>$gia_sale,
                     'idSP'			=>$id,
                     'idKM'			=>$idkm,
+                    'TrangThai'     =>$khuyenmai_id,
                 ]);
             }
 

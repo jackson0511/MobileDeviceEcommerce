@@ -21,6 +21,8 @@
     <link href="admin/assets/plugins/datatables/dataTables.colVis.css" rel="stylesheet" type="text/css"/>
     <link href="admin/assets/plugins/datatables/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <link href="admin/assets/plugins/datatables/fixedColumns.dataTables.min.css" rel="stylesheet" type="text/css"/>
+    <!-- Ladda buttons css -->
+    <link href="admin/assets/plugins/ladda-buttons/css/ladda-themeless.min.css" rel="stylesheet" type="text/css" />
 
     <!--Morris Chart CSS -->
     <link rel="stylesheet" href="admin/assets/plugins/morris/morris.css">
@@ -48,6 +50,7 @@
     <link href="admin/assets/css/pages.css" rel="stylesheet" type="text/css" />
     <link href="admin/assets/css/menu.css" rel="stylesheet" type="text/css" />
     <link href="admin/assets/css/responsive.css" rel="stylesheet" type="text/css" />
+    <link href="admin/assets/plugins/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 
     <!-- HTML5 Shiv and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -82,7 +85,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-xs-6">
-                        © 2020. All rights reserved.
+                        © {{date('Y')}}. by Developer Đức Thuận
                     </div>
                     <div class="col-xs-6">
                         <ul class="pull-right list-inline m-b-0">
@@ -167,6 +170,12 @@
 <script src="admin/assets/plugins/clockpicker/js/bootstrap-clockpicker.min.js"></script>
 <script src="admin/assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
 <script src="admin/assets/pages/jquery.form-pickers.init.js"></script>
+<!-- ladda js -->
+<script src="admin/assets/plugins/ladda-buttons/js/spin.min.js"></script>
+<script src="admin/assets/plugins/ladda-buttons/js/ladda.min.js"></script>
+<script src="admin/assets/plugins/ladda-buttons/js/ladda.jquery.min.js"></script>
+{{--pusher--}}
+<script src="https://js.pusher.com/4.4/pusher.min.js"></script>
 <script type="text/javascript">
     jQuery(document).ready(function($) {
         $('.counter').counterUp({
@@ -185,37 +194,146 @@
 </script>
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#datatable').dataTable();
-        $('#datatable-keytable').DataTable({keys: true});
-        $('#datatable-responsive').DataTable();
-        $('#datatable-colvid').DataTable({
-            "dom": 'C<"clear">lfrtip',
-            "colVis": {
-                "buttonText": "Change columns"
-            }
-        });
-        $('#datatable-scroller').DataTable({
-            ajax: "admin/assets/plugins/datatables/json/scroller-demo.json",
-            deferRender: true,
-            scrollY: 380,
-            scrollCollapse: true,
-            scroller: true
-        });
-        var table = $('#datatable-fixed-header').DataTable({fixedHeader: true});
-        var table = $('#datatable-fixed-col').DataTable({
-            scrollY: "300px",
-            scrollX: true,
-            scrollCollapse: true,
-            paging: false,
-            fixedColumns: {
-                leftColumns: 1,
-                rightColumns: 1
-            }
+        $('#datatable').dataTable({
+            processing: true,
+            pageLength: 25
         });
     });
     TableManageButtons.init();
 
 </script>
+<script>
+    $(document).ready(function () {
+        function showNoti() {
+            var notifications= notificationsWrapper.find('li.notification-list');
+            let notifi=localStorage.getItem('notifi');
+            if(notifi !=null) {
+                notifi = $.parseJSON(notifi);
+                notifi.sort((a,b)=>{
+                    return b-a;
+                });
+                var newNotification='';
+                $.each(notifi, function (key, value) {
+                    newNotification += `<a href="admin/donhang/danhsach?order_id=${value}" class="list-group-item">
+                                <div class="media">
+                                    <div class="pull-left p-r-10">
+                                        <em class="fa fa-bell-o noti-custom"></em>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="media-heading">New Order</h5>
+                                        <p class="m-0">
+                                            <small>Khách vừa mua đơn hàng với id là <span class="text-primary font-600">${value}</span></small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>`;
+                });
+                notifications.html(newNotification)
+            }
+        }
+        var notificationsWrapper     = $('.dropdown-menu-lg');
+        var notificationsCountElem   = $('.navbar-c-items').find('a > span[data-count]');
+        var notificationsCount       =parseInt(notificationsCountElem.data('count'));
+        var notifications            = notificationsWrapper.find('li.notification-list');
+        var shownotifi               = $(".icon-bell");
+        var result                   =$("#ketqua-trungtam");
+        //show notification old
+            showNoti();
+        //
+        Pusher.logToConsole = true;
+        var pusher = new Pusher('f69d9f56b41b786cfb23', {
+            encrypted: true,
+            cluster: "ap1"
+        });
+        // Subscribe to the channel we specified in our Laravel Event
+        var channel = pusher.subscribe('notification-message');
+
+        channel.bind('send-message', function(data) {
+            //save notification
+            let notis=localStorage.getItem('notifi');
+            if (notis==null){
+                arraynoti=new Array();
+                arraynoti.push(JSON.stringify(data.order.id));
+                localStorage.setItem('notifi',JSON.stringify(arraynoti));
+            }else{
+                notis=$.parseJSON(notis);
+                if (notis.indexOf(JSON.stringify(data.order.id))==-1) {
+                    notis.push(JSON.stringify(data.order.id));
+                    localStorage.setItem('notifi', JSON.stringify(notis));
+                }
+            }
+            //
+            var existingNotifications = notifications.html();
+            var newNotificationHtml = `
+                            <a href="admin/donhang/danhsach?order_id=`+JSON.stringify(data.order.id)+`" class="list-group-item">
+                                <div class="media">
+                                    <div class="pull-left p-r-10">
+                                        <em class="fa fa-bell-o noti-custom"></em>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="media-heading">New Order</h5>
+                                        <p class="m-0">
+                                            <small>Khách vừa mua đơn hàng với id là <span class="text-primary font-600">`+JSON.stringify(data.order.id)+`</span></small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+        `;
+            notifications.html(newNotificationHtml+existingNotifications);
+
+            notificationsCount += 1;
+            notificationsCountElem.attr('data-count', notificationsCount);
+            notificationsCountElem.text(notificationsCount);
+            notificationsWrapper.find('li.notifi-title > span').text('New '+notificationsCount);
+        });
+
+        //reset count notification
+        shownotifi.click(function () {
+            notificationsCount=0;
+            notificationsCountElem.attr('data-count', notificationsCount);
+            notificationsCountElem.text(notificationsCount);
+        });
+        //
+
+        //reload phieu trung tam
+        var channel1 = pusher.subscribe('notification-warrantly');
+        channel1.bind('reload-page', function(data) {
+            if(data.data.message==='success'){
+                showApple();
+            }
+        });
+        function showApple() {
+            $.ajax({
+                url   : 'admin/phieutrungtam/show',
+                type  : 'GET',
+                async : true,
+                success : function(data){
+                   result.html(data);
+
+                    $(".view-phieubaohanh").click(function () {
+                        var id=$(this).attr('data-key');
+                        $("#modal").modal('show');
+                        $(".idbaohanh").text(id);
+                        $.ajax({
+                            method: "POST",
+                            url: 'admin/phieubaohanh/show_chitiet_baohanh',
+                            data: {
+                                id:id,
+                            },
+                            success: function (data) {
+                                if(data!=null) {
+                                    $(".ketqua").html(data);
+                                }
+                            }
+                        });
+                    });
+                }
+            });
+        }
+    });
+
+</script>
+
 {{--ckeditor--}}
 <script src="admin/ckeditor/ckeditor.js"></script>
 

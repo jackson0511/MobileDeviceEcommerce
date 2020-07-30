@@ -8,7 +8,7 @@ class GopYController extends Controller
 {
     public function getList(){
         $gopy=GopY::orderByRaw('id DESC')->get();
-        return view('admin/gopy/danhsach',['gopy'=>$gopy]);
+        return view('admin.gopy.danhsach',['gopy'=>$gopy]);
     }
     public function getXuly($id){
         $gopy=GopY::find($id);

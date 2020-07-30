@@ -10,11 +10,11 @@ class QuanTriController extends Controller
     //
     public function getList(){
         $quantri=QuanTri::all();
-        return view('admin/quantri/danhsach',['quantri'=>$quantri]);
+        return view('admin.quantri.danhsach',['quantri'=>$quantri]);
     }
     public function getAdd(){
         $quyen=Quyen::all();
-        return view('admin/quantri/them',['quyen'=>$quyen]);
+        return view('admin.quantri.them',['quyen'=>$quyen]);
     }
     public function postAdd(){
         $this->validate($this->request,
@@ -53,7 +53,7 @@ class QuanTriController extends Controller
     public function getEdit($id){
         $quantri=QuanTri::find($id);
         $quyen=Quyen::all();
-        return view('admin/quantri/sua',['quyen'=>$quyen,'quantri'=>$quantri]);
+        return view('admin.quantri.sua',['quyen'=>$quyen,'quantri'=>$quantri]);
     }
     public function postEdit($id){
         $quantri=QuanTri::find($id);

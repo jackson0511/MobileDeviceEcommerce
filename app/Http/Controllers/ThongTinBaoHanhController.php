@@ -30,7 +30,11 @@ class ThongTinBaoHanhController extends Controller
     }
     public function search(){
         $keyword=$this->request->keyword;
-        $thongtinbaohanh=ThongTinBaoHanh::where('IMEI',$keyword)->get();
+        if ($keyword!=null) {
+            $thongtinbaohanh = ThongTinBaoHanh::where('IMEI', $keyword)->get();
+        }else{
+            $thongtinbaohanh=ThongTinBaoHanh::all();
+        }
         return view('admin.thongtinbaohanh.danhsach',['thongtinbaohanh'=>$thongtinbaohanh]);
     }
     public function getListOption(){

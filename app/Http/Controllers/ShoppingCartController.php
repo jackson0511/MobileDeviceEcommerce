@@ -15,6 +15,8 @@ use App\TheLoaiMaKhuyenMai;
 use Carbon\Carbon;
 use Session;
 use Mail;
+use App\Events\NewOrder;
+use App\Events\NotificationOrder;
 session_start();
 class ShoppingCartController extends Controller
 {
@@ -219,27 +221,52 @@ class ShoppingCartController extends Controller
         }
     }
     public function update_cart(){
+
         $soluong=(int)$this->request->soluong;
         $idcart=$this->request->idcart;
         $idsp=$this->request->idsp;
         $sanpham=SanPham::find($idsp);
-        if($sanpham->SoLuong<$soluong){
-            echo"<script> alert('Số lượng vượt quá số lượng sản phẩm trong kho');
-			location.herf='giohang';
-			</script>";
-        }else{
-            $sanpham1=\Cart::get($idcart);
-            $idsp_sale=(int)$sanpham1->options->detail;
-            $idCart = -1;
-            foreach (Cart::content() as $key => $value) {
-                if ($idsp_sale == $value->id && $value->price==0) {
-                    $idCart = $key;
-                }
+        //check thong tin
+        $sanpham1=\Cart::get($idcart);
+        $idsp_sale=(int)$sanpham1->options->detail;
+        $idCart = -1;
+        $soluong_sp_sale=-1;
+        $soluong_sp_cart=-1;
+        $check=false;
+        $check1=false;
+        $id=-1;
+        foreach (Cart::content() as $key => $value) {
+            if ($idsp_sale == $value->id && $value->price==0) {
+                $idCart = $key;
+                $soluong_sp_sale=$value->qty;
+                $id=$value->id;
+
             }
+            //cap nhap so luong san pham trong khuyen mai trung voi san pham trong gio hang
+            if ($idsp==$value->id && $value->price==0){
+                $soluong_sp_sale=$value->qty;
+            }
+            //cap nhap so luong san pham trung voi san pham khuyen mao
+            if ($idsp_sale==$value->id){
+                $soluong_sp_cart=$value->qty;
+            }
+        }
+        if ($id!=-1 && $soluong_sp_cart!=-1){
+            $sp=SanPham::find($id);
+            $check=$sp->SoLuong<$soluong+$soluong_sp_cart;
+        }
+        if ($soluong_sp_sale!=-1){
+            $check1=$sanpham->SoLuong<$soluong+$soluong_sp_sale;
+        }
+        //
+        if($sanpham->SoLuong<$soluong   || $check1 ) {
+            echo "Số lượng vượt quá số lượng sản phẩm trong kho";
+        }else if($check){
+            echo "Số lượng sản phẩm khuyến mãi chỉ còn ".$sp->SoLuong;
+        }else{
             if ($idCart!=-1) {
                 \Cart::update($idCart,$soluong);
             }
-
             \Cart::update($idcart,$soluong);
             echo 1;
         }
@@ -345,6 +372,11 @@ class ShoppingCartController extends Controller
         $donhang->save();
 
         $donhangId=$donhang->id;
+        //event khi có đơn hàng mới
+        $order=DonHang::find($donhangId);
+        event(new NewOrder($order));
+        event( new NotificationOrder($order));
+        //
         if($donhangId){
             $sanpham=\Cart::content();
 
