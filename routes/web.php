@@ -12,10 +12,17 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+// Route::get('/wellcome', function () {
+// 	return view('welcome');
+// });
 
 //dang nhap admin
 Route::get('admin/dangnhap','AdminController@getLogin');
 Route::post('admin/dangnhap','AdminController@postLogin');
+
+Route::post('admin/profile/','AdminController@getProfile');
+
+Route::post('admin/profile-save/','AdminController@postProfile');
 
 Route::get('admin/logout','AdminController@getLogout');
 
@@ -113,7 +120,9 @@ Route::group(['prefix'=>'admin','middleware'=>'CheckLoginAdmin'],function() {
         Route::post('them','QuanTriController@postAdd');
         Route::get('sua/{id}','QuanTriController@getEdit');
         Route::post('sua/{id}','QuanTriController@postEdit');
-        Route::get('xoa/{id}','QuanTriController@getDelete');
+
+        Route::get('khoa/{id}','QuanTriController@getKhoa');
+        Route::get('reset/{id}','QuanTriController@resetPass');
     });
     //quyen
     Route::group(['prefix'=>'quyen','middleware'=>'CheckLoginAdmin:taikhoan'],function (){
@@ -129,6 +138,7 @@ Route::group(['prefix'=>'admin','middleware'=>'CheckLoginAdmin'],function() {
         Route::get('danhsach','KhuyenMaiController@getList');
         Route::get('them','KhuyenMaiController@getAdd');
         Route::post('them','KhuyenMaiController@postAdd');
+        Route::get('update/{id}','KhuyenMaiController@update_status');
         Route::get('sua/{id}','KhuyenMaiController@getEdit');
         Route::post('sua/{id}','KhuyenMaiController@postEdit');
         Route::get('xoa/{id}','KhuyenMaiController@getDelete');
@@ -235,7 +245,7 @@ Route::group(['prefix'=>'admin','middleware'=>'CheckLoginAdmin'],function() {
         //xu ly cong lai so luong
         Route::get('xulyhuy/{id}','DonHangController@getXulyhuy');
         //filter status
-//        Route::post('filter-status','DonHangController@filter_status');
+        Route::post('load-data','DonHangController@loadData');
 
     });
 

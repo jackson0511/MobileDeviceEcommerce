@@ -10,6 +10,8 @@ use App\DonHang;
 use App\KhachHang;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+
 class AdminController extends Controller
 {
     public function index(){
@@ -153,7 +155,7 @@ class AdminController extends Controller
                 'password.required' =>'Ban chua nhap password',
             ]);
 //        $data=$this->request->only(['email','password']);
-        if(Auth::guard('QuanTri')->attempt(['Email'=>$this->request->email,'password'=>$this->request->password])){
+        if(Auth::guard('QuanTri')->attempt(['Email'=>$this->request->email,'password'=>$this->request->password,'active'=>1])){
             return redirect('admin/trangchu');
         }else{
             return redirect()->back();
@@ -163,5 +165,41 @@ class AdminController extends Controller
         Auth::guard('QuanTri')->logout();
         return redirect('admin/dangnhap');
 
+    }
+    public function getProfile(){
+        $id=$this->request->id;
+        $quantri=QuanTri::find($id);
+        return view('modals.modal_profile',['quantri'=>$quantri]);
+    }
+    public function postProfile(){
+        $id=$this->request->id;
+        $quantri=QuanTri::find($id);
+        $ten=$this->request->ten;
+        $sdt=$this->request->sdt;
+        $message='';
+        if (!empty($this->request->checkpassword)){
+            if ($this->request->checkpassword=='on'){
+                $passwordold=$this->request->passwordold;
+                $password=$this->request->password;
+                $passwordagain=$this->request->passwordagain;
+                if(!(Hash::check($passwordold,Auth::guard('QuanTri')->user()->password))){
+                    $message= "Mat khau cu khong dung";
+                    echo json_encode(['result'=>false,'message'=>$message]);die();
+                }
+                if ($password!=$passwordagain){
+                    $message= "Mật khẩu không giống nhau";
+                    echo json_encode(['result'=>false,'message'=>$message]);die();
+                }
+                $password   =bcrypt($password);
+                $quantri->password=$password;
+            }
+        }
+        $quantri->HoTen =$ten;
+        $quantri->SoDienThoai=$sdt;
+        $success=$quantri->save();
+        if ($success){
+            $message= "Cập nhập thành công";
+            echo json_encode(['result'=>true,'message'=>$message]);die();
+        }
     }
 }

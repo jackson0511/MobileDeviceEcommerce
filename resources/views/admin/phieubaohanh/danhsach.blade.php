@@ -20,7 +20,6 @@
                     {{session('ThongBao')}}
                 </div>
             @endif
-
             <div class="card-box table-responsive">
                 <!-- filter -->
                 <div class="row" style="margin-bottom: 20px">
@@ -228,6 +227,9 @@
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
     </div>
+    <div id="loading" style="display: none">
+        <img src="images/loading.gif"  alt="">
+    </div>
     <!-- end row -->
 @endsection
 @section('script')
@@ -329,9 +331,12 @@
                 $("#form_search").submit();
             });
             $("#datatable").on('click','.view',function () {
+                $("#loading").show();
                 var id=$(this).attr('data-key');
-                $("#modal").modal('show');
-                $(".idbaohanh").text(id);
+                setTimeout(function() {
+                    $("#modal").modal('show');
+                    $(".idbaohanh").text(id);
+                }, 500);
                 $.ajax({
                     method: "POST",
                     url: 'admin/phieubaohanh/show_chitiet_baohanh',
@@ -342,6 +347,9 @@
                         if(data!=null) {
                             $(".ketqua").html(data);
                         }
+                        setTimeout(function() {
+                            $("#loading").hide();
+                        }, 500);
                     }
                 });
             });

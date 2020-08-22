@@ -16,7 +16,7 @@
                     <ul class="product style3">
                         @foreach($sanphamsale as $spsale)
                             <li class="product-item">
-                                <div class="product-thumb clearfix">
+                                <div class="product-thumb  clearfix">
                                     <a href="chitietsanpham/{{$spsale->sanpham->id}}/{{$spsale->sanpham->Ten_KhongDau}}.html">
                                         <img src="upload/sanpham/{{$spsale->sanpham->Hinh}}" alt="image">
                                     </a>
@@ -31,7 +31,7 @@
                                     @endif
                                 </div>
                                 <div class="product-info clearfix">
-                                    <span class="product-title">{{$spsale->sanpham->Ten}}</span>
+                                    <div class="product-title">{{$spsale->sanpham->Ten}}</div>
                                     <div class="price">
                                         <del>
                                             <span class="regular">{{number_format($spsale->sanpham->Gia,0,',','.').'đ'}}</span>
@@ -46,7 +46,7 @@
                                     </div>
                                 </div>
                                 <div class="add-to-cart text-center">
-                                    <a href="themgiohang/{{$spsale->sanpham->id}}">ADD TO CART</a>
+                                    <a href="themgiohang/{{$spsale->sanpham->id}}">Thêm giỏ hàng</a>
                                 </div>
                                 <a href="#" class="like"><i class="fa fa-heart-o"></i></a>
                             </li>

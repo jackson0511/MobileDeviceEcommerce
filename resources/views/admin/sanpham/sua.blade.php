@@ -249,6 +249,10 @@
             placeholder: "Select a category",
             allowClear: true
         });
+        $("#boloc").select2({
+            placeholder: "Select a filter",
+            allowClear: true
+        });
         CKEDITOR.replace( 'editor1', {
             filebrowserBrowseUrl: "admin/ckfinder/ckfinder.html",
             filebrowserImageBrowseUrl: "admin/ckfinder/ckfinder.html?type=Images",

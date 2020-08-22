@@ -41,7 +41,7 @@
                                 @endforeach
 								<div class="panel panel-info">
 									<div class="thanhtoan alert alert-primary" role="alert">
-										Thông tin thanh toán
+										Thông tin nhận hàng
 									</div>
 									<div class="panel-body">
 

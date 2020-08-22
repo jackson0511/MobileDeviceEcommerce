@@ -32,22 +32,20 @@
                         <div class="col-lg-6">
                             <h2>Thông tin sản phẩm</h2>
                             <div class="form-group">
-                                <label for="exampleFormControlSelect1">Sản Phẩm *</label>
-                                <select class="form-control" name="tensanpham" id="tensanpham">
-                                    <option value="-1">--Chọn sản phẩm--</option>
-                                    @foreach($danhmucsanpham as $dmsp)
-                                        <option value="{{$dmsp->id}}">{{$dmsp->Ten}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div class="form-group">
                                 <label for="userName">IMEI *</label>
                                 <input type="text" name="imei" parsley-trigger="change"   placeholder="Nhập imei sản phẩm" value="{{ old('imei') }}" class="form-control">
                                 <p class="text-danger" id="ketqua_check"></p>
                                 <button class="ladda-button  btn btn-default" name="check" type="button" data-style="slide-left"><span class="ladda-label">check
                                         </span><span class="ladda-spinner"></span><div class="ladda-progress" style="width: 0px;"></div></button>
-{{--                                <button class="btn btn-default" type="button" name="check">check</button>--}}
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleFormControlSelect1">Sản Phẩm *</label>
+                                <select class="form-control" disabled name="tensanpham" id="tensanpham">
+                                    <option value="-1">--Chọn sản phẩm--</option>
+                                    @foreach($danhmucsanpham as $dmsp)
+                                        <option value="{{$dmsp->id}}">{{$dmsp->Ten}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="userName">Tình trạng *</label>
@@ -147,8 +145,10 @@
                             if (data == 1) {
                                 $("#ketqua_check").html('Imei không chính xác');
                                 $("#dichvu").prop('disabled', true);
+                                $("#tensanpham").prop('disabled', true);
                             }else{
                                 $("#dichvu").removeAttr('disabled');
+                                $("#tensanpham").removeAttr('disabled');
                                 $("#ketqua_check").html('');
                             }
                         }

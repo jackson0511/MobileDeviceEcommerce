@@ -20,7 +20,7 @@
                                         </a>
                                     </div>
                                     <div class="product-info clearfix">
-                                        <span class="product-title">{{$spview->Ten}}</span>
+                                        <div class="product-title">{{$spview->Ten}}</div>
                                         <div class="price">
                                             <ins>
                                                 <span class="amount">{{number_format($spview->Gia,0,',','.').'đ'}}</span>
@@ -28,7 +28,7 @@
                                         </div>
                                     </div>
                                     <div class="add-to-cart text-center">
-                                        <a href="themgiohang/{{$spview->id}}">ADD TO CART</a>
+                                        <a href="themgiohang/{{$spview->id}}">Thêm giỏ hàng</a>
                                     </div>
                                     <a href="#" class="like"><i class="fa fa-heart-o"></i></a>
                                 </li>

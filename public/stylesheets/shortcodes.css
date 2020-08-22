@@ -899,7 +899,11 @@
 .product .product-item .product-thumb {
 	padding: 68px 0px 57px 0px;
 }
-
+/*//*/
+.product-thumb-four > a >img{
+    min-height: 291px;
+}
+/*end*/
 .product .product-item .new {
 	font-size: 18px;
 	line-height: 35px;
@@ -1172,6 +1176,7 @@
 
 .product.style2 .product-item .product-title {
 	font-size: 16px;
+    min-height: 54px;
 }
 
 .product.style2 .product-item .product-info {

@@ -32,7 +32,8 @@
                         <th>Họ Tên</th>
                         <th>Quyền</th>
                         <th>Sửa</th>
-                        <th>Xoá</th>
+                        <th>Active</th>
+                        <th>Reset Pass</th>
                     </tr>
                     </thead>
 
@@ -63,13 +64,18 @@
                                 </i>
                             </td>
                             <td>
-                                <i class="fa fa-trash">
-                                    <a href="admin/quantri/xoa/{{$qt->id}}"
-                                       onclick="return confirm('Bạn có chắc muốn xoá không?');"
-                                    >
-                                        Xoá
-                                    </a>
-                                </i>
+                                <a class="btn btn-xs {{$qt->active==1?'btn-info':'btn-danger'}}" href="admin/quantri/khoa/{{$qt->id}}"
+                                   onclick="return confirm('Bạn có chắc muốn khoá không?');"
+                                >
+                                    {{$qt->active==1?'Hoạt động':'Khoá'}}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="admin/quantri/reset/{{$qt->id}}"
+                                   onclick="return confirm('Bạn có chắc muốn khoá không?');"
+                                >
+                                    <button class="btn btn-xs btn-info">reset</button>
+                                </a>
                             </td>
                         </tr>
                     @endforeach

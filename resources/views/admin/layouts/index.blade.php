@@ -79,6 +79,10 @@
 
         <!-- content -->
             @yield('content')
+        <div id="loading" style="display: none">
+            <img src="images/loading.gif"  alt="">
+        </div>
+        <div id="data_profile"></div>
         <!-- endcontent -->
         <!-- Footer -->
         <footer class="footer text-right">
@@ -196,6 +200,24 @@
     $(document).ready(function () {
         $('#datatable').dataTable({
             processing: true,
+            scrollY:        '50vh',
+            "oLanguage":{
+                "sProcessing":   "Đang xử lý...",
+                "sLengthMenu":   "Xem _MENU_ mục",
+                "sZeroRecords":  "Không tìm thấy dòng nào phù hợp",
+                "sInfo":         "Đang xem _START_ đến _END_ trong tổng số _TOTAL_ mục",
+                "sInfoEmpty":    "Đang xem 0 đến 0 trong tổng số 0 mục",
+                "sInfoFiltered": "(được lọc từ _MAX_ mục)",
+                "sInfoPostFix":  "",
+                "sSearch":       "Tìm:",
+                "sUrl":          "",
+                "oPaginate": {
+                    "sFirst":    "Đầu",
+                    "sPrevious": "Trước",
+                    "sNext":     "Tiếp",
+                    "sLast":     "Cuối"
+                }
+            },
             pageLength: 25
         });
     });
@@ -338,5 +360,6 @@
 <script src="admin/ckeditor/ckeditor.js"></script>
 
 @yield('script')
+@include('scripts.script_profile');
 </body>
 </html>

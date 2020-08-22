@@ -30,7 +30,7 @@
     <div class="product-content product-fourcolumn clearfix">
 
       <div class="table-responsive text-center">
-        <table class="table table-bordered">
+        <table id="datatable" class="table table-bordered">
           <thead>
             <tr>
               <th scope="col">STT</th>
@@ -102,7 +102,7 @@
 
           <!-- Modal body -->
           <div class="modal-body ">
-            <table class="table table-striped table-bordered table-hover ketqua" id="dataTables-example">
+            <table class="table  table-bordered table-hover ketqua" id="dataTables-example">
 
             </table>
           </div>
@@ -141,7 +141,7 @@
             method: "POST",
             url: 'chitietdonhang',
             data: {
-                iddh:iddh,
+                id:iddh,
             },
             success: function (data) {
                 if(data!=null) {

@@ -51,7 +51,7 @@
                             <td>{{$km->NgayKetThuc}}</td>
                             <td>{{$km->quantri->HoTen}}</td>
                             <td>
-                                <a class="btn btn-xs {{$km->TrangThai==1?'btn-info':'btn-danger'}}">
+                                <a href="admin/khuyenmai/update/{{$km->id}}" class="btn btn-xs {{$km->TrangThai==1?'btn-info':'btn-danger'}}">
                                     {{$km->TrangThai==1?'Hiển thị':'Ẩn'}}
                                 </a>
                             </td>
@@ -99,6 +99,9 @@
             </div>
         </div>
     </div>
+    <div id="loading" style="display: none">
+        <img src="images/loading.gif"  alt="">
+    </div>
     <!-- end row -->
 @endsection
 @section('script')
@@ -110,9 +113,12 @@
                 }
             });
             $(".view").click(function(){
+                $("#loading").show();
                 var id=$(this).attr("data-key");
-                $("#myModal").modal('show');
-                $(".idkhuyenmai").text(id);
+                setTimeout(function() {
+                    $("#myModal").modal('show');
+                    $(".idkhuyenmai").text(id);
+                }, 500);
 
                 $.ajax({
                     method: "POST",
@@ -124,6 +130,9 @@
                         if(data!=null) {
                             $(".ketqua").html(data);
                         }
+                        setTimeout(function() {
+                            $("#loading").hide();
+                        }, 500);
                     }
                 });
             });

@@ -176,4 +176,14 @@ class KhuyenMaiController extends Controller
         }
         return redirect('admin/khuyenmai/danhsach')->with('ThongBao',' Cập nhập khuyến mãi thành công');
     }
+    public function update_status($id){
+        $khuyenmai=KhuyenMai::find($id);
+        if ($khuyenmai->TrangThai==1){
+            $khuyenmai->TrangThai=0;
+        }else{
+            $khuyenmai->TrangThai=1;
+        }
+        $khuyenmai->save();
+        return redirect('admin/khuyenmai/danhsach')->with('ThongBao',' Cập nhập trạng thái thành công');
+    }
 }

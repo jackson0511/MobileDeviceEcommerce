@@ -15,7 +15,6 @@
     <div class="row">
         <div class="col-lg-10">
             <div class="card-box">
-
                 <p class="text-muted font-13 m-b-30">
                 @if(count($errors)>0)
                     <div class="alert alert-danger">
@@ -48,7 +47,7 @@
                         </div>
                         <div class="form-group">
                             <label for="userName">IMEI</label>
-                            <input type="imei" name="imei" parsley-trigger="change"  placeholder="nhập imei sản phẩm" class="form-control" >
+                            <input type="imei" name="imei" parsley-trigger="change" value="{{$ctdh->IMEI!=null?$ctdh->IMEI:''}}" placeholder="nhập imei sản phẩm" class="form-control" >
                         </div>
                         <div class="form-group text-right m-b-0">
                             <button class="btn btn-primary waves-effect waves-light" type="submit">

@@ -23,7 +23,7 @@
 
             <div class="card-box table-responsive">
                 <!-- filter -->
-                <div class="col-lg-12 p-0 text-center">
+                <div class="col-lg-12 text-center">
                     <form class="form-inline" action="admin/donhang/danhsach" method="post">
                         {{csrf_field()}}
                         <div class="form-group">
@@ -31,7 +31,7 @@
                             <select class="form-control" name="trangthai" id="trangthai">
                                 <option
                                     @if($id==-1)
-                                        {{'selected'}}
+                                    {{'selected'}}
                                     @endif
                                     value="-1">Tất cả</option>
                                 <option
@@ -40,7 +40,7 @@
                                     @endif
                                     value="0">Chưa xử lý</option>
                                 <option
-                                    @if($id==1)
+                                @if($id==1)
                                     {{'selected'}}
                                     @endif
                                     value="1">Đã xử lý</option>
@@ -64,11 +64,11 @@
                         <button class="btn btn-default">sort</button>
                     </form>
                 </div>
-                <!-- end filtet-->
-                <table id="datatable" class="table table-striped table-bordered">
+                <!-- end filter-->
+                <table id="datatable" class="table list-order table-striped table-bordered">
                     <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>STT</th>
                         <th>Tổng tiền</th>
                         <th>Tổng tiền đã giảm</th>
                         <th>Khách hàng</th>
@@ -79,12 +79,10 @@
                         <th>CTĐH</th>
                     </tr>
                     </thead>
-
-
                     <tbody>
-                    @foreach($donhang as $dh)
+                    @foreach($donhang as $key => $dh)
                         <tr align="center" >
-                            <td>{{$dh->id}}</td>
+                            <td>{{$key+1}}</td>
                             <td>{{number_format($dh->TongTien,0,',','.').'đ'}}</td>
                             <td>{{number_format($dh->TongTien_DaGiam,0,',','.').'đ'}}</td>
                             <td>{{$dh->khachhang->HoTen}}</td>
@@ -168,20 +166,26 @@
             </div>
         </div>
     </div>
+    <div id="loading" style="display: none">
+        <img src="images/loading.gif"  alt="">
+    </div>
     <!-- end row -->
 @endsection
 @section('script')
     <script type="text/javascript">
-        $(document).ready(function(){
+        $(document).ready(function() {
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
             $(".view").click(function(){
+                $("#loading").show();
                 var id=$(this).attr("data-key");
-                $("#myModal").modal('show');
-                $(".idhoadon").text(id);
+                setTimeout(function() {
+                    $("#myModal").modal('show');
+                    $(".idhoadon").text(id);
+                }, 500);
                 $.ajax({
                     method: "POST",
                     url: 'ajax/chitietdonhang',
@@ -192,6 +196,10 @@
                         if(data!=null) {
                             $(".ketqua").html(data);
                         }
+                        setTimeout(function() {
+                            $("#loading").hide();
+                        }, 500);
+
                     }
                 });
             });

@@ -43,7 +43,7 @@ class HomeController extends Controller
     }
 
     public function index(){
-        $sanpham=SanPham::where('TrangThai',1)->where('TinhTrang',1)->orderByRaw('id DESC')->get();
+        $sanpham=SanPham::where('TrangThai',1)->where('TinhTrang',1)->orderByRaw('id DESC')->get()->random(24);
         $tintuc=TinTuc::orderByRaw('id DESC')->take(4)->get();
         $iphone=SanPham::where('idTL',1)->orderByRaw('id DESC')->get()->random(8);;
         $ipad=SanPham::where('idTL',2)->orderByRaw('id DESC')->take(8)->get();
@@ -116,7 +116,7 @@ class HomeController extends Controller
         $now=Carbon::now();
         $ngay=$now->toDateString();
         $ctkhuyenmai=ChiTietKhuyenMai::where('idSP',$id)->get();
-        $sanphamlienquan=SanPham::where('idTL',$sanpham->idTL)->where('TrangThai',1)->get()->random(1);
+        $sanphamlienquan=SanPham::where('idTL',$sanpham->idTL)->where('TrangThai',1)->get()->random(4);
         return view('frontend.subpage.chitietsanpham',
             [
                 'sanpham'           =>$sanpham,
@@ -134,7 +134,7 @@ class HomeController extends Controller
         $arr_gia='tat-ca-1';
         $sim='tat-ca-3';
         $theloai1=TheLoai::find($id);
-        $sanpham=SanPham::where('idTL',$id)->orderBy('id','desc')->paginate(8);
+        $sanpham=SanPham::where('idTL',$id)->orderBy('id','asc')->paginate(8);
         $array_bl=[];
         if($this->request->has('gia') ) {
             $arr_gia = $this->request->gia;
@@ -479,7 +479,7 @@ class HomeController extends Controller
     }
     //chi tiet don hang
     public function getChitietdonhang(){
-        $id=$this->request->iddh;
+        $id=$this->request->id;
         $chitietdonhang=ChiTietDonHang::where('idDH',$id)->get();
         echo     "<thead>
            <tr align='center'>
@@ -506,7 +506,22 @@ class HomeController extends Controller
                         <p><?=$i?> :<?=$vl?></p>
                         <?php $i++;} ?>
                 </th>
-                <th><?=$cthd->GiamGia!=null?$cthd->GiamGia:'No'?></th>
+                <th>
+                    <?php
+                    if ($cthd->GiamGia!=null) {
+                        if ($cthd->TrangThai_KM == 1) {
+                            echo $cthd->GiamGia;
+                        } else {
+                            $id = $cthd->GiamGia;
+                            $sanpham = SanPham::find($id);
+                            echo 'tặng' . ' ' . $sanpham->Ten;
+                        }
+                    }
+                    else{
+                        echo 'No';
+                    }
+                    ?>
+                </th>
             </tr>
          <?php
         }

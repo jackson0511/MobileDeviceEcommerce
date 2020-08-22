@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\QuanTri;
 use App\Quyen;
+use Illuminate\Support\Facades\Auth;
+use Mail;
 class QuanTriController extends Controller
 {
     //
     public function getList(){
-        $quantri=QuanTri::all();
+        $quantri=QuanTri::where('id','!=', Auth::guard('QuanTri')->user()->id)->get();
         return view('admin.quantri.danhsach',['quantri'=>$quantri]);
     }
     public function getAdd(){
@@ -70,19 +72,19 @@ class QuanTriController extends Controller
             ]);
         $quantri->HoTen=$this->request->ten;
         $quantri->SoDienThoai=$this->request->sdt;
-        if($this->request->password && $this->request->passwordagain){
-            $this->validate($this->request,
-                [
-                'password'      =>'required',
-                'passwordagain' =>'required|same:password',
-                ],
-                [
-                'password.required'  =>'Bạn chưa nhập mật khẩu',
-                'passwordagain.required'  =>'Bạn chưa nhập lại mật khẩu',
-                'passwordagain.same'  =>'Mật khẩu không giống nhau',
-                ]);
-            $quantri->password=bcrypt($this->request->password);
-        }
+//        if($this->request->password && $this->request->passwordagain){
+//            $this->validate($this->request,
+//                [
+//                'password'      =>'required',
+//                'passwordagain' =>'required|same:password',
+//                ],
+//                [
+//                'password.required'  =>'Bạn chưa nhập mật khẩu',
+//                'passwordagain.required'  =>'Bạn chưa nhập lại mật khẩu',
+//                'passwordagain.same'  =>'Mật khẩu không giống nhau',
+//                ]);
+//            $quantri->password=bcrypt($this->request->password);
+//        }
         $quantri->save();
         if($quantri) {
             $quyen = $this->request->quyen;
@@ -92,5 +94,34 @@ class QuanTriController extends Controller
             }
         }
         return redirect('admin/quantri/danhsach')->with('ThongBao','Cập nhập thành công');
+    }
+    public function resetPass($id){
+        $quantri=QuanTri::find($id);
+        $email=$quantri->Email;
+        $code=str_random(4);
+        $data=[
+            'name'      =>$quantri->HoTen,
+            'code'      =>$code,
+        ];
+        //gui mail
+        Mail::send('frontend.email-template.reset_pass',$data, function($message) use ($email){
+            $message->from('thuan.dh51600602@gmail.com','Đức Thuận');
+            $message->to($email, 'Reset Mật Khẩu');
+            $message->subject('Reset Mật Khẩu!');
+        });
+        $quantri->password=bcrypt($code);
+        $quantri->save();
+        return redirect('admin/quantri/danhsach')->with('ThongBao','Reset thành công');
+    }
+    public function getKhoa($id){
+        $quantri=QuanTri::find($id);
+        if($quantri->active==0){
+            return redirect('admin/quantri/danhsach')->with('ThongBao','Tài khoản chưa được kích hoạt ');
+        }else{
+            $active=0;
+            $quantri->active=$active;
+            $quantri->save();
+            return redirect('admin/quantri/danhsach')->with('ThongBao','Khoá thành công');
+        }
     }
 }

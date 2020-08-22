@@ -39,29 +39,18 @@
                 <ul class="product style2">
                     @foreach($sanpham as $sp)
                     <li class="product-item">
-                        <div class="product-thumb clearfix">
+                        <div class="product-thumb product-thumb-four clearfix">
                             <a href="chitietsanpham/{{$sp->id}}/{{$sp->Ten_KhongDau}}.html">
                                 <img src="upload/sanpham/{{$sp->Hinh}}" alt="image">
                             </a>
                         </div>
                         <div class="product-info clearfix">
-                            <span class="product-title">{{$sp->Ten}}</span>
+                            <div class="product-title">{{$sp->Ten}}</div>
                             <div class="price">
                                 <ins>
                                     <span class="amount">{{\App\Helpers\FormatPrice::formatPrice($sp->Gia)}}</span>
                                 </ins>
                             </div>
-                            <ul class="flat-color-list">
-                                <li>
-                                    <a href="#" class="red"></a>
-                                </li>
-                                <li>
-                                    <a href="#" class="blue"></a>
-                                </li>
-                                <li>
-                                    <a href="#" class="black"></a>
-                                </li>
-                            </ul>
                         </div>
                         <div class="add-to-cart text-center">
                             <a href="#">Thêm giỏ hàng</a>

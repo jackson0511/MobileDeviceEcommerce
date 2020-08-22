@@ -57,7 +57,7 @@
                         <tr align="center" >
                             <td>{{$key+1}}</td>
                             <td>{{$ttbh->sanpham->Ten}}</td>
-                            <td>{{$ttbh->sanpham->Gia}}</td>
+                            <td>{{number_format($ttbh->sanpham->Gia)}}</td>
                             <td>{{$ttbh->IMEI}}</td>
                             <td>{{$ttbh->BaoHanh}}</td>
                             <td>{{$ttbh->NgayApDung}}</td>
@@ -111,6 +111,9 @@
             </div>
         </div>
     </div>
+    <div id="loading" style="display: none">
+        <img src="images/loading.gif"  alt="">
+    </div>
     <!-- end row -->
 @endsection
 @section('script')
@@ -122,9 +125,12 @@
                 }
             });
             $(".view").click(function () {
+                $("#loading").show();
                 var id=$(this).attr('data-key');
-                $("#myModal").modal('show');
-                $(".idbaohanh").text(id);
+                setTimeout(function() {
+                    $("#myModal").modal('show');
+                    $(".idbaohanh").text(id);
+                }, 500);
                 $.ajax({
                     method: "POST",
                     url: 'admin/thongtinbaohanh/option_baohanh',
@@ -135,6 +141,9 @@
                         if(data!=null) {
                             $(".ketqua").html(data);
                         }
+                        setTimeout(function() {
+                            $("#loading").hide();
+                        }, 500);
                     }
                 });
             });

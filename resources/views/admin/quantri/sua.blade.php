@@ -33,14 +33,14 @@
                             <label for="userName">Email</label>
                             <input type="email" name="email" parsley-trigger="change" required  placeholder="Nhập email" disabled value="{{$quantri->Email}}" class="form-control" >
                         </div>
-                        <div class="form-group">
-                            <label for="userName">Mật khẩu</label>
-                            <input type="password" name="password" parsley-trigger="change"   placeholder="Nhập password"  class="form-control" >
-                        </div>
-                        <div class="form-group">
-                            <label for="userName">Nhập lại mật khẩu</label>
-                            <input type="password" name="passwordagain" parsley-trigger="change"   placeholder="Nhập lại password"  class="form-control" >
-                        </div>
+{{--                        <div class="form-group">--}}
+{{--                            <label for="userName">Mật khẩu</label>--}}
+{{--                            <input type="password" name="password" parsley-trigger="change"   placeholder="Nhập password"  class="form-control" >--}}
+{{--                        </div>--}}
+{{--                        <div class="form-group">--}}
+{{--                            <label for="userName">Nhập lại mật khẩu</label>--}}
+{{--                            <input type="password" name="passwordagain" parsley-trigger="change"   placeholder="Nhập lại password"  class="form-control" >--}}
+{{--                        </div>--}}
                         <div class="form-group">
                             <label for="userName">Họ và tên</label>
                             <input type="text" name="ten" parsley-trigger="change"  required  placeholder="Nhập họ tên" value="{{$quantri->HoTen}}"  class="form-control" >

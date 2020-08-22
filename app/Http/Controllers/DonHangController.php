@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\DonHang;
 use App\ChiTietDonHang;
+use Illuminate\Support\Facades\DB;
 use PDF;
 use App\SanPham;
 class DonHangController extends Controller
@@ -68,7 +69,7 @@ class DonHangController extends Controller
 
         $ctdh->IMEI=$this->request->imei;
         $ctdh->save();
-        return redirect('admin/donhang/danhsach')->with('ThongBao','Thêm imei thành công');
+        return redirect('admin/donhang/xulydonhang/'.$ctdh->idDH)->with('ThongBao','Thêm imei thành công');
 
     }
     public function getXulydonhang($id){
@@ -77,85 +78,158 @@ class DonHangController extends Controller
     }
     public function postXulydonhang($id){
         $donhang=DonHang::find($id);
+        $array_imei=[];
+        $trangthai=$this->request->trangthai;
         foreach ($donhang->chitietdonhang as $chitiet) {
-            if($chitiet->IMEI!=null ){
-                if($donhang->TrangThai==4){
-                    return redirect('admin/donhang/danhsach')->with('ThongBao','Đơn hàng đã được huỷ');
-                }elseif($donhang->TrangThai==3){
-                    return redirect('admin/donhang/danhsach')->with('ThongBao','Đơn hàng đã được giao');
-                }
-                else{
-                    $trangthai=$this->request->trangthai;
+            if ($chitiet->IMEI!=null) {
+                array_unshift($array_imei, $chitiet->IMEI);
+            }
+        }
+        if ($trangthai==4){
+            $donhang->TrangThai=4;
+            $donhang->save();
+            return redirect('admin/donhang/danhsach')->with('ThongBao', 'Cập nhập trạng thái đơn hàng thành công');
+        }else {
+            if (count($array_imei) == count($donhang->chitietdonhang)) {
+                if ($donhang->TrangThai == 4) {
+                    return redirect('admin/donhang/danhsach')->with('ThongBao', 'Đơn hàng đã được huỷ');
+                } elseif ($donhang->TrangThai == 3) {
+                    return redirect('admin/donhang/danhsach')->with('ThongBao', 'Đơn hàng đã được giao');
+                } else {
+//                $trangthai=$this->request->trangthai;
                     //tru so luong san pham trong don hang
-                    if($trangthai==1){
-                        $this->update_product($id);
+                    if ($trangthai == 1) {
+//                    $this->update_product($id);
+                        foreach ($donhang->chitietdonhang as $ctdh) {
+                            //so luong trong hoa don
+                            $soluong = $ctdh->SoLuong;
+                            $idsp = $ctdh->idSP;
+
+                            $sanpham = SanPham::find($idsp);
+                            //so luong trong san pham
+                            $slsanpham = $sanpham->SoLuong;
+
+                            //so luong san pham con lai
+                            if ($slsanpham >= $soluong) {
+                                $slsanphamconlai = $slsanpham - $soluong;
+                            } else {
+                                return redirect('admin/donhang/danhsach')->with('ThongBao', 'Số lượng sản phẩm không đủ');
+                                die();
+                            }
+                            //update lai so luong san pham
+                            $sanpham->SoLuong = $slsanphamconlai;
+
+                            $sanpham->pay = $sanpham->pay + $soluong;
+                            $sanpham->save();
+                        }
                     }
-                    if($trangthai==2 && $donhang->TrangThai==0){
-                        $this->update_product($id);
+                    if ($trangthai == 2 && $donhang->TrangThai == 0) {
+                        foreach ($donhang->chitietdonhang as $ctdh) {
+                            //so luong trong hoa don
+                            $soluong = $ctdh->SoLuong;
+                            $idsp = $ctdh->idSP;
+
+                            $sanpham = SanPham::find($idsp);
+                            //so luong trong san pham
+                            $slsanpham = $sanpham->SoLuong;
+
+                            //so luong san pham con lai
+                            if ($slsanpham >= $soluong) {
+                                $slsanphamconlai = $slsanpham - $soluong;
+                            } else {
+                                return redirect('admin/donhang/danhsach')->with('ThongBao', 'Số lượng sản phẩm không đủ');
+                                die();
+                            }
+                            //update lai so luong san pham
+                            $sanpham->SoLuong = $slsanphamconlai;
+
+                            $sanpham->pay = $sanpham->pay + $soluong;
+                            $sanpham->save();
+                        }
                     }
-                    if($trangthai==3 && $donhang->TrangThai==0){
-                        $this->update_product($id);
+                    if ($trangthai == 3 && $donhang->TrangThai == 0) {
+                        foreach ($donhang->chitietdonhang as $ctdh) {
+                            //so luong trong hoa don
+                            $soluong = $ctdh->SoLuong;
+                            $idsp = $ctdh->idSP;
+
+                            $sanpham = SanPham::find($idsp);
+                            //so luong trong san pham
+                            $slsanpham = $sanpham->SoLuong;
+
+                            //so luong san pham con lai
+                            if ($slsanpham >= $soluong) {
+                                $slsanphamconlai = $slsanpham - $soluong;
+                            } else {
+                                return redirect('admin/donhang/danhsach')->with('ThongBao', 'Số lượng sản phẩm không đủ');
+                                die();
+                            }
+                            //update lai so luong san pham
+                            $sanpham->SoLuong = $slsanphamconlai;
+
+                            $sanpham->pay = $sanpham->pay + $soluong;
+                            $sanpham->save();
+                        }
                     }
-                    if($trangthai==3){
+                    if ($trangthai == 3) {
                         Carbon::setLocale('vi');
-                        $now=Carbon::now();
-                        $now1=Carbon::now();
-                        $ngay=$now->toDateString();
-                        $ngayketthuc6=$now1->addMonth(6);
-                        $ngayketthuc12=$now->addMonth(12);
-                        foreach ($donhang->chitietdonhang as $ctdh){
-                            $thongtinbaohanh=new ThongTinBaoHanh();
-                            if ($ctdh->SoLuong>1){
-                                $sanpham=SanPham::find($ctdh->idSP);
-                                for ($i=0;$i<$ctdh->SoLuong;$i++){
-                                    $thongtinbaohanh=new ThongTinBaoHanh();
-                                    $arr_imei=explode('/',$ctdh->IMEI);
-                                    $thongtinbaohanh->IMEI=$arr_imei[$i];
-                                    $thongtinbaohanh->idSP=$ctdh->idSP;
-                                    $thongtinbaohanh->idDH=$ctdh->idDH;
-                                    $thongtinbaohanh->NgayApDung=$ngay;
-                                    if($sanpham->baohanh->Ten=='6 tháng'){
-                                        $thongtinbaohanh->NgayKetThuc=$ngayketthuc6;
-                                    }elseif($sanpham->baohanh->Ten=='6 tháng-Phụ kiện') {
-                                        $thongtinbaohanh->NgayKetThuc=$ngayketthuc6;
-                                    }elseif($sanpham->baohanh->Ten=='12 tháng-Phụ kiện') {
-                                        $thongtinbaohanh->NgayKetThuc=$ngayketthuc12;
-                                    }else{
-                                        $thongtinbaohanh->NgayKetThuc=$ngayketthuc12;
+                        $now = Carbon::now();
+                        $now1 = Carbon::now();
+                        $ngay = $now->toDateString();
+                        $ngayketthuc6 = $now1->addMonth(6);
+                        $ngayketthuc12 = $now->addMonth(12);
+                        foreach ($donhang->chitietdonhang as $ctdh) {
+                            $thongtinbaohanh = new ThongTinBaoHanh();
+                            if ($ctdh->SoLuong > 1) {
+                                $sanpham = SanPham::find($ctdh->idSP);
+                                for ($i = 0; $i < $ctdh->SoLuong; $i++) {
+                                    $thongtinbaohanh = new ThongTinBaoHanh();
+                                    $arr_imei = explode('/', $ctdh->IMEI);
+                                    $thongtinbaohanh->IMEI = $arr_imei[$i];
+                                    $thongtinbaohanh->idSP = $ctdh->idSP;
+                                    $thongtinbaohanh->idDH = $ctdh->idDH;
+                                    $thongtinbaohanh->NgayApDung = $ngay;
+                                    if ($sanpham->baohanh->Ten == '6 tháng') {
+                                        $thongtinbaohanh->NgayKetThuc = $ngayketthuc6;
+                                    } elseif ($sanpham->baohanh->Ten == '6 tháng-Phụ kiện') {
+                                        $thongtinbaohanh->NgayKetThuc = $ngayketthuc6;
+                                    } elseif ($sanpham->baohanh->Ten == '12 tháng-Phụ kiện') {
+                                        $thongtinbaohanh->NgayKetThuc = $ngayketthuc12;
+                                    } else {
+                                        $thongtinbaohanh->NgayKetThuc = $ngayketthuc12;
                                     }
-                                    $thongtinbaohanh->BaoHanh=$sanpham->baohanh->Ten;
+                                    $thongtinbaohanh->BaoHanh = $sanpham->baohanh->Ten;
                                     $thongtinbaohanh->save();
                                 }
-                            }else{
-                                $sanpham=SanPham::find($ctdh->idSP);
-                                $thongtinbaohanh->IMEI=$ctdh->IMEI;
-                                $thongtinbaohanh->idSP=$ctdh->idSP;
-                                $thongtinbaohanh->idDH=$ctdh->idDH;
-                                $thongtinbaohanh->NgayApDung=$ngay;
-                                if($sanpham->baohanh->Ten=='6 tháng'){
-                                    $thongtinbaohanh->NgayKetThuc=$ngayketthuc6;
-                                }elseif($sanpham->baohanh->Ten=='6 tháng-Phụ kiện') {
-                                    $thongtinbaohanh->NgayKetThuc=$ngayketthuc6;
-                                }elseif($sanpham->baohanh->Ten=='12 tháng-Phụ kiện') {
-                                    $thongtinbaohanh->NgayKetThuc=$ngayketthuc12;
-                                }else{
-                                    $thongtinbaohanh->NgayKetThuc=$ngayketthuc12;
+                            } else {
+                                $sanpham = SanPham::find($ctdh->idSP);
+                                $thongtinbaohanh->IMEI = $ctdh->IMEI;
+                                $thongtinbaohanh->idSP = $ctdh->idSP;
+                                $thongtinbaohanh->idDH = $ctdh->idDH;
+                                $thongtinbaohanh->NgayApDung = $ngay;
+                                if ($sanpham->baohanh->Ten == '6 tháng') {
+                                    $thongtinbaohanh->NgayKetThuc = $ngayketthuc6;
+                                } elseif ($sanpham->baohanh->Ten == '6 tháng-Phụ kiện') {
+                                    $thongtinbaohanh->NgayKetThuc = $ngayketthuc6;
+                                } elseif ($sanpham->baohanh->Ten == '12 tháng-Phụ kiện') {
+                                    $thongtinbaohanh->NgayKetThuc = $ngayketthuc12;
+                                } else {
+                                    $thongtinbaohanh->NgayKetThuc = $ngayketthuc12;
                                 }
-                                $thongtinbaohanh->BaoHanh=$sanpham->baohanh->Ten;
+                                $thongtinbaohanh->BaoHanh = $sanpham->baohanh->Ten;
                                 $thongtinbaohanh->save();
                             }
                         }
                     }
-                    $donhang->TrangThai=$trangthai;
+                    $donhang->TrangThai = $trangthai;
                 }
                 $donhang->save();
-                return redirect('admin/donhang/danhsach')->with('ThongBao','Cập nhập trạng thái đơn hàng thành công');
+                return redirect('admin/donhang/danhsach')->with('ThongBao', 'Cập nhập trạng thái đơn hàng thành công');
 
-            }else{
-                return redirect('admin/donhang/danhsach')->with('ThongBao','Không thể cập nhập trạng thái vì còn sản phẩm chưa cập nhập imei');
+            } else {
+                return redirect('admin/donhang/danhsach')->with('ThongBao', 'Không thể cập nhập trạng thái vì còn sản phẩm chưa cập nhập imei');
             }
         }
-
     }
     public function getXulyhuy($id){
         $donhang=DonHang::find($id);
@@ -167,6 +241,8 @@ class DonHangController extends Controller
                 $soluong=$ctdh->SoLuong;
                 $idsp=$ctdh->idSP;
 
+                //xoa imei
+                $ctDH=ChiTietDonHang::find($ctdh->id);
 
                 $sanpham=SanPham::find($idsp);
                 //so luong trong san pham
@@ -178,8 +254,14 @@ class DonHangController extends Controller
 
                 //update lai so luong san pham
                 $sanpham->SoLuong=$slsanphamconlai;
-                $sanpham->pay=$pay-$soluong;
+                if ($pay-$soluong<0){
+                    $sanpham->pay = 0;
+                }else {
+                    $sanpham->pay = $pay - $soluong;
+                }
 
+                $ctDH->IMEI='';
+                $ctDH->save();
                 $sanpham->save();
             }
         }
@@ -223,15 +305,15 @@ class DonHangController extends Controller
             $soluong=$ctdh->SoLuong;
             $idsp=$ctdh->idSP;
 
-
             $sanpham=SanPham::find($idsp);
             //so luong trong san pham
             $slsanpham=$sanpham->SoLuong;
+
             //so luong san pham con lai
             if($slsanpham>=$soluong){
                 $slsanphamconlai=$slsanpham-$soluong;
-            }else{
-                return redirect('admin/donhang/danhsach')->with('ThongBao','Số lượng sản phẩm không đủ');
+            } else{
+                return redirect('admin/donhang/danhsach')->with('ThongBao','Số lượng sản phẩm không đủ');die();
             }
             //update lai so luong san pham
             $sanpham->SoLuong=$slsanphamconlai;

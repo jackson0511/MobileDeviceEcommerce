@@ -294,13 +294,13 @@
                         <ul class="product style2">
                             @foreach($sanphamlienquan as $splq)
                                 <li class="product-item">
-                                    <div class="product-thumb clearfix">
+                                    <div class="product-thumb product-thumb-four clearfix">
                                         <a href="chitietsanpham/{{$splq->id}}/{{$splq->Ten_KhongDau}}.html">
                                             <img src="upload/sanpham/{{$splq->Hinh}}" alt="image">
                                         </a>
                                     </div>
                                     <div class="product-info clearfix">
-                                        <span class="product-title">{{$splq->Ten}}</span>
+                                        <div class="product-title">{{$splq->Ten}}</div>
                                         <div class="price">
                                             <ins>
                                                 <span class="amount">{{number_format($splq->Gia,0,',','.').'đ'}}</span>
@@ -308,7 +308,7 @@
                                         </div>
                                     </div>
                                     <div class="add-to-cart text-center">
-                                        <a href="#">THÊM GIỎ HÀNG</a>
+                                        <a href="#">Thêm giỏ hàng</a>
                                     </div>
                                     <a href="#" class="like"><i class="fa fa-heart-o"></i></a>
                                 </li>

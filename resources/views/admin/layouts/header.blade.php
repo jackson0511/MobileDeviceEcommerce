@@ -36,7 +36,7 @@
                     <a href="" class="dropdown-toggle waves-effect waves-light profile" data-toggle="dropdown" aria-expanded="true"><img src="admin/assets/images/users/avatar-1.jpg" alt="user-img" class="img-circle"> </a>
                     <ul class="dropdown-menu">
                         <li><a href="javascript:void(0)"><i class="ti-user text-custom m-r-10"></i> {{Auth::guard('QuanTri')->user()->HoTen}}</a></li>
-                        <li><a href="javascript:void(0)"><i class="ti-user text-custom m-r-10"></i> Profile</a></li>
+                        <li id="profile" data-id="{{Auth::guard('QuanTri')->user()->id}}"><a href="javascript:void(0)"><i class="ti-user text-custom m-r-10" ></i> Profile</a></li>
                         <li class="divider"></li>
                         <li><a href="admin/logout"><i class="ti-power-off text-danger m-r-10"></i> Logout</a></li>
                     </ul>

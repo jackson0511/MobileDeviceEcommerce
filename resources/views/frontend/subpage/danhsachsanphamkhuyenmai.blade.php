@@ -40,7 +40,7 @@
                     <ul class="product style2">
                         @foreach($sanphamsale as $sp)
                         <li class="product-item">
-                            <div class="product-thumb clearfix">
+                            <div class="product-thumb product-thumb-four clearfix">
                                 <a href="chitietsanpham/{{$sp->sanpham->id}}/{{$sp->sanpham->Ten_KhongDau}}.html">
                                     <img src="upload/sanpham/{{$sp->sanpham->Hinh}}" alt="image">
                                 </a>
@@ -55,7 +55,7 @@
                                 @endif
                             </div>
                             <div class="product-info clearfix">
-                                <span class="product-title">{{$sp->sanpham->Ten}}</span>
+                                <div class="product-title">{{$sp->sanpham->Ten}}</div>
                                 <div class="price">
                                     <del>
                                         <span class="regular">{{number_format($sp->sanpham->Gia,0,',','.').'đ'}}</span>

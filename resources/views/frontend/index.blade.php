@@ -27,8 +27,6 @@
     <!-- Animation Style -->
     <link rel="stylesheet" type="text/css" href="stylesheets/animate.css">
 
-
-
     <!-- Favicon and touch icons  -->
     <link href="icon/ducthuan.png" rel="shortcut icon">
     <style>

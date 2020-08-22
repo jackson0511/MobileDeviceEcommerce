@@ -18,108 +18,108 @@
                     <ul class="product style2 isotope-product clearfix">
                         @foreach($ipad as $ipad)
                             <li class="product-item ipad ">
-                                <div class="product-thumb clearfix">
+                                <div class="product-thumb product-thumb-four clearfix">
                                     <a href="chitietsanpham/{{$ipad->id}}/{{$ipad->Ten_KhongDau}}.html">
                                         <img src="upload/sanpham/{{$ipad->Hinh}}" alt="image">
                                     </a>
                                 </div>
                                 <div class="product-info clearfix">
-                                    <span class="product-title">{{$ipad->Ten}}</span>
+                                    <div class="product-title">{{$ipad->Ten}}</div>
                                     <div class="price">
                                         <ins>
-                                            <span class="amount">{{number_format($ipad->Gia,0,',','.'),'đ'}}</span>
+                                            <span class="amount">{{number_format($ipad->Gia,0,',','.').'đ'}}</span>
                                         </ins>
                                     </div>
                                 </div>
                                 <div class="add-to-cart text-center">
-                                    <a href="themgiohang/{{$ipad->id}}">ADD TO CART</a>
+                                    <a href="themgiohang/{{$ipad->id}}">Thêm giỏ hàng</a>
                                 </div>
                                 <a href="#" class="like"><i class="fa fa-heart-o"></i></a>
                             </li>
                         @endforeach
                         @foreach($iphone as $iphone)
                             <li class="product-item iphone ">
-                                <div class="product-thumb clearfix">
+                                <div class="product-thumb product-thumb-four clearfix">
                                     <a href="chitietsanpham/{{$iphone->id}}/{{$iphone->Ten_KhongDau}}.html" class="product-thumb">
                                         <img src="upload/sanpham/{{$iphone->Hinh}}" alt="image">
                                     </a>
                                 </div>
                                 <div class="product-info clearfix">
-                                    <span class="product-title">{{$iphone->Ten}}</span>
+                                    <div class="product-title">{{$iphone->Ten}}</div>
                                     <div class="price">
                                         <ins>
-                                            <span class="amount">{{number_format($iphone->Gia,0,',','.'),'đ'}}</span>
+                                            <span class="amount">{{number_format($iphone->Gia,0,',','.').'đ'}}</span>
                                         </ins>
                                     </div>
                                 </div>
                                 <div class="add-to-cart text-center">
-                                    <a href="themgiohang/{{$iphone->id}}">ADD TO CART</a>
+                                    <a href="themgiohang/{{$iphone->id}}">Thêm giỏ hàng</a>
                                 </div>
                                 <a href="#" class="like"><i class="fa fa-heart-o"></i></a>
                             </li>
                         @endforeach
                         @foreach($applewatch as $aw)
                             <li class="product-item applewatch">
-                                <div class="product-thumb clearfix">
+                                <div class="product-thumb product-thumb-four clearfix">
                                     <a href="chitietsanpham/{{$aw->id}}/{{$aw->Ten_KhongDau}}.html" class="product-thumb">
                                         <img src="upload/sanpham/{{$aw->Hinh}}" alt="image">
                                     </a>
                                     <span class="new sale">Sale</span>
                                 </div>
                                 <div class="product-info clearfix">
-                                    <span class="product-title">{{$aw->Ten}}</span>
+                                    <div class="product-title">{{$aw->Ten}}</div>
                                     <div class="price">
                                         <ins>
-                                            <span class="amount">{{number_format($aw->Gia,0,',','.'),'đ'}}</span>
+                                            <span class="amount">{{number_format($aw->Gia,0,',','.').'đ'}}</span>
                                         </ins>
                                     </div>
                                 </div>
                                 <div class="add-to-cart text-center">
-                                    <a href="themgiohang/{{$aw->id}}">ADD TO CART</a>
+                                    <a href="themgiohang/{{$aw->id}}">Thêm giỏ hàng</a>
                                 </div>
                                 <a href="#" class="like"><i class="fa fa-heart-o"></i></a>
                             </li>
                         @endforeach
                         @foreach($macbook as $mac)
                             <li class="product-item macbook">
-                                <div class="product-thumb clearfix">
+                                <div class="product-thumb product-thumb-four clearfix">
                                     <a href="chitietsanpham/{{$mac->id}}/{{$mac->Ten_KhongDau}}.html" class="product-thumb">
                                         <img src="upload/sanpham/{{$mac->Hinh}}" alt="image">
                                     </a>
                                     <span class="new">New</span>
                                 </div>
                                 <div class="product-info clearfix">
-                                    <span class="product-title">{{$mac->Ten}}</span>
+                                    <div class="product-title">{{$mac->Ten}}</div>
                                     <div class="price">
                                         <ins>
-                                            <span class="amount">{{number_format($mac->Gia,0,',','.'),'đ'}}</span>
+                                            <span class="amount">{{number_format($mac->Gia,0,',','.').'đ'}}</span>
                                         </ins>
                                     </div>
                                 </div>
                                 <div class="add-to-cart text-center">
-                                    <a href="themgiohang/{{$mac->id}}">ADD TO CART</a>
+                                    <a href="themgiohang/{{$mac->id}}">Thêm giỏ hàng</a>
                                 </div>
                                 <a href="#" class="like"><i class="fa fa-heart-o"></i></a>
                             </li>
                         @endforeach
                         @foreach($phukien as $pk)
                             <li class="product-item phukien">
-                                 <div class="product-thumb clearfix">
+                                 <div class="product-thumb product-thumb-four clearfix">
                                     <a href="chitietsanpham/{{$pk->id}}/{{$pk->Ten_KhongDau}}.html" class="product-thumb">
                                          <img src="upload/sanpham/{{$pk->Hinh}}" alt="image">
                                     </a>
                                     <span class="new">New</span>
                                  </div>
                                  <div class="product-info clearfix">
-                                     <span class="product-title">{{$pk->Ten}}</span>
+                                     <div class="product-title">{{$pk->Ten}}</div>
                                      <div class="price">
                                          <ins>
-                                             <span class="amount">{{number_format($pk->Gia,0,',','.'),'đ'}}</span>
+                                             <span class="amount">{{number_format($pk->Gia,0,',','.').'đ'}}</span>
                                          </ins>
                                       </div>
                                  </div>
                                  <div class="add-to-cart text-center">
-                                    <a href="themgiohang/{{$pk->id}}">ADD TO CART</a>
+                                    <a href="themgiohang/{{$pk->id}}">Thêm giỏ hàng</a>
                                  </div>
                                     <a href="#" class="like"><i class="fa fa-heart-o"></i></a>
                              </li>

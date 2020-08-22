@@ -108,19 +108,19 @@ class AjaxController extends Controller
         $chitietkhuyenmai=ChiTietKhuyenMai::where('idKM',$id)->get();
         echo   "<thead>
                    <tr align='center'>
-                   <th>ID</th>
+                   <th>STT</th>
                    <th>Tên</th>
                     <th>Hình</th>
                    <th>Gia_Sale</th>
                    <th>Chi tiết</th>
                    </tr>
                  </thead>";
-        foreach ($chitietkhuyenmai as $ctkm) {?>
+        foreach ($chitietkhuyenmai as $key => $ctkm) {?>
             <tr align='center'>
-                <th><?=$ctkm->id?></th>
+                <th><?=$key+1?></th>
                 <th><a href='chitietsanpham/<?=$ctkm->sanpham->id?>'><?=$ctkm->sanpham->Ten?></a></th>
                 <th><img width='70px' height='70px' src='upload/sanpham/<?=$ctkm->sanpham->Hinh?>' ></th>
-                <th><?=$ctkm->Gia_Sale?></th>
+                <th><?=number_format($ctkm->Gia_Sale,0,',','.').'đ'?></th>
                 <th>
                     <?php
                     if ($ctkm->TrangThai==1){
@@ -380,9 +380,9 @@ class AjaxController extends Controller
         <table class="table ">
             <thead>
             <tr>
-                <th style='font-weight: bold'>Thuộc tính</th>
+                <td height="50px" style='font-weight: bold'>Thuộc tính</td>
                 <?php foreach ($sanpham as $sp1) {
-                echo "<th width='35%' style='font-weight: bold'>$sp1->Ten</th>";
+                echo "<td width='35%' style='font-weight: bold'>$sp1->Ten</td>";
                 }?>
             </tr>
             </thead>
@@ -391,7 +391,7 @@ class AjaxController extends Controller
                     <td>
                         <table class="table">
                             <?php foreach ($arr_tt as $tt) {
-                                echo "<tr><td height='50px'>$tt</td></tr>";
+                                echo "<tr><td height='70px'>$tt</td></tr>";
                             }?>
                         </table>
                     </td>
@@ -399,7 +399,7 @@ class AjaxController extends Controller
                         echo "<td>
                                 <table class='table'>";
                          foreach($sp->chitietthuoctinh as $cttt) {
-                            echo "<tr><td height='50px'>{$cttt->ChiTiet}</td></tr> ";
+                            echo "<tr><td height='70px'>{$cttt->ChiTiet}</td></tr> ";
                          }
                          echo " </table>
                             </td>";

@@ -98,6 +98,9 @@
             </div>
         </div>
     </div>
+    <div id="loading" style="display: none">
+        <img src="images/loading.gif"  alt="">
+    </div>
     <!-- end row -->
 @endsection
 @section('script')
@@ -109,10 +112,13 @@
                 }
             });
             $('.view-coupon').click(function () {
+                $("#loading").show();
+                var id=$(this).attr("data-key");
+                setTimeout(function() {
+                    $("#myModal").modal('show');
+                    $(".idtheloaimakhuyenmai").text(id);
+                }, 500);
                 var id=$(this).attr('data-key');
-                $("#myModal").modal('show');
-                $(".idtheloaimakhuyenmai").text(id);
-
                 $.ajax({
                     method: "POST",
                     url: 'ajax/makhuyenmai',
@@ -123,6 +129,9 @@
                         if(data!=null) {
                             $(".ketqua").html(data);
                         }
+                        setTimeout(function() {
+                            $("#loading").hide();
+                        }, 500);
                     }
                 });
             });
