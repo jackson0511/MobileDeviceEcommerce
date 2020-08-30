@@ -193,6 +193,10 @@
 </script>
 <script type="text/javascript">
     $(document).ready(function() {
+        $("#loading").show();
+        setTimeout(function() {
+            $("#loading").hide();
+        }, 1000);
         $('form').parsley();
     });
 </script>

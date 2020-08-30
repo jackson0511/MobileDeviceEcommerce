@@ -19,6 +19,12 @@ class AdminController extends Controller
         $donhang=DonHang::all();
         $tongtien=DonHang::where('TrangThai',3)->sum('TongTien');
         $khachhang=KhachHang::where('active',1)->get();
+        $data_month=[];
+        $data_year_detail=[];
+        $data_year_name=[];
+        for($i=1;$i<date('m');$i++){
+            array_unshift($data_month,['id'=>$i,'value'=>'Tháng '.$i]);
+        }
 
         $moneyDay=DonHang::whereDay('updated_at',date('d'))->where('TrangThai',3)->sum('TongTien');
         //danh thu thang
@@ -37,7 +43,18 @@ class AdminController extends Controller
         $month1=DonHang::whereMonth('updated_at',date('1'))->where('TrangThai',3)->sum('TongTien');
         //end danh thu thang
         $moneyWeek=DonHang::whereBetween('updated_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->where('TrangThai',3)->sum('TongTien');
+        //nam
         $moneyYear=DonHang::whereYear('updated_at',date('Y'))->where('TrangThai',3)->sum('TongTien');
+        $money='';
+        for($i=date('Y');$i>=date('Y')-5;$i--){
+            $money=DonHang::whereYear('updated_at',date("$i"))->where('TrangThai',3)->sum('TongTien');
+            $data_year_detail[]=[
+                'Năm '.$i,
+                (int)$money,
+               ];
+        }
+//        dd($data_year_detail);
+        //
         $donhang_new=DonHang::orderByRaw('id DESC')->where('TrangThai',0)->paginate(10);
 
         $chiTiet =DB::select('select idSP,sum(SoLuong)as TongSL from ChiTietDonHang join DonHang on ChiTietDonHang.idDH=DonHang.id where MONTH(ChiTietDonHang.updated_at)=MONTH(NOW()) and DonHang.TrangThai=3  group By idSP ');
@@ -74,6 +91,7 @@ class AdminController extends Controller
             [
                 "name" => "Doanh thu năm",
                 "y"    => (int)$moneyYear,
+                "drilldown"=>"Doanh thu năm"
             ],
         ];
         $dataChitiet=[
@@ -138,8 +156,39 @@ class AdminController extends Controller
                 'dataMoney'     =>json_encode($dataMoney),
                 'dataProduct'   =>json_encode($dataProduct),
                 'dataChitiet'   =>json_encode($dataChitiet),
+                'dataChitietNam'=>json_encode($data_year_detail),
                 'donhang_new'   =>$donhang_new,
+                'data_month'    =>$data_month
             ]);
+    }
+    public function index2(){
+        $months_report = $this->request->report_months;
+        if ($months_report=='this_month'){
+            $month=date('m');
+        }else{
+            if ($months_report<10) {
+                $month = '0' . $months_report;
+            }else{
+                $month=$months_report;
+            }
+        }
+        $chiTiet =DB::select('select idSP,sum(SoLuong)as TongSL from ChiTietDonHang join DonHang on ChiTietDonHang.idDH=DonHang.id where MONTH(ChiTietDonHang.updated_at)='.$month.' and DonHang.TrangThai=3  group By idSP ');
+        $dataProduct=[];
+        foreach($chiTiet as $chitiet){
+            $soluong=$chitiet->TongSL;
+            $idsp=$chitiet->idSP;
+            $sp=SanPham::where('id',$idsp)->get();
+            foreach ($sp as $value) {
+
+                $dataProduct[]=[
+                    "name"  =>$value->Ten ,
+                    "y"  => (int)$soluong,
+                ];
+            }
+
+        }
+        $data['dataProduct']=$dataProduct;
+        echo json_encode($data);
     }
     public function getLogin(){
         return view('admin.login');

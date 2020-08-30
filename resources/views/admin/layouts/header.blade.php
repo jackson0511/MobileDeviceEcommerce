@@ -3,7 +3,7 @@
 
         <!-- Logo container-->
         <div class="logo">
-            <a href="index.html" class="logo"><span>Appl<i
+            <a href="admin/trangchu" class="logo"><span>Appl<i
                         class="md md-explicit"></i></span></a>
         </div>
         <!-- End Logo container-->

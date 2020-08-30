@@ -272,7 +272,7 @@ class DonHangController extends Controller
     public function print_order($order_id){
         //function trong pdf
         $pdf= \App::make('dompdf.wrapper');
-        $pdf->loadView($this->print_order_convert($order_id));
+        $pdf->loadHTML($this->print_order_convert($order_id));
         return $pdf->stream();
     }
     public function print_order_convert($order_id){
@@ -293,7 +293,7 @@ class DonHangController extends Controller
             [
                 'donhang'=>$donhang,
                 'chitietdonhang'=>$chitietdonhang,
-                'sanpham'       =>$sanpham,
+                'sanpham'       =>isset($sanpham)?$sanpham:'',
                 'makm'          =>$makm
             ]);
     }

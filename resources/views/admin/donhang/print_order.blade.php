@@ -1,45 +1,51 @@
 <!doctype html>
 <html lang="vi33">
 <head>
-    <title>Invoice</title>
+    <title></title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        body{
+            font-family: "DejaVu Sans";
+        }
+        .table tr th{
+            font-size: 12px;
+        }
+    </style>
 </head>
 <body>
-<div class="container-fluid" style="border:2px solid rgb(74, 204, 243);">
+<div class="container-fluid" style="border:2px solid rgb(74, 204, 243);padding: 5px" >
     <div class="row mt-5">
-        <div class="col-md-3">
-            <h4 class="text-center"><img src="assets/images/logo_dark.png" alt="velonic"></h4>
+        <div class="col-md-4" style="width: 200px">
+            <div>
+                <img src="images/logo2.png" width="200px">
+            </div>
         </div>
-        <div class="col-md-9">
-            <div class="title-right">
-                <h2 style="font-weight: bold; color: red;">CÔNG TY THHH HỆ THỐNG APPLE</h2>
-                <p>Địa chỉ: 270 Tôn Thất Thuyết Phường 3 Quận 4</p>
-                <p>Điện thoại: 0772818495</p>
+        <div class="col-md-8" style="width: 350px; float: right">
+            <div>
+                <h2 style="font-weight: bold; font-size: 15px; color: red;">CÔNG TY THHH HỆ THỐNG APPLE</h2>
+                <div style="font-size: 12px">Địa chỉ: 270 Tôn Thất Thuyết Phường 3 Quận 4</div>
+                <div style="font-size: 12px">Điện thoại: 0772818495</div>
             </div>
         </div>
     </div>
-    <hr>
-    <div class="row">
-        <div class="col-md-12 text-center">
-            <h2 style="font-weight: bold; color: red;">HOÁ ĐƠN BÁN HÀNG</h2>
-        </div>
-        <div class="col-md-12 text-center">
-            <p>Ngày.....Tháng.....Năm.....</p>
-        </div>
+    <div class="col-md-12 text-center">
+        <h2 style="font-weight: bold; font-size: 17px; color: red;">HOÁ ĐƠN BÁN HÀNG</h2>
+        <div style="font-size: 12px">Ngày.....Tháng.....Năm.....</div>
     </div>
-    <h2 class='text-center'>Thông tin vận chuyển</h2>
-    <table class='table table-striped table-bordered table-hover'>
+
+    <div class="text-center mt-2 mb-2" style="font-size: 16px;font-weight: bold">Thông Tin Vận Chuyển</div>
+    <table class="table table-bordered table-hover">
         <thead>
-        <tr align='center'>
-            <th>Tên người nhận</th>
-            <th>Địa chỉ</th>
-            <th>Số điện thoại</th>
-            <th>Ghi chú</th>
+        <tr align="center">
+            <th width="130px">Tên người nhận</th>
+            <th >Địa chỉ</th>
+            <th width="100px">Số điện thoại</th>
+            <th >Ghi chú</th>
         </tr>
         </thead>
         <tr align='center'>
@@ -72,27 +78,27 @@
             </th>
         </tr>
     </table>
-     <h2 class='text-center'>Chi tiết đơn hàng</h2>
-    <table class='table table-striped table-bordered table-hover '>
+    <div class="text-center mt-4 mb-2 mt-0" style="font-size: 16px;font-weight: bold">Chi Tiết Đơn Hàng</div>
+    <table class='table table-bordered table-hover '>
         <thead>
         <tr align='center'>
-            <th>STT</th>
+            <th width="20px" >STT</th>
             <th>Tên</th>
-            <th>Số lượng</th>
+            <th width="60px">Số lượng</th>
             <th>Giá</th>
-            <th>Thành tiền</th>
+            <th width="100px">Thành tiền</th>
         </tr>
-        </thead>";
+        </thead>
         @foreach ($chitietdonhang as $key => $cthd)
             <?php
              $imei=explode('/', $cthd->IMEI);
             ?>
         <tr align='center'>
-            <th>{{$key+1}}</th>
+            <th class="text-center">{{$key+1}}</th>
             <th>
                 {{$cthd->sanpham->Ten}}
             </th>
-            <th>{{$cthd->SoLuong}}</th>
+            <th class="text-center">{{$cthd->SoLuong}}</th>
             <th>
                 {{number_format($cthd->Gia,0,',','.').'đ'}}
                 <br>
@@ -106,8 +112,7 @@
         </tr>
         @endforeach
         <tr>
-            <th colspan="4"></th>
-            <th colspan='2'>
+            <th colspan="4">
                 Tổng:
                 <br>
                 Khuyến mãi:
@@ -119,7 +124,7 @@
                 <br>
                 Thanh toán:
             </th>
-            <th colspan="2">
+            <th colspan="1">
                 {{number_format($donhang->TongTien,0,',','.').'đ'}}
                 <br>
                 <?php
@@ -138,7 +143,8 @@
                         @endif
                     @endif
                 @endforeach
-                {{number_format(-$sum_sale,0,',','.').'đ'.'</br>'.$name_sale}}
+                {{number_format(-$sum_sale,0,',','.').'đ'}}
+                <br>{{$name_sale}}
                 <br>
                 <?php
                 $sum_coupon=0;
@@ -155,7 +161,19 @@
             </th>
         </tr>
     </table>
-
+   <div class="row">
+       <div class="col-md-12 text-right ml-2"><div style="font-size: 12px;font-style: italic">Ngày.....Tháng.....Năm.....</div></div>
+   </div>
+    <div class="row mb-4">
+        <div class="col-md-6" style="width: 200px;text-align: center">
+            <div style="font-weight: bold">Người Mua hàng</div>
+            <p style="font-style: italic;font-size: 10px">( Ký, ghĩ rõ họ tên ) </p>
+        </div>
+        <div class="col-md-6" style="width: 170px; float: right;text-align: center">
+            <div style="font-weight: bold">Người Bán Hàng</div>
+            <p style="font-style: italic;font-size: 10px">( Ký, ghĩ rõ họ tên ) </p>
+        </div>
+    </div>
 </div>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->

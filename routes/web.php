@@ -29,6 +29,7 @@ Route::get('admin/logout','AdminController@getLogout');
 Route::group(['prefix'=>'admin','middleware'=>'CheckLoginAdmin'],function() {
     //trang chu admin
     Route::get('trangchu','AdminController@index');
+    Route::post('dashboard','AdminController@index2');
 
     //theloai
 

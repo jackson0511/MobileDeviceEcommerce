@@ -149,7 +149,7 @@
 
                     <!-- Modal Header -->
                     <div class="modal-header">
-                        <h4 class="modal-title">Chi tiết đơn hàng #<b class="idhoadon" ></b></h4>
+                        <h4 class="modal-title" style="font-weight: bold;text-transform: uppercase">Chi tiết đơn hàng #<b class="idhoadon" ></b></h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
 

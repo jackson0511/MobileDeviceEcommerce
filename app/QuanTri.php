@@ -27,6 +27,9 @@ class QuanTri extends Authenticatable
     function khuyenmai(){
         return $this->hasMany('App\KhuyenMai','idQT','id');
     }
+    function logactive(){
+        return $this->hasMany('App\LogActive','idQT','id');
+    }
     protected $hidden = [
         'password'
     ];

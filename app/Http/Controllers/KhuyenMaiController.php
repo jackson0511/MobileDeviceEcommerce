@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\KhuyenMai;
 use App\SanPham;
+use App\LogActiveKM;
 use App\ChiTietKhuyenMai;
 use Illuminate\Support\Facades\Auth;
 
 class KhuyenMaiController extends Controller
 {
     //
+
     public function getList(){
         $khuyenmai=KhuyenMai::orderby('id','desc')->get();
         return view('admin.khuyenmai.danhsach',['khuyenmai'=>$khuyenmai]);
@@ -67,6 +70,18 @@ class KhuyenMaiController extends Controller
         $khuyenmai->save();
         if ($khuyenmai){
             $idkm=$khuyenmai->id;
+            //log active
+            $log=new LogActiveKM();
+            if ($this->request->trangthai==0){
+                $status='Ẩn';
+            }else{
+                $status='Hiện';
+            }
+            $log->Ten='Tạo mới khuyến mãi trạng thái '.$status;
+            $log->idQT=Auth::guard('QuanTri')->id();
+            $log->idKM=$idkm;
+            $log->save();
+            //
             $idsp=$this->request->sanpham;
             $khuyenmai_id=$this->request->khuyenmai;
             if ($khuyenmai_id==1){
@@ -148,6 +163,18 @@ class KhuyenMaiController extends Controller
         $khuyenmai->save();
         if ($khuyenmai){
             $idkm=$khuyenmai->id;
+            //log active
+            $log=new LogActiveKM();
+            if ($this->request->trangthai==0){
+                $status='Ẩn';
+            }else{
+                $status='Hiện';
+            }
+            $log->Ten='Sửa ngày kết thúc mới '.$this->request->ngayketthuc.' và trạng thái '.$status;
+            $log->idQT=Auth::guard('QuanTri')->id();
+            $log->idKM=$idkm;
+            $log->save();
+            //
             $idsp=$this->request->sanpham;
             $khuyenmai_id=$this->request->khuyenmai;
             if ($khuyenmai_id==1){
@@ -180,9 +207,18 @@ class KhuyenMaiController extends Controller
         $khuyenmai=KhuyenMai::find($id);
         if ($khuyenmai->TrangThai==1){
             $khuyenmai->TrangThai=0;
+            $status='Ẩn';
         }else{
             $khuyenmai->TrangThai=1;
+            $status='Hiện';
         }
+        //log active
+        $log=new LogActiveKM();
+        $log->Ten='Sửa trạng thái '.$status;
+        $log->idQT=Auth::guard('QuanTri')->id();
+        $log->idKM=$id;
+        $log->save();
+        //
         $khuyenmai->save();
         return redirect('admin/khuyenmai/danhsach')->with('ThongBao',' Cập nhập trạng thái thành công');
     }

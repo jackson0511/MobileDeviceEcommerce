@@ -57,7 +57,19 @@
     <div class="row">
         <div class="col-lg-5">
             <div class="card-box">
-                <h4 class="text-dark header-title m-t-0 m-b-30">Top sản phẩm bán chạy trong tháng</h4>
+                <div class="row">
+                    <div class="col-md-8"><h4 class="text-dark header-title m-t-0 m-b-30">Top sản phẩm bán chạy trong tháng</h4></div>
+                    <div class="col-md-4">
+                        <div  id="report-time">
+                            <select class="form-control" name="months-report" id="months-report" data-width="100%">
+                                <option selected value="this_month">Tháng này</option>
+                                @foreach($data_month as $month)
+                                    <option value="{{$month['id']}}">{{$month['value']}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
                 <div id="container1"></div>
             </div>
         </div>
@@ -143,6 +155,7 @@
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
     <script src="https://code.highcharts.com/modules/funnel.js"></script>
     <script>
+        $("#months-report").select2();
         // Build the chart
         let data1="{{$dataProduct}}";
         datachart1=JSON.parse(data1.replace(/&quot;/g,'"'));
@@ -181,8 +194,9 @@
 
         //chitiet
         let dt="{{$dataChitiet}}";
+        let dt1="{{$dataChitietNam}}";
         datamonth=JSON.parse(dt.replace(/&quot;/g,'"'));
-        console.log(datamonth);
+        datayear=JSON.parse(dt1.replace(/&quot;/g,'"'));
         Highcharts.chart('container2', {
             chart: {
                 type: 'column'
@@ -238,10 +252,62 @@
                         id: "Doanh thu tháng",
                         data: datamonth
                     },
+                    {
+                        name: "Doanh thu năm",
+                        id: "Doanh thu năm",
+                        data: datayear
+                    },
 
 
                 ]
             }
         });
+        $('select[name="months-report"]').on('change', function() {
+            $("#loading").show();
+            init_dashboard();
+        });
+        function init_dashboard() {
+            var report_months = $('select[name="months-report"]').val();
+            dataString = {
+                report_months: report_months,
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            };
+            $.post('admin/dashboard/', dataString, function (response) {
+                response = JSON.parse(response);
+
+                Highcharts.chart('container1', {
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'pie'
+                    },
+                    title: {
+                        text: 'Biểu đồ top sản phẩm bán chạy trong tháng'
+                    },
+                    tooltip: {
+                        pointFormat: '{point.y:.1f}Cái'
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: false
+                            },
+                            showInLegend: true
+                        }
+                    },
+                    series: [{
+                        name: 'Brands',
+                        colorByPoint: true,
+                        data: response.dataProduct
+                    }]
+                });
+                setTimeout(function() {
+                    $("#loading").hide();
+                }, 500);
+            });
+        }
     </script>
 @endsection

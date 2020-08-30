@@ -26,14 +26,14 @@
                     <p style="color: #f63440" class="showing-product">
                         Tìm được {{count($sanpham)}} trong tổng {{count($tongsanpham)}} sản phẩm
                     </p>
-                    <ul class="flat-filter-search">
-                        <li>
-                            <a  class="show-filter">Filters</a>
-                        </li>
-                        <li class="search-product"><a  >Search</a></li>
-                    </ul>
+{{--                    <ul class="flat-filter-search">--}}
+{{--                        <li>--}}
+{{--                            <a  class="show-filter">Filters</a>--}}
+{{--                        </li>--}}
+{{--                        <li class="search-product"><a  >Search</a></li>--}}
+{{--                    </ul>--}}
                 </div><!-- /.filte-shop -->
-                @include('frontend.subpage.boloc')
+{{--                @include('frontend.subpage.boloc')--}}
 
                 <div class="product-content product-fourcolumn clearfix">
                     <ul class="product style2">

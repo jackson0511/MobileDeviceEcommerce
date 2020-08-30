@@ -72,6 +72,7 @@ class QuanTriController extends Controller
             ]);
         $quantri->HoTen=$this->request->ten;
         $quantri->SoDienThoai=$this->request->sdt;
+        $quantri->active=$this->request->trangthai;
 //        if($this->request->password && $this->request->passwordagain){
 //            $this->validate($this->request,
 //                [

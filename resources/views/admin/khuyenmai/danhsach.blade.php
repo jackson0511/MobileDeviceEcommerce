@@ -1,5 +1,98 @@
 @extends('admin.layouts.index')
 @section('content')
+    <style>
+        .progressbar_img{
+            text-align: center!important;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+        }
+        .progressbar_img img{
+            height: 25px;
+            width: 25px;
+        }
+        ul.progressbar_img li.active_img img{
+            border: 2px solid #00ff50;
+        }
+        ul.progressbar_img li.cancel img{
+            border: 2px solid red;
+        }
+        ul.progressbar_img li.cancel_all img{
+            border: 2px solid blue;
+        }
+        ul.progressbar_img li {
+            width: 120px;
+            float: left;
+            list-style-type: none;
+        }
+        .progressbar:not(.hoang) {
+            margin: 0;
+            padding: 10px 0;
+            counter-reset: step;
+        }
+        .progressbar_img:not(.hoang) {
+            margin: 0;
+            padding: 0;
+            counter-reset: step;
+        }
+        .progressbar li span{
+            font-size: 11px;
+        }
+        .progressbar li:not(.hoang) {
+            list-style-type: none;
+            width: 15%;
+            /*width: 25%;*/
+            float: left;
+            font-size: 12px;
+            position: relative;
+            text-align: center;
+            /*text-transform: uppercase;*/
+            color: #7d7d7d;
+            z-index: 0;
+        }
+        .progressbar li:not(.hoang):before {
+            width: 10px;
+            height: 10px;
+            content: ' ';
+            counter-increment: step;
+            line-height: 51px;
+            border: 5px solid #7d7d7d;
+            display: block;
+            text-align: center;
+            margin: 0 auto 10px auto;
+            border-radius: 50%;
+            background-color: white;
+        }
+        .progressbar li:not(.hoang):after {
+            width: 100%!important;
+            height: 2px!important;
+            content: ''!important;
+            position: absolute!important;
+            background-color: #7d7d7d!important;
+            top: 4px!important;
+            left: -50%!important;
+            z-index: -1!important;
+        }
+        .progressbar li:first-child:after {
+            content: none;
+            display: none;
+        }
+        .progressbar li.active_ch:before {
+            border-color: red;
+        }
+        .progressbar li.active:not(.hoang) {
+            color: green;
+        }
+        .progressbar li.active:not(.hoang):before {
+            border-color: #55b776;
+        }
+        .progressbar li.cancel:before {
+            border-color: red;
+        }
+        .progressbar li.active + li:after {
+            background-color: #55b776!important;
+        }
+    </style>
     <!-- Page-Title -->
     <div class="row">
         <div class="col-sm-12">
@@ -75,20 +168,17 @@
         </div>
     </div>
     <div class="modal" id="myModal">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
 
                 <!-- Modal Header -->
                 <div class="modal-header">
-                    <h4 class="modal-title">Chi tiết khuyến mãi #<b class="idkhuyenmai" ></b></h4>
+                    <h4 class="modal-title" style="font-weight: bold; text-transform: uppercase">Chi tiết khuyến mãi #<b class="idkhuyenmai" ></b></h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
                 <!-- Modal body -->
-                <div class="modal-body ">
-                    <table class="table table-striped table-bordered table-hover ketqua" id="dataTables-example">
-
-                    </table>
+                <div class="modal-body ketqua">
                 </div>
 
                 <!-- Modal footer -->
@@ -138,4 +228,10 @@
             });
         });
     </script>
+    <script>
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
 @endsection
+

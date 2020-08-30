@@ -48,7 +48,7 @@
                             <td>{{$makm->Code}}</td>
                             <td>{{$makm->NgayApDung}}</td>
                             <td>{{$makm->NgayKetThuc}}</td>
-                            <td>{{$makm->GiaTri}}</td>
+                            <td>{{number_format($makm->GiaTri)}}</td>
                             <td>{{$makm->SoLuong}}</td>
                             <td>
                                 <a href="admin/theloaimakhuyenmai/xuly/{{$makm->id}}" class="btn btn-xs {{$makm->TrangThai==1?'btn-info':'btn-danger'}} ">

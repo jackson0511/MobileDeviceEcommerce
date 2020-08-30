@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DonHang;
+use App\LogActiveKM;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\SanPham;
@@ -106,7 +107,30 @@ class AjaxController extends Controller
     public function postChitietkhuyenmai(){
         $id=$this->request->id;
         $chitietkhuyenmai=ChiTietKhuyenMai::where('idKM',$id)->get();
-        echo   "<thead>
+        $logs=LogActiveKM::where('idKM',$id)->orderByRaw('created_at asc')->get();
+         $content='';
+         $content1='';
+         foreach ($logs as $log){
+             $content .= '<li class="active">
+                        <a class="pointer #ff6f00" status-procedure="1" >'.$log->Ten.'</a>
+                       </li>';
+             $content1.='<li class="active_img" >
+                            <a href="javascripts::void(0)" data-toggle="tooltip" data-html="true" title="'.$log->quantri->HoTen.' vào lúc '.date('d-m-Y H:i:s',strtotime($log->created_at)).'">
+                             <img src="admin/assets/images/users/avatar-1.jpg" alt="user-img" class="img-circle">
+                            </a>
+                           </li>';
+         }
+          $string_Row = '<ul class="progressbar" style="display: flex;flex-direction: row;justify-content: center;">';
+          $string_Row.=$content;
+          $string_Row.= '<div class="clearfix"></div></ul>';
+          $string_Row1 = '<ul class="progressbar_img" style="display: flex;flex-direction: row;justify-content: center;">';
+          $string_Row1.=$content1;
+          $string_Row1 .= '<div class="clearfix"></div></ul>';
+          echo $string_Row1;
+          echo $string_Row;
+
+        echo   "<table class='table table-striped table-bordered table-hover mt-3'>
+                <thead>
                    <tr align='center'>
                    <th>STT</th>
                    <th>Tên</th>
@@ -134,6 +158,7 @@ class AjaxController extends Controller
                 </th>
             </tr>
                 <?php }
+        echo "</table>";
     }
     public function postMakhuyenmai(){
         $id=$this->request->id;
@@ -339,9 +364,9 @@ class AjaxController extends Controller
                    <?php echo number_format($donhang->TongTien_DaGiam,0,',','.').'đ';?>
                 </th>
             </tr>
-            <tr>
+            <tr class="">
                 <th colspan="8">
-                    <button class="btn btn-primary button"><a href="admin/donhang/print-order/<?= $donhang->id; ?>">in hoá đơn</a></button>
+                    <button class="btn btn-primary button"><a target="_blank" href="admin/donhang/print-order/<?= $donhang->id; ?>">in hoá đơn</a></button>
                 </th>
             </tr>
         <?php

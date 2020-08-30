@@ -63,7 +63,25 @@
                                 @endforeach
                             </select>
                         </div>
-
+                        <div class="form-group">
+                            <label for="">Trạng thái</label>
+                            <div class="radio radio-custom radio-inline">
+                                <input type="radio"
+                                       @if($quantri->TrangThai==1)
+                                           checked
+                                        @endif
+                                value="1" name="trangthai" checked="">
+                                <label for="inlineRadio1"> Hoạt Động </label>
+                            </div>
+                            <div class="radio radio-custom radio-inline">
+                                <input type="radio"
+                                       @if($quantri->TrangThai==0)
+                                       checked
+                                       @endif
+                                       value="0" name="trangthai">
+                                <label for="inlineRadio2"> Khoá </label>
+                            </div>
+                        </div>
                         <div class="form-group text-right m-b-0">
                             <button class="btn btn-primary waves-effect waves-light" type="submit">
                                 Save
