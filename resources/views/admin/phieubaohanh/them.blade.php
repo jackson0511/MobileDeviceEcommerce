@@ -55,7 +55,7 @@
                                 <label class="control-label">Thời gian *</label>
                                     <div class="input-daterange input-group" id="date-range">
                                         <span class="input-group-addon bg-custom b-0 text-white">Ngày nhận</span>
-                                        <input type="text" class="form-control" placeholder="ngày nhận" name="ngaynhan">
+                                        <input type="text" class="form-control" placeholder="ngày nhận"  name="ngaynhan">
                                         <span class="input-group-addon bg-custom b-0 text-white">Ngày trả</span>
                                         <input type="text" class="form-control" placeholder="ngày dự kiến trả" name="ngaytra">
                                     </div>

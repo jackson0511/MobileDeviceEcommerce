@@ -40,16 +40,9 @@
                             <img style="width: 150px" src="upload/khuyenmai/{{$khuyenmai->Hinh}}" alt="">
                         </div>
                         <div class="form-group">
-                            <label>Ngày Bắt Đầu</label>
+                            <label>Ngày Hiệu Lực</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" name="ngaybatdau" value="{{ date('m/d/Y',strtotime($khuyenmai->NgayBatDau))}}" placeholder="mm/dd/yyyy" id="datepicker">
-                                <span class="input-group-addon bg-custom b-0 text-white"><i class="icon-calender"></i></span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Ngày Kết Thúc</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" name="ngayketthuc" value="{{ date('m/d/Y',strtotime($khuyenmai->NgayKetThuc))}}" placeholder="mm/dd/yyyy" id="datepicker-autoclose">
+                                <input type="text" class="form-control" name="ngayhieuluc" data-date="{{date('d/m/Y',strtotime($ngay))}}" id="ngayhieuluc" >
                                 <span class="input-group-addon bg-custom b-0 text-white"><i class="icon-calender"></i></span>
                             </div>
                         </div>
@@ -137,7 +130,7 @@
                             <label for="userName">Chi tiết khuyến mãi</label>
                             <input
                                 @foreach($khuyenmai->chitietkhuyenmai as $ct)
-                                type="text" name="chitiet_km" parsley-trigger="change"    placeholder="Nhập chi tiết khuyến mãi"
+                                type="text" name="chitiet_km" parsley-trigger="change"   placeholder="Nhập chi tiết khuyến mãi"
                                 value="{{ $ct->ChiTiet }}" class="form-control"
                                 @endforeach
                             >
@@ -212,6 +205,28 @@
                }
             });
         });
+        var daterangepicker = () => {
+            max_date=$("#ngayhieuluc").attr('data-date');
+            $('input[name="ngayhieuluc"]').daterangepicker({
+                opens: 'top',
+                isInvalidDate: false,
+                minDate:max_date,
+                "locale": {
+                    "format": "DD/MM/YYYY",
+                },
+            },function(start, end, label) {
+            });
+            $('input[name="ngayhieuluc"]').val('').datepicker("refresh");
+            $('input[name="ngayhieuluc"]').on('apply.daterangepicker', function(ev, picker) {
+            $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+            $( "#ngayhieuluc" ).trigger( "change" );
+             });
+            $('input[name="ngayhieuluc"]').on('cancel.daterangepicker', function(ev, picker) {
+                $(this).val('');
+                $( "#ngayhieuluc" ).trigger( "change" );
+             });
+        };
+        daterangepicker();
     </script>
 
 @endsection

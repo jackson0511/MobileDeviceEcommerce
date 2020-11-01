@@ -110,7 +110,7 @@
                                 </ul>
                                 <div class="product-quantity">
                                     <div class="quantity">
-                                        <input type="text" value="1" name="quantity-number" class="quantity-number">
+                                        <input type="text" value="1" name="quantity-number" min="1" class="quantity-number">
                                         <span class="inc quantity-button">+</span>
                                         <span class="dec quantity-button">-</span>
                                     </div>

@@ -38,16 +38,9 @@
                         <input type="file" name="hinh" class="filestyle" data-buttonbefore="true">
                     </div>
                     <div class="form-group">
-                        <label>Ngày Bắt Đầu</label>
+                        <label>Ngày Hiệu Lực</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" name="ngaybatdau" value="{{old('ngaybatdau')}}" placeholder="mm/dd/yyyy" id="datepicker">
-                            <span class="input-group-addon bg-custom b-0 text-white"><i class="icon-calender"></i></span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Ngày Kết Thúc</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" name="ngayketthuc" value="{{old('ngayketthuc')}}" placeholder="mm/dd/yyyy" id="datepicker-autoclose">
+                            <input type="text" class="form-control" name="ngayhieuluc" data-date="{{date('d/m/Y',strtotime($ngay))}}" value="{{old('ngayhieuluc')}}" id="ngayhieuluc">
                             <span class="input-group-addon bg-custom b-0 text-white"><i class="icon-calender"></i></span>
                         </div>
                     </div>
@@ -170,6 +163,18 @@
                 }
             });
         });
+        var dt_daterangepicker = () => {
+            max_date=$("#ngayhieuluc").attr('data-date');
+            $('input[name="ngayhieuluc"]').daterangepicker({
+                opens: 'top',
+                isInvalidDate: false,
+                minDate:max_date,
+                "locale": {
+                    "format": "DD/MM/YYYY",
+                },
+            });
+        };
+        dt_daterangepicker();
     </script>
 
 @endsection

@@ -171,8 +171,8 @@ class ShoppingCartController extends Controller
                     break;
                 }
             }
-            //khuyen mai het han
-            if ($ngay > $ngayketthuc || $ngay <$ngaybatdau){
+            //khuyen mai het han hoac trang thai khong ap dung
+            if ($ngay > $ngayketthuc || $ngay <$ngaybatdau || $km->khuyenmai->TrangThai==0){
                 \Cart::add([
                     'id' => $sanpham->id,
                     'name' => $sanpham->Ten,
@@ -374,8 +374,8 @@ class ShoppingCartController extends Controller
         $donhangId=$donhang->id;
         //event khi có đơn hàng mới
         $order=DonHang::find($donhangId);
-        event(new NewOrder($order));
-        event( new NotificationOrder($order));
+//        event(new NewOrder($order));
+//        event( new NotificationOrder($order));
         //
         if($donhangId){
             $sanpham=\Cart::content();

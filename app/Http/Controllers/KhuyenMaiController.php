@@ -13,6 +13,15 @@ use Illuminate\Support\Facades\Auth;
 class KhuyenMaiController extends Controller
 {
     //
+    public  $ngay;
+    public function __construct(Request $request)
+    {
+        parent::__construct($request);
+        Carbon::setLocale('vi');
+        $now=Carbon::now();
+        $ngay=$now->toDateString();
+        $this->ngay=$ngay;
+    }
 
     public function getList(){
         $khuyenmai=KhuyenMai::orderby('id','desc')->get();
@@ -20,23 +29,21 @@ class KhuyenMaiController extends Controller
     }
     public function getAdd(){
         $sanpham=SanPham::where('TrangThai',1)->get();
-        return view('admin.khuyenmai.them',['sanpham'=>$sanpham]);
+        return view('admin.khuyenmai.them',['sanpham'=>$sanpham,'ngay'=>$this->ngay]);
     }
     public function postAdd(){
         $this->validate($this->request,
             [
                 'ten'                   =>'required',
                 'hinh'                  =>'required',
-                'ngaybatdau'            =>'required',
-                'ngayketthuc'           =>'required',
+                'ngayhieuluc'           =>'required',
                 'noidung'               =>'required',
                 'sanpham'               =>'required',
             ],
             [
                 'ten.required'          =>'Bạn chưa nhập tên',
                 'hinh.required'         =>'Bạn chưa chọn hình',
-                'ngaybatdau.required'   =>'Bạn chưa nhập ngày bắt đầu',
-                'ngayketthuc.required'  =>'Bạn chưa nhập ngày kết thúc',
+                'ngayhieuluc.required'  =>'Bạn chưa nhập thời gian áp dụng',
                 'noidung.required'      =>'Bạn chưa nhập nội dung',
                 'sanpham.required'      =>'Bạn chưa chọn sản phẩm',
             ]);
@@ -55,17 +62,14 @@ class KhuyenMaiController extends Controller
         }else{
             $khuyenmai->Hinh='';
         }
+        $ngayhieuluc=explode('-',$this->request->ngayhieuluc);
+        $arr1 = explode ("/", $ngayhieuluc[0]);
+        $ngaybatdau = trim($arr1[2])."-".$arr1[1]."-".$arr1[0];
+        $arr =explode ("/", $ngayhieuluc[1]);
+        $ngayketthuc = $arr[2]."-".$arr[1]."-".trim($arr[0]);
 
-        $arr1 = explode ("/", $this->request->ngaybatdau);
-        if (count($arr1)==3) $this->request->ngaybatdau = $arr1[2]."-".$arr1[0]."-".$arr1[1];
-        else $this->request->ngaybatdau = date("Y-m-d");
-
-        $arr = explode ("/", $this->request->ngayketthuc);
-        if (count($arr)==3) $this->request->ngayketthuc = $arr[2]."-".$arr[0]."-".$arr[1];
-        else $this->request->ngayketthuc = date("Y-m-d");
-
-        $khuyenmai->NgayBatDau      =$this->request->ngaybatdau;
-        $khuyenmai->NgayKetThuc     =$this->request->ngayketthuc;
+        $khuyenmai->NgayBatDau      =$ngaybatdau;
+        $khuyenmai->NgayKetThuc     =$ngayketthuc;
 
         $khuyenmai->save();
         if ($khuyenmai){
@@ -112,23 +116,19 @@ class KhuyenMaiController extends Controller
     public function getEdit($id){
         $khuyenmai=KhuyenMai::find($id);
         $sanpham=SanPham::where('TrangThai',1)->get();
-        return view('admin.khuyenmai.sua',['sanpham'=>$sanpham,'khuyenmai'=>$khuyenmai]);
+        return view('admin.khuyenmai.sua',['sanpham'=>$sanpham,'khuyenmai'=>$khuyenmai,'ngay'=>$this->ngay]);
     }
     public function postEdit($id){
         $this->validate($this->request,
             [
                 'ten'                   =>'required',
-//                'hinh'                  =>'required',
-                'ngaybatdau'            =>'required',
-                'ngayketthuc'           =>'required',
+//                'ngayhieuluc'           =>'required',
                 'noidung'               =>'required',
                 'sanpham'               =>'required',
             ],
             [
                 'ten.required'          =>'Bạn chưa nhập tên',
-//                'hinh.required'         =>'Bạn chưa chọn hình',
-                'ngaybatdau.required'   =>'Bạn chưa nhập ngày bắt đầu',
-                'ngayketthuc.required'  =>'Bạn chưa nhập ngày kết thúc',
+//                'ngayhieuluc.required'  =>'Bạn chưa nhập thời gian áp dụng',
                 'noidung.required'      =>'Bạn chưa nhập nội dung',
                 'sanpham.required'      =>'Bạn chưa chọn sản phẩm',
             ]);
@@ -148,17 +148,19 @@ class KhuyenMaiController extends Controller
         }else{
             $khuyenmai->Hinh=$khuyenmai->Hinh;
         }
+        if ($this->request->ngayhieuluc){
+            $ngayhieuluc=explode('-',$this->request->ngayhieuluc);
+            $arr1 = explode ("/", $ngayhieuluc[0]);
+            $ngaybatdau = trim($arr1[2])."-".$arr1[1]."-".$arr1[0];
+            $arr =explode ("/", $ngayhieuluc[1]);
+            $ngayketthuc = $arr[2]."-".$arr[1]."-".trim($arr[0]);
 
-        $arr1 = explode ("/", $this->request->ngaybatdau);
-        if (count($arr1)==3) $this->request->ngaybatdau = $arr1[2]."-".$arr1[0]."-".$arr1[1];
-        else $this->request->ngaybatdau = date("Y-m-d");
-
-        $arr = explode ("/", $this->request->ngayketthuc);
-        if (count($arr)==3) $this->request->ngayketthuc = $arr[2]."-".$arr[0]."-".$arr[1];
-        else $this->request->ngayketthuc = date("Y-m-d");
-
-        $khuyenmai->NgayBatDau      =$this->request->ngaybatdau;
-        $khuyenmai->NgayKetThuc     =$this->request->ngayketthuc;
+            $khuyenmai->NgayBatDau      =$ngaybatdau;
+            $khuyenmai->NgayKetThuc     =$ngayketthuc;
+        }else{
+            $khuyenmai->NgayBatDau      =$khuyenmai->NgayBatDau;
+            $khuyenmai->NgayKetThuc     =$khuyenmai->NgayKetThuc;
+        }
 
         $khuyenmai->save();
         if ($khuyenmai){
