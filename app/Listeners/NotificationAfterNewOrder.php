@@ -40,7 +40,7 @@ class NotificationAfterNewOrder
         $data['route']=$url;
         //gui mail
         Mail::send('frontend.email-template.new_order',$data, function($message) use ($email){
-            $message->from('thuan.dh51600602@gmail.com','Đức Thuận');
+            $message->from('it.duonggiabao@gmail.com','Quản trị viên');
             $message->to($email, 'Thông báo đơn hàng mới');
             $message->subject('Thông báo đơn hàng mới');
         });

@@ -5,7 +5,7 @@
     <div id="top-bar-inner" class="container">
         <div class="top-bar-inner-wrap">
             <div class="top-bar-content">
-                <span class="content"><img width="50px" height="50px" src="images/apple.png"> APPLE</span>
+                {{-- <span class="content"><img width="50px" height="50px" src="images/apple.png"> it.duonggiabao</span> --}}
             </div>
             <div class="top-bar-nav">
 
@@ -45,7 +45,8 @@
     <div class="container clearfix" id="site-header-inner">
         <div id="logo" class="logo float-left">
             <a href="/" title="logo">
-                <img src="images/logo2.png" alt="image" width="107" height="24" data-retina="images/logo2.png" data-width="107" data-height="24">
+                {{-- <img src="{{asset('admin')}}/assets/images/logo2.png" alt="image" width="107" height="24" data-retina="images/logo2.png" data-width="107" data-height="24"> --}}
+                <h3 class="d-inline">DI</h3> <h3 class="text-danger d-inline">DONG</h3>
             </a>
         </div><!-- /.logo -->
         <div class="mobile-button"><span></span></div>
@@ -132,6 +133,15 @@
                                         @foreach($tl->children as $child)
                                             <li>
                                                 <a href="danhmucsanpham/{{$child->id}}/{{$child->Ten_KhongDau}}.html">{{$child->Ten}}</a>
+                                                @if(count($child->children)>0)
+                                                    <ul class="submenu">
+                                                        @foreach($child->children as $subchild)
+                                                            <li>
+                                                                <a href="danhmucsanpham/{{$subchild->id}}/{{$subchild->Ten_KhongDau}}.html">{{$subchild->Ten}}</a>
+                                                            </li>
+                                                        @endforeach
+                                                    </ul>
+                                                @endif
                                             </li>
                                         @endforeach
                                     </ul>

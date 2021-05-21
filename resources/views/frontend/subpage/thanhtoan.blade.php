@@ -47,21 +47,15 @@
 
 										<div class="form-group">
 											<label for="exampleInputEmail1">Họ Tên </label>
-											<input type="text" class="form-control"
-											 id="exampleInputEmail1" placeholder="thay đổi tên người nhận vui lòng nhập vào đây"
-											name="hoten"aria-describedby="emailHelp" >
+											<input type="text" class="form-control" id="exampleInputEmail1" placeholder="{{Auth::guard('KhachHang')->user()->HoTen}}" name="hoten"aria-describedby="emailHelp" >
 										</div>
 										<div class="form-group">
 											<label for="exampleInputPassword1">Địa chỉ</label>
-											<input type="text" class="form-control" id="exampleInputPassword1"
-                                                   placeholder="thay đổi địa chỉ nhận hàng vui lòng nhập vào đây"
-                                                   name="diachi">
+											<input type="text" class="form-control" id="exampleInputPassword1" placeholder="{{Auth::guard('KhachHang')->user()->DiaChi}}" name="diachi">
 										</div>
 										<div class="form-group">
 											<label for="inputAddress">Phone</label>
-											<input type="text" class="form-control" id="inputAddress"
-                                                   placeholder="thay đổi số điện thoại nhận hàng vui lòng nhập vào đây"
-                                                   name="sdt">
+											<input type="text" class="form-control" id="inputAddress" placeholder="{{Auth::guard('KhachHang')->user()->SoDienThoai}}" name="sdt">
 										</div>
 										<div class="form-group">
 											<label for="exampleInputPassword1">Tổng Tiền</label>

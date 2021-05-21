@@ -82,7 +82,7 @@
                                 </div>
                             </div>
                             <div class="middle-product table-wrapper-scroll-y table-responsive custom-scrollbar-css">
-                                <table class="table table-fixed">
+                                <table class="table table-fixed table-hover">
                                     <tbody>
                                     @foreach($sp->chitietthuoctinh as $tt)
                                         <tr>
@@ -125,7 +125,7 @@
             <!-- Modal body -->
             <div class="modal-body ">
                 <h2 class='text-center mb-5'>Thông tin sản phẩm</h2>
-                    <table class="table table-bordered  ketqua" id="dataTables-example">
+                    <table class="table table-bordered table-hover ketqua" id="dataTables-example">
 
                     </table>
             </div>

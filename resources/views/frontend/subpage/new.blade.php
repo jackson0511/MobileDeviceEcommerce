@@ -9,8 +9,8 @@
                                     <i class="fa fa-truck"></i>
                                 </div>
                                 <div class="text-wrap">
-                                    <h5 class="heading letter-spacing--1"><a href="#">Free Shipping</a></h5>
-                                    <p class="desc">Apply order over $99</p>
+                                    <h5 class="heading letter-spacing--1"><a href="#">Miễn phí Ship</a></h5>
+                                    <p class="desc">Cho tất cả hoá đơn</p>
                                 </div>                                
                             </div>
                         </div>
@@ -22,8 +22,8 @@
                                     <i class="fa fa-money"></i>
                                 </div>
                                 <div class="text-wrap">
-                                    <h5 class="heading letter-spacing--1"><a href="#">Cash On Delivery</a></h5>
-                                    <p class="desc">Internet Trend To Repeat</p>
+                                    <h5 class="heading letter-spacing--1"><a href="#">Thanh toán khi giao hàng</a></h5>
+                                    <p class="desc">Nhận hàng mới thanh toán</p>
                                 </div>                                    
                             </div>
                         </div>
@@ -35,8 +35,8 @@
                                     <i class="fa fa-gift"></i>
                                 </div>
                                 <div class="text-wrap">
-                                    <h5 class="heading letter-spacing--1"><a href="#">Gift For All</a></h5>
-                                    <p class="desc">Gift When Subscribe</p>
+                                    <h5 class="heading letter-spacing--1"><a href="#">Quà tặng hấp dẫn</a></h5>
+                                    <p class="desc">Khi đăng kí kênh</p>
                                 </div>                                    
                             </div>
                         </div>
@@ -48,7 +48,7 @@
                                     <i class="fa fa-clock-o"></i>
                                 </div>
                                 <div class="text-wrap">
-                                    <h5 class="heading letter-spacing--1"><a href="#">Opening All Week</a></h5>
+                                    <h5 class="heading letter-spacing--1"><a href="#">Mở tất cả các ngày trong tuần</a></h5>
                                     <p class="desc">6.00 am - 17.00pm</p>
                                 </div>                                    
                             </div>

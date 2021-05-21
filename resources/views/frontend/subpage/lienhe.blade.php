@@ -71,7 +71,7 @@
                     </div>
                 </div><!-- /.box-header -->
                 <div class="box-content">
-                    <p>thuannguyen14897@gmail.com</p>
+                    <p>baob1704597@student.ctu.edu.vn</p>
                 </div><!-- /.box-content -->
             </div><!-- /.iconbox -->
         </div><!-- /.col-md-4 -->

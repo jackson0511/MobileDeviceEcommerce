@@ -106,7 +106,7 @@ class QuanTriController extends Controller
         ];
         //gui mail
         Mail::send('frontend.email-template.reset_pass',$data, function($message) use ($email){
-            $message->from('thuan.dh51600602@gmail.com','Đức Thuận');
+            $message->from('it.duonggiabao@gmail.com','Quản Trị Viên');
             $message->to($email, 'Reset Mật Khẩu');
             $message->subject('Reset Mật Khẩu!');
         });

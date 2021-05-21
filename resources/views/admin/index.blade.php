@@ -89,7 +89,7 @@
                 <a class="pull-right btn btn-default btn-sm waves-effect waves-light">View All</a>
                 <h4 class="text-dark header-title m-t-0">Đơn hàng mới</h4>
                 <div class="table-responsive">
-                    <table class="table table-actions-bar m-b-0">
+                    <table class="table table-actions-bar m-b-0 table-hover">
                         <thead>
                         <tr>
                             <th>ID</th>

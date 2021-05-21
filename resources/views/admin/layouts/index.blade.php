@@ -6,9 +6,9 @@
     <meta name="description" content="A fully featured admin theme which can be used to build CRM, CMS, etc.">
     <meta name="author" content="Coderthemes">
     <!-- App Favicon icon -->
-    <link href="icon/ducthuan.png" rel="shortcut icon">
+    <link href="icon/favicon.png" rel="shortcut icon">
     <!-- App Title -->
-    <title>Admin - Apple</title>
+    <title>Admin - DIDONG2021</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <base href="{{ asset('') }}">
 
@@ -85,13 +85,13 @@
         <div id="data_profile"></div>
         <!-- endcontent -->
         <!-- Footer -->
-        <footer class="footer text-right">
+        <footer class="footer text-center">
             <div class="container">
                 <div class="row">
-                    <div class="col-xs-6">
-                        © {{date('Y')}}. by Developer Đức Thuận
+                    <div class="col-xs-12 text-center">
+                        <strong>© DIDONG {{date('Y')}}.</strong>
                     </div>
-                    <div class="col-xs-6">
+                    {{-- <div class="col-xs-6">
                         <ul class="pull-right list-inline m-b-0">
                             <li>
                                 <a href="#">About</a>
@@ -103,7 +103,7 @@
                                 <a href="#">Contact</a>
                             </li>
                         </ul>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </footer>

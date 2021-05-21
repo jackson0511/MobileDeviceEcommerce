@@ -46,7 +46,7 @@
                             <img width="150px" src="upload/sanpham/{{$ctdh->sanpham->Hinh }}" alt="">
                         </div>
                         <div class="form-group">
-                            <label for="userName">IMEI</label>
+                            <label for="userName">IMEI (Mỗi IMEI được ngăn cách bởi "/")</label>
                             <input type="imei" name="imei" parsley-trigger="change" value="{{$ctdh->IMEI!=null?$ctdh->IMEI:''}}" placeholder="nhập imei sản phẩm" class="form-control" >
                         </div>
                         <div class="form-group text-right m-b-0">

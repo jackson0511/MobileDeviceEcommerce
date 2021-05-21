@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <!-- end filtet-->
-                <table id="datatable" class="table table-striped table-bordered">
+                <table id="datatable" class="table table-striped table-bordered table-hover">
                     <thead>
                     <tr>
                         <th>STT</th>

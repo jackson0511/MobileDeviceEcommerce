@@ -30,7 +30,7 @@
     <div class="product-content product-fourcolumn clearfix">
 
       <div class="table-responsive text-center">
-        <table id="datatable" class="table table-bordered">
+        <table id="datatable" class="table table-bordered table-hover">
           <thead>
             <tr>
               <th scope="col">STT</th>

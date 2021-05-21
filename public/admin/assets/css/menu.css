@@ -12,7 +12,7 @@ File: Menu
   right: 0;
   left: 0;
   top: 0;
-  z-index: 1030;
+  z-index: 1;
   background-color: transparent;
   border: 0;
   -webkit-transition: all .5s ease;
@@ -262,8 +262,8 @@ File: Menu
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   line-height: 20px;
-  padding-left: 25px;
-  padding-right: 25px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 #topnav .navigation-menu > li > a:hover {
   color: #5fbeaa;

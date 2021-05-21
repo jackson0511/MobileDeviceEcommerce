@@ -51,7 +51,7 @@
                         </textarea>
                     </div>
                     <div class="form-group">
-                        <table id="datatable" class="table table-striped table-bordered">
+                        <table id="datatable" class="table table-striped table-bordered table-hover">
                             <thead>
                             <tr>
                                 <th>Chọn</th>

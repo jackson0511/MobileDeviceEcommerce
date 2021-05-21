@@ -22,7 +22,7 @@
             @endif
 
             <div class="card-box table-responsive">
-                <table id="datatable" class="table table-bordered">
+                <table id="datatable" class="table table-bordered table-hover">
                     <thead>
                     <tr>
                         <th>STT</th>

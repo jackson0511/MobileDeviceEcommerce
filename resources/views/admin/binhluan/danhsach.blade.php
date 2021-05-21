@@ -23,7 +23,7 @@
 
             <div class="card-box table-responsive">
 
-                <table id="datatable" class="table table-striped table-bordered">
+                <table id="datatable" class="table table-striped table-bordered table-hover">
                     <thead>
                     <tr>
                         <th>ID</th>
@@ -43,7 +43,7 @@
                                 <td>
                                     {{$bl->NoiDung}}
                                     @if(count($bl->children)>0)
-                                        <table  style="margin-left:50px" >
+                                        <table  style="margin-left:50px" class="table-hover">
                                         @foreach($bl->children as $child)
                                             <tr>
                                                 <td width="200px" height="30px" >{{"- ".$child->NoiDung}}</td>

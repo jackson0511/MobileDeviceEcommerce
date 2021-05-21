@@ -65,7 +65,7 @@
                     </form>
                 </div>
                 <!-- end filter-->
-                <table id="datatable" class="table list-order table-striped table-bordered">
+                <table id="datatable" class="table list-order table-striped table-bordered table-hover">
                     <thead>
                     <tr>
                         <th>STT</th>

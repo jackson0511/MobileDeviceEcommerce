@@ -14,6 +14,12 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
+    public function __construct(Request $request)
+    {
+        parent::__construct($request);
+        DB::enableQueryLog();
+    }
+
     public function index(){
         $sanpham=SanPham::all();
         $donhang=DonHang::all();
@@ -58,7 +64,6 @@ class AdminController extends Controller
         $donhang_new=DonHang::orderByRaw('id DESC')->where('TrangThai',0)->paginate(10);
 
         $chiTiet =DB::select('select idSP,sum(SoLuong)as TongSL from ChiTietDonHang join DonHang on ChiTietDonHang.idDH=DonHang.id where MONTH(ChiTietDonHang.updated_at)=MONTH(NOW()) and DonHang.TrangThai=3  group By idSP ');
-
         $dataProduct=[];
         foreach($chiTiet as $chitiet){
             $soluong=$chitiet->TongSL;

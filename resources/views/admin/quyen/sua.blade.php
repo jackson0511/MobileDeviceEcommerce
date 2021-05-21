@@ -7,7 +7,7 @@
             <ol class="breadcrumb">
                 <li><a href="admin/trangchu">Trang chủ</a></li>
                 <li><a href="#">Quyền</a></li>
-                <li class="active">Thêm</li>
+                <li class="active">Sửa</li>
             </ol>
         </div>
     </div>

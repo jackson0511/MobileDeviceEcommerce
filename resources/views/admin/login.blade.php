@@ -27,14 +27,14 @@
     <script src="admin/assets/js/modernizr.min.js"></script>
 
 </head>
-<body>
+<body class="d-flex align-items-center">
 
 <div class="account-pages"></div>
 <div class="clearfix"></div>
 <div class="wrapper-page">
-    <div class=" card-box">
+    <div class=" card-box ">
         <div class="panel-heading">
-            <h3 class="text-center"> Sign In to <strong class="text-custom">Apple</strong> </h3>
+            <h3 class="text-center"> Sign In to <strong class="text-custom">DIDONG2021</strong> </h3>
         </div>
 
 
@@ -43,13 +43,13 @@
                 {{ csrf_field() }}
                 <div class="form-group ">
                     <div class="col-xs-12">
-                        <input class="form-control" name="email" type="text" required="" placeholder="Email">
+                        <input class="form-control" name="email" type="text" required="" placeholder="Nhập Email">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="col-xs-12">
-                        <input class="form-control" name="password" type="password" required="" placeholder="Password">
+                        <input class="form-control" name="password" type="password" required="" placeholder="Nhập Password">
                     </div>
                 </div>
 
@@ -58,7 +58,7 @@
                         <div class="checkbox checkbox-primary">
                             <input id="checkbox-signup" type="checkbox">
                             <label for="checkbox-signup">
-                                Remember me
+                                Ghi nhớ đăng nhập
                             </label>
                         </div>
 
@@ -67,7 +67,7 @@
 
                 <div class="form-group text-center m-t-40">
                     <div class="col-xs-12">
-                        <button class="btn btn-pink btn-block text-uppercase waves-effect waves-light" type="submit">Log In</button>
+                        <button class="btn btn-success btn-block text-uppercase waves-effect waves-light" type="submit">Đăng nhập</button>
                     </div>
                 </div>
             </form>

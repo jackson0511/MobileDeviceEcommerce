@@ -43,7 +43,7 @@
                     </div>
                 </div>
                 <!-- end filter-->
-                <table id="datatable" class="table table-bordered">
+                <table id="datatable" class="table table-bordered table-hover">
                     <thead>
                     <tr>
                         <th>STT</th>

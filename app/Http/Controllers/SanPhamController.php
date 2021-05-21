@@ -173,13 +173,17 @@ class SanPhamController extends Controller
         }
         return redirect('admin/sanpham/danhsach')->with('ThongBao','Cập nhập thành công');
     }
-    public function getDelete($id){
-        $sanpham=SanPham::find($id);
-        if(count($sanpham->anhslidesp)>0){
-            return redirect('admin/sanpham/danhsach')->with('ThongBao','Không xoá được vì ràng buộc dữ liêu');
-        }else{
+    public function getDelete($id)
+    {
+        $sanpham = SanPham::find($id);
+        if (count($sanpham->anhslidesp) > 0) {
+            return redirect('admin/sanpham/danhsach')->with('ThongBao', 'Không xoá được vì ràng buộc dữ liêu');
+        } else {
+            $sanpham->ChiTietThuocTinh()->delete();
+            $sanpham->boloc()->detach();
             $sanpham->delete();
-            return redirect('admin/sanpham/danhsach')->with('ThongBao','Xoá thành công');
+
+            return redirect('admin/sanpham/danhsach')->with('ThongBao', 'Xoá thành công');
         }
     }
 

@@ -107,7 +107,7 @@
                     <li><a href="admin/theloaimakhuyenmai/them">Thêm</a></li>
                 </ul>
             </li>
-            <li class="has-submenu">
+            {{-- <li class="has-submenu">
                 <a><i class="md md-class"></i>Thông tin bảo hành</a>
                 <ul class="submenu">
                     <li class="has-submenu">
@@ -140,24 +140,12 @@
                         </ul>
                     </li>
                 </ul>
-            </li>
+            </li> --}}
             <li class="has-submenu">
                 <a><i class="md md-class"></i>Bảng giá sửa chữa linh kiện</a>
                 <ul class="submenu">
-                    <li class="has-submenu">
-                        <a>Giá linh kiện</a>
-                        <ul class="submenu">
-                            <li><a href="admin/gialinhkien/danhsach">Danh sách</a></li>
-                            <li><a href="admin/gialinhkien/them">Thêm</a></li>
-                        </ul>
-                    </li>
-                    <li class="has-submenu">
-                        <a>DM sản phẩm</a>
-                        <ul class="submenu">
-                            <li><a href="admin/danhmucsanpham/danhsach">Danh sách</a></li>
-                            <li><a href="admin/danhmucsanpham/them">Thêm</a></li>
-                        </ul>
-                    </li>
+                    <li><a href="admin/gialinhkien/danhsach">Danh sách</a></li>
+                    <li><a href="admin/gialinhkien/them">Thêm</a></li>
                 </ul>
             </li>
             <li class="has-submenu">
@@ -166,9 +154,6 @@
 {{--                    <li><a href="admin/donhang/danhsach">Danh sách</a></li>--}}
 {{--                    <li><a href="admin/donhang/them">Thêm</a></li>--}}
 {{--                </ul>--}}
-            </li>
-            <li class="has-submenu">
-                <a href="admin/phieutrungtam/danhsach"><i class="md md-class"></i>Trung tâm</a>
             </li>
         @endif
     </ul>

@@ -6,7 +6,7 @@
     <!-- Basic Page Needs -->
     <meta charset="utf-8">
     <!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
-    <title>Đức Thuận Apple</title>
+    <title>Di Động 2021</title>
 
     <meta name="author" content="themesflat.com">
 
@@ -28,7 +28,8 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/animate.css">
 
     <!-- Favicon and touch icons  -->
-    <link href="icon/ducthuan.png" rel="shortcut icon">
+    <link href="icon/favicon.png" rel="shortcut icon">
+
     <style>
         .page-item.active .page-link{
             background: #f63440;

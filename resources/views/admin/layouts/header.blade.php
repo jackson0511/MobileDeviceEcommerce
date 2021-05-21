@@ -3,8 +3,7 @@
 
         <!-- Logo container-->
         <div class="logo">
-            <a href="admin/trangchu" class="logo"><span>Appl<i
-                        class="md md-explicit"></i></span></a>
+            <a href="admin/trangchu" class="logo"><span>DIDONG2021</span></a>
         </div>
         <!-- End Logo container-->
 
@@ -18,14 +17,14 @@
                         <i class="icon-bell"></i> <span data-count="0" class="badge badge-xs badge-danger">0</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-lg">
-                        <li class="notifi-title"><span class="label label-default pull-right"> 0</span>Notification</li>
+                        <li class="notifi-title"><span class="label label-default pull-right"> 0</span>Thông báo</li>
                         <li class="list-group slimscroll-noti notification-list">
                             <!-- list item-->
 
                         </li>
                         <li>
                             <a href="javascript:void(0);" class="list-group-item text-right">
-                                <small class="font-600">See all notifications</small>
+                                <small class="font-600">Xem tất cả thông báo</small>
                             </a>
                         </li>
                     </ul>
@@ -35,10 +34,10 @@
                 <li class="dropdown navbar-c-items">
                     <a href="" class="dropdown-toggle waves-effect waves-light profile" data-toggle="dropdown" aria-expanded="true"><img src="admin/assets/images/users/avatar-1.jpg" alt="user-img" class="img-circle"> </a>
                     <ul class="dropdown-menu">
-                        <li><a href="javascript:void(0)"><i class="ti-user text-custom m-r-10"></i> {{Auth::guard('QuanTri')->user()->HoTen}}</a></li>
-                        <li id="profile" data-id="{{Auth::guard('QuanTri')->user()->id}}"><a href="javascript:void(0)"><i class="ti-user text-custom m-r-10" ></i> Profile</a></li>
+                        <li><a href="javascript:void(0)">Xin chào, {{Auth::guard('QuanTri')->user()->HoTen}}</a></li>
+                        <li id="profile" data-id="{{Auth::guard('QuanTri')->user()->id}}"><a href="javascript:void(0)"><i class="ti-user text-custom m-r-10" ></i> Cá nhân</a></li>
                         <li class="divider"></li>
-                        <li><a href="admin/logout"><i class="ti-power-off text-danger m-r-10"></i> Logout</a></li>
+                        <li><a href="admin/logout"><i class="ti-power-off text-danger m-r-10"></i> Đăng xuất</a></li>
                     </ul>
                 </li>
                  @endif

@@ -402,7 +402,7 @@ class AjaxController extends Controller
             }
         }
         ?>
-        <table class="table ">
+        <table class="table table-hover">
             <thead>
             <tr>
                 <td height="50px" style='font-weight: bold'>Thuộc tính</td>
@@ -414,7 +414,7 @@ class AjaxController extends Controller
             <tbody>
                 <tr>
                     <td>
-                        <table class="table">
+                        <table class="table table-hover">
                             <?php foreach ($arr_tt as $tt) {
                                 echo "<tr><td height='70px'>$tt</td></tr>";
                             }?>
@@ -422,7 +422,7 @@ class AjaxController extends Controller
                     </td>
                     <?php foreach ($sanpham as $sp){
                         echo "<td>
-                                <table class='table'>";
+                                <table class='table table-hover'>";
                          foreach($sp->chitietthuoctinh as $cttt) {
                             echo "<tr><td height='70px'>{$cttt->ChiTiet}</td></tr> ";
                          }
@@ -433,30 +433,5 @@ class AjaxController extends Controller
             </tbody>
         </table>
     <?php
-//        echo   "<thead>
-//                   <tr align='center'>";
-//            foreach ($sanpham as $sp1) {
-//                  echo "<th style='font-weight: bold'>$sp1->Ten</th>";
-//                   }
-//             echo "</tr>
-//                 </thead>";
-//            echo  "<tr>";
-//            foreach ($sanpham as $sp){
-//                echo  "<td width='50%'>
-//                    <div class='table-wrapper-scroll-y table-responsive custom-scrollbar-css'>
-//                       <table class='table table-fixed'>
-//                           <thead>";
-//                            foreach ($sp->chitietthuoctinh as $tt) {
-//                                echo "<tr>
-//                                       <th>" . $tt->thuoctinh->Ten . "</th>
-//                                       <th>" . $tt->ChiTiet . "</th>
-//                                     </tr>";
-//                            }
-//                     echo "</thead>
-//                       </table>
-//                       </div>
-//                    </td>";
-//                }
-//            echo "</tr>";
     }
 }

@@ -14,6 +14,7 @@ class BoLocController extends Controller
     public function getAdd(){
         $boloc=BoLoc::where('parent_id',0)->get();
         return view('admin.boloc.them',['boloc'=>$boloc]);
+        
     }
     public function postAdd(){
         $this->validate($this->request,
@@ -27,7 +28,7 @@ class BoLocController extends Controller
         $boloc->Ten         =$this->request->ten;
         $boloc->parent_id   =$this->request->parent_id;
         $boloc->TrangThai   =$this->request->trangthai;
-
+        $boloc->Ten_KhongDau = str_slug($this->request->ten);        
         $boloc->save();
         return redirect('admin/boloc/danhsach')->with('ThongBao','Thêm thành công');
     }
@@ -35,6 +36,7 @@ class BoLocController extends Controller
         $boloc=BoLoc::where('parent_id',0)->get();
         $boloc_edit=BoLoc::find($id);
         return view('admin.boloc.sua',['boloc'=>$boloc,'boloc_edit'=>$boloc_edit]);
+        
     }
     public function postEdit($id){
         $this->validate($this->request,
@@ -48,7 +50,7 @@ class BoLocController extends Controller
         $boloc->Ten         =$this->request->ten;
         $boloc->parent_id   =$this->request->parent_id;
         $boloc->TrangThai   =$this->request->trangthai;
-
+        $boloc->Ten_KhongDau = str_slug($this->request->ten);            
         $boloc->save();
         return redirect('admin/boloc/danhsach')->with('ThongBao','Cập nhập thành công');
     }

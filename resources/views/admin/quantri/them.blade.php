@@ -3,10 +3,10 @@
     <!-- Page-Title -->
     <div class="row">
         <div class="col-sm-12">
-            <h4 class="page-title">Quyền</h4>
+            <h4 class="page-title">Nhân Viên</h4>
             <ol class="breadcrumb">
                 <li><a href="admin/trangchu">Trang chủ</a></li>
-                <li><a href="admin/quantri/danhsach">Quyền</a></li>
+                <li><a href="admin/quantri/danhsach">Nhân Viên</a></li>
                 <li class="active">Thêm</li>
             </ol>
         </div>

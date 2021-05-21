@@ -165,7 +165,7 @@
                                 <!-- /.content-inner -->
                                 <div class="content-inner">
                                     <div style="list-style: none;" class="inner max-width-40 ">
-                                        <table>
+                                        <table class="table-hover">
                                             <tbody>
                                             @foreach($sanpham->chitietthuoctinh as $tt)
                                                 <tr>

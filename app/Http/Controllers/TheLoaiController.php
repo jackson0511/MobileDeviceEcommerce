@@ -84,14 +84,16 @@ class TheLoaiController extends Controller
         return redirect('admin/theloai/danhsach')->with('ThongBao','Cập nhập thành công');
 
     }
-    public function getDelete($id){
-        $theloai=TheLoai::find($id);
-        if(count($theloai->sanpham)>0){
-            return redirect('admin/theloai/danhsach')->with('ThongBao','Không xoá được vì có sản phẩm');
-        }else{
-            $theloai->delete();
+    public function getDelete($id)
+    {
+        $theloai = TheLoai::find($id);
+        if (count($theloai->sanpham) > 0) {
+            return redirect('admin/theloai/danhsach')->with('ThongBao', 'Không xoá được vì có sản phẩm');
+        } else {
             $theloai->thuoctinh()->detach();
-            return redirect('admin/theloai/danhsach')->with('ThongBao','Xoá thành công');
+            $theloai->delete();
+
+            return redirect('admin/theloai/danhsach')->with('ThongBao', 'Xoá thành công');
         }
     }
     public function getXuLy($id){

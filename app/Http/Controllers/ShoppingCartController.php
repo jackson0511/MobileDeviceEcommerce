@@ -423,7 +423,7 @@ class ShoppingCartController extends Controller
                     $email=Auth::guard('KhachHang')->user()->Email;
                     //gui mail
                     Mail::send('frontend.email-template.coupon',$data, function($message) use ($email){
-                        $message->from('thuan.dh51600602@gmail.com','Đức Thuận');
+                        $message->from('it.duonggiabao@gmail.com','Quản Trị Viên');
                         $message->to($email, 'Tặng mã khuyến mãi');
                         $message->subject('Tặng mã khuyến mãi!');
                     });

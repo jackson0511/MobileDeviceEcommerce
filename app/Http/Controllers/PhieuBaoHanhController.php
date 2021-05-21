@@ -320,7 +320,7 @@ class PhieuBaoHanhController extends Controller
         $output.="<div class='row'>
                      <div class='col-lg-6'>
                         <h2 style='font-weight: bold'>Dịch vụ sửa chữa</h2>
-                        <table class='table table-bordered'>
+                        <table class='table table-bordered table-hover'>
                               <thead>
                                   <tr>
                                        <th>STT</th>
@@ -352,7 +352,7 @@ class PhieuBaoHanhController extends Controller
                         </div>
                         <div class='col-lg-6'>
                         <h2 style='font-weight: bold'>Thông tin sản phẩm</h2>
-                         <table class='table table-bordered'>
+                         <table class='table table-bordered table-hover'>
                               <thead>
                                   <tr>
                                        <th>Tên sản phẩm</th>
@@ -373,7 +373,7 @@ class PhieuBaoHanhController extends Controller
                               </thead>
                           </table>
                         <br>
-                        <h2>Thông tin tiếp nhận</h2> <table class='table table-bordered'>
+                        <h2>Thông tin tiếp nhận</h2> <table class='table table-bordered table-hover'>
                               <thead>
                                   <tr>
                                        <th>Tên khách hàng</th>

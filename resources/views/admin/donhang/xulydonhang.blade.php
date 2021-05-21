@@ -144,7 +144,7 @@
                         </div>
                         <div class="col-lg-6">
                             <h4 class="page-title m-b-30">Chi tiết đơn hàng</h4>
-                            <table id="datatable" class="table  table-bordered">
+                            <table id="datatable" class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
                                         <th width="20px">STT</th>

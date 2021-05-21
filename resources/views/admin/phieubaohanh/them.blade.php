@@ -83,7 +83,7 @@
                             </div>
                         </div>
                         <div class="col-lg-12 ketqua_dichvu" style="display: none">
-                            <table class="table table-bordered">
+                            <table class="table table-bordered table-hover">
                                 <thead>
                                 <tr>
                                     <th>STT</th>
